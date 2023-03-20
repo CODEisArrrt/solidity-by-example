@@ -18,8 +18,8 @@ contract IfElse {
         // }
         // return 2;
 
-        // shorthand way to write if / else statement
-        // the "?" operator is called the ternary operator
+        // if/else语句的速记写法
+        // "?" 运算符被称为三元运算符。
         return _x < 10 ? 1 : 2;
     }
 }
