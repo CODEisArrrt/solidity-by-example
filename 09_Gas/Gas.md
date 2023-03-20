@@ -1,6 +1,6 @@
 Gas
 一笔交易需要支付多少以太币?
-You pay gas spent * gas price amount of ether, where
+您支付的是燃气使用量*燃气价格的以太币数量，其中
 
 gas is a unit of computation
 gas spent is the total amount of gas used in a transaction
