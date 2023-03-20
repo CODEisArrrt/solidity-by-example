@@ -1,5 +1,5 @@
 Gas
-How much ether do you need to pay for a transaction?
+一笔交易需要支付多少以太币?
 You pay gas spent * gas price amount of ether, where
 
 gas is a unit of computation
