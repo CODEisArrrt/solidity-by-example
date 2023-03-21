@@ -1,4 +1,5 @@
 #For and While Loop
+
 Solidity支持for、while和do while循环.
 
 不要编写无限循环，因为这会达到gas限制，导致您的交易失败.
@@ -23,7 +24,7 @@ contract Loop {
             }
         }
 
-        // while loop
+        // 循环结构
         uint j;
         while (j < 10) {
             j++;
