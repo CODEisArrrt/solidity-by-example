@@ -9,7 +9,7 @@ contract A {
     }
 }
 
-// Solidity 0.6版本中禁止屏蔽。
+// Solidity v0.6.0版本中禁止遮蔽。
 // 这样将无法编译。
 // contract B is A {
 //     string public name = "Contract B";
