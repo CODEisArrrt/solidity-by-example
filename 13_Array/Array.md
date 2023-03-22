@@ -1,37 +1,36 @@
-Array
-Array can have a compile-time fixed size or a dynamic size.
+#Array
+数组可以在编译时具有固定长度，也可以具有动态长度
 
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
 contract Array {
-    // Several ways to initialize an array
+    // 初始化数组的几种方式
     uint[] public arr;
     uint[] public arr2 = [1, 2, 3];
-    // Fixed sized array, all elements initialize to 0
+    // 固定长度的数组，所有元素都初始化为0
     uint[10] public myFixedSizeArr;
 
     function get(uint i) public view returns (uint) {
         return arr[i];
     }
 
-    // Solidity can return the entire array.
-    // But this function should be avoided for
-    // arrays that can grow indefinitely in length.
+    // Solidity 可以返回整个数组.
+    // 但是对于长度可以无限增长的数组，应该避免使用此类函数.
     function getArr() public view returns (uint[] memory) {
         return arr;
     }
 
     function push(uint i) public {
-        // Append to array
-        // This will increase the array length by 1.
+        // 在数组末尾添加元素
+        // 这将使数组长度增加1.
         arr.push(i);
     }
 
     function pop() public {
-        // Remove last element from array
-        // This will decrease the array length by 1
+        // 删除数组中的最后一个元素
+        // 这将使数组长度减少1
         arr.pop();
     }
 
@@ -40,21 +39,19 @@ contract Array {
     }
 
     function remove(uint index) public {
-        // Delete does not change the array length.
-        // It resets the value at index to it's default value,
-        // in this case 0
+        // delete 不会改变数组长度
+        // 它将索引处的值重置为其默认值，这里为0 value,
         delete arr[index];
     }
 
     function examples() external {
-        // create array in memory, only fixed size can be created
+        // 在内存中创建数组，只能创建固定大小的数组
         uint[] memory a = new uint[](5);
     }
 }
 ```
-Examples of removing array element
-Remove array element by shifting elements from right to left
-
+###删除数组元素的示例
+通过将元素从右到左移动来删除数组元素
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -94,7 +91,7 @@ contract ArrayRemoveByShifting {
     }
 }
 ```
-Remove array element by copying last element into to the place to remove
+通过将最后一个元素复制到要删除的位置来删除数组元素
 
 
 ```solidity
@@ -104,9 +101,8 @@ pragma solidity ^0.8.17;
 contract ArrayReplaceFromEnd {
     uint[] public arr;
 
-    // Deleting an element creates a gap in the array.
-    // One trick to keep the array compact is to
-    // move the last element into the place to delete.
+    // 删除一个元素会在数组中创建一个间隙.
+    // 保持数组紧凑的一个技巧是将最后一个元素移动到要删除的位置.
     function remove(uint index) public {
         // Move the last element into the place to delete
         arr[index] = arr[arr.length - 1];
