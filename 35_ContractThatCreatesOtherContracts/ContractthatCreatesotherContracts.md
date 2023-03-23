@@ -1,7 +1,7 @@
-Contract that Creates other Contracts
-Contracts can be created by other contracts using the new keyword. Since 0.8.0, new keyword supports create2 feature by specifying salt options.
+#Contract that Creates other Contracts
+使用 new 关键字，可以由其他合约创建合约。自 0.8.0 版本以来，new 关键字支持通过指定 salt 选项创建 create2 功能。
 
-
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
@@ -56,3 +56,4 @@ contract CarFactory {
         return (car.owner(), car.model(), car.carAddr(), address(car).balance);
     }
 }
+```
