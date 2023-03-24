@@ -4,19 +4,19 @@ pragma solidity ^0.8.17;
 contract Fallback {
     event Log(string func, uint gas);
 
-    // Fallback function must be declared as external.
+    // 回退函数必须声明为external函数。
     fallback() external payable {
-        // send / transfer (forwards 2300 gas to this fallback function)
-        // call (forwards all of the gas)
+        // 发送/转移（将2300个gas转发到此回退函数）
+        // call (转发所有gas)
         emit Log("fallback", gasleft());
     }
 
-    // Receive is a variant of fallback that is triggered when msg.data is empty
+    // Receive是fallback的一种变体，当msg.data为0时触发。
     receive() external payable {
         emit Log("receive", gasleft());
     }
 
-    // Helper function to check the balance of this contract
+    // 辅助函数用于检查此合约的余额
     function getBalance() public view returns (uint) {
         return address(this).balance;
     }
