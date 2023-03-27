@@ -14,7 +14,8 @@ pragma solidity ^0.8.17;
 */
 
 contract VerifySignature {
-    /* 1. 解锁 MetaMask 账户ethereum.enable()
+    /* 1. 解锁 MetaMask 账户
+    ethereum.enable()
     */
 
     /* 2. 获取要签名的消息哈希
@@ -36,22 +37,23 @@ contract VerifySignature {
         return keccak256(abi.encodePacked(_to, _amount, _message, _nonce));
     }
 
-    /* 3. Sign message hash
-    # using browser
-    account = "copy paste account of signer here"
+/*  3. 签署消息哈希
+    # 使用浏览器
+    account = “在此处复制粘贴签名者的账户”
     ethereum.request({ method: "personal_sign", params: [account, hash]}).then(console.log)
 
-    # using web3
+    # 使用web3
     web3.personal.sign(hash, web3.eth.defaultAccount, console.log)
 
-    Signature will be different for different accounts
+    不同账户的签名将不同
     0x993dab3dd91f5c6dc28e17439be475478f5635c92a56e17e82349d3fb2f166196f466c0b4e0c146f285204f0dcb13e5ae67bc33f4b888ec32dfe0a063e8f3f781b
-    */
+*/
+
     function getEthSignedMessageHash(
         bytes32 _messageHash
     ) public pure returns (bytes32) {
         /*
-        Signature is produced by signing a keccak256 hash with the following format:
+        签名是通过使用以下格式签名keccak256哈希值生成的：:
         "\x19Ethereum Signed Message\n" + len(msg) + msg
         */
         return
@@ -99,22 +101,22 @@ contract VerifySignature {
 
         assembly {
             /*
-            First 32 bytes stores the length of the signature
+            前32个字节存储签名的长度。
 
             add(sig, 32) = pointer of sig + 32
-            effectively, skips first 32 bytes of signature
+            有效地跳过签名的前32个字节
 
-            mload(p) loads next 32 bytes starting at the memory address p into memory
+            mload(p)函数将从内存地址p开始的下一个32个字节加载到内存中。
             */
 
-            // first 32 bytes, after the length prefix
+            // 在长度前缀之后的前32个字节
             r := mload(add(sig, 32))
-            // second 32 bytes
+            // 之后32个字节
             s := mload(add(sig, 64))
-            // final byte (first byte of the next 32 bytes)
+            // 最后一个字节（下一个32个字节的第一个字节）
             v := byte(0, mload(add(sig, 96)))
         }
 
-        // implicitly return (r, s, v)
+        // 隐式返回 (r, s, v)。
     }
 }
