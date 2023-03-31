@@ -1,4 +1,4 @@
-Block Timestamp Manipulation
+ Block Timestamp Manipulation
 Vulnerability
 block.timestamp can be manipulated by miners with the following constraints
 

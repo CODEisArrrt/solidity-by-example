@@ -1,27 +1,23 @@
 # Block Timestamp Manipulation
-## Vulnerability
-block.timestamp can be manipulated by miners with the following constraints
-
-it cannot be stamped with an earlier time than its parent
-it cannot be too far in the future
+## 漏洞
+矿工可以通过以下限制来操纵block.timestamp：
+它不能比其父块早
+它不能太遥远的未来
 
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
 /*
-Roulette is a game where you can win all of the Ether in the contract
-if you can submit a transaction at a specific timing.
-A player needs to send 10 Ether and wins if the block.timestamp % 15 == 0.
+轮盘是一种游戏，您可以在特定时间提交交易以赢取合同中的所有以太币。
+玩家需要发送10 Ether，如果block.timestamp％15 == 0，则赢了。
 */
 
 /*
-1. Deploy Roulette with 10 Ether
-2. Eve runs a powerful miner that can manipulate the block timestamp.
-3. Eve sets the block.timestamp to a number in the future that is divisible by
-   15 and finds the target block hash.
-4. Eve's block is successfully included into the chain, Eve wins the
-   Roulette game.
+1. 使用10 Ether部署轮盘
+2. Eve运行一个强大的矿工，可以操纵块时间戳。
+3. Eve将block.timestamp设置为未来的一个可以被15整除的数字，并找到目标块哈希。
+4. Eve的块成功包含在链中，Eve赢得了轮盘游戏。
 */
 
 contract Roulette {
@@ -30,8 +26,8 @@ contract Roulette {
     constructor() payable {}
 
     function spin() external payable {
-        require(msg.value == 10 ether); // must send 10 ether to play
-        require(block.timestamp != pastBlockTime); // only 1 transaction per block
+        require(msg.value == 10 ether); // 必须发送10 ether以玩游戏
+        require(block.timestamp != pastBlockTime); // 每个块只能有一个交易
 
         pastBlockTime = block.timestamp;
 
@@ -42,5 +38,5 @@ contract Roulette {
     }
 }
 ```
-## Preventative Techniques
-Don't use block.timestamp for a source of entropy and random number
+## 预防技术
+不要使用block.timestamp作为熵和随机数的来源。
