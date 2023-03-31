@@ -40,5 +40,6 @@ contract Roulette {
         }
     }
 }
+
 Preventative Techniques
 Don't use block.timestamp for a source of entropy and random number
