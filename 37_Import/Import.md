@@ -1,7 +1,7 @@
-#Import
+# Import
 在Solidity中，您可以导入本地和外部文件。
 
-##Local
+## Local
 这是我们的文件夹结构。
 
 ```solidity
@@ -52,7 +52,7 @@ contract Import {
     }
 }
 ```
-##External
+## External
 您还可以通过简单地复制URL来从GitHub导入
 
 

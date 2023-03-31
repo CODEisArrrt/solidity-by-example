@@ -1,4 +1,4 @@
-Interface
+# Interface
 您可以通过声明接口与其他合约交互。
 
 接口

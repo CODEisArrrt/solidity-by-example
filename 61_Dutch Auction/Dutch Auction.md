@@ -1,7 +1,7 @@
-#Dutch Auction
+# Dutch Auction
 NFT的荷兰式拍卖。
 
-##Auction
+## Auction
 NFT的卖家部署此合约，设定NFT的起始价格。
 拍卖持续7天。
 NFT的价格随时间降低。

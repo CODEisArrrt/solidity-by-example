@@ -1,4 +1,4 @@
-#Write to Any Slot
+# Write to Any Slot
 Solidity存储类似于长度为2^256的数组。数组中的每个槽位可以存储32个字节。
 
 

@@ -1,4 +1,4 @@
-#Inheritance
+# Inheritance
 Solidity 支持多重继承。合约可以使用 is 关键字继承其他合约.
 
 子合约将要覆盖的函数必须声明为 virtual.

@@ -1,4 +1,4 @@
-#Bi-Directional Payment Channel
+# Bi-Directional Payment Channel
 双向支付通道允许参与者 Alice 和 Bob 反复在链外转移以太币。
 
 支付可以双向进行，Alice 支付 Bob，Bob 支付 Alice。

@@ -1,4 +1,4 @@
-Error
+# Error
 错误会撤销合约编译期间对状态所做的所有更改。
 
 您可以通过调用require、revert或assert来引发错误。
