@@ -22,3 +22,12 @@ function dec() public {
         count -= 1;
     }
 ```
+
+# remix验证
+1. 部署合约Counter，调用count和get()函数，结果显示为0。
+![2-1.png](./img/2-1.png)
+2. 调用inc()函数，结果显示为1。
+![2-2.png](./img/2-2.png)
+3. 调用dec()函数，结果显示为1.
+![2-3.png](./img/2-3.png)
+
