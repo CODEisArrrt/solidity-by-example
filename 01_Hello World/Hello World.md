@@ -30,3 +30,6 @@ contract HelloWorld {
 
 } 
 ```
+##remix验证
+1.编译并部署代码
+![1-1.png](png/1-1.png)

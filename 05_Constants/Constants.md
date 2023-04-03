@@ -14,3 +14,9 @@ contract Constants {
     uint public constant MY_UINT = 123;
 }
 ```
+
+##remix验证
+1.编译并部署代码
+![5-1.png](png/5-1.png)
+2.调用MY_ADDRESS显示地址，调用MY_UINT显示整数
+![5-2.png](png/5-2.png)

@@ -66,3 +66,6 @@ contract Primitives {
     address public defaultAddr; // 0x0000000000000000000000000000000000000000
 }
 ```
+##remix验证
+编译并部署代码查看数据类型
+![1-1.png](png/3-1.png)

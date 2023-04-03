@@ -23,3 +23,8 @@ contract SimpleStorage {
     }
 }
 ```
+## remix验证
+1.部署合约 调用set写入状态变量
+![7-1.png](png/7-1.png)
+2.调用get可以不消耗gas读取变量
+![7-2.png](png/7-2.png)
