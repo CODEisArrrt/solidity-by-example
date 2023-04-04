@@ -83,3 +83,7 @@ contract Todos {
     Todo[] public todos;
 }
 ```
+
+## remix验证
+1.部署 Todos合约，调用create函数，创建结构体
+![15-1.png](img/15-1.png)
