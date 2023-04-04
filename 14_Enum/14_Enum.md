@@ -45,3 +45,10 @@ function reset() public {
     delete status;
 }
 ```
+## remix验证
+1. 部署合约Enum，调用cancel（）函数，get（）函数显示为4.
+![14-1.png](./img/14-1.png)
+2. 调用reset（）函数，get（）函数显示为0.
+![14-2.png](./img/14-2.png)
+3. 调用set（）函数，输入1，get（）函数显示为1.
+![14-3.png](./img/14-3.png)
