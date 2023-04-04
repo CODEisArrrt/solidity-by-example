@@ -73,3 +73,9 @@ contract XYZ {
             someFuncWithManyInputs({a: address(0), b: true, c: "c", x: 1, y: 2, z: 3});
     }
 }
+```
+## remix验证
+1.部署 Function合约,调用returnMany函数查看函数返回值,调用named函数给返回值命名，
+![17-1.png](img/17-1.png)
+2.部署XYZ合约，调用someFuncWithManyInputs函数，输入六个参数：三个无符号整数（x、y和z）、一个地址（a）、一个布尔值（b）和一个字符串（c）。该函数是一个纯函数，不会修改合约状态，并且返回一个无符号整数。
+![17-2.png](img/17-2.png)
