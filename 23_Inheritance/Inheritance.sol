@@ -71,3 +71,4 @@ contract F is A, B {
         return super.foo();
     }
 }
+
