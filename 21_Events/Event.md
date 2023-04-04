@@ -22,3 +22,7 @@ contract Event {
     }
 }
 ```
+
+## remix验证
+1.部署 Error合约,调用test函数中，通过emit关键字触发了三次事件。前两次是Log事件，分别传入了两个不同的字符串参数。第三次是AnotherLog事件，没有传入任何参数。
+![21-1.png](img/21-1.png)
