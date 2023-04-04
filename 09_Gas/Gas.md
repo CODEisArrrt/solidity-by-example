@@ -34,3 +34,9 @@ contract Gas {
     }
 }
 ```
+
+## remix验证
+1.部署合约
+![9-1.png](img/9-1.png)
+2.调用forever()进入循环消耗gas 交易失败
+![9-2.png](img/9-2.png)
