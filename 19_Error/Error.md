@@ -88,3 +88,13 @@ contract Account {
     }
 }
 ```
+
+## remix验证
+1.部署 Error合约,testRequire()须大于10否则抛出错误信息；testRevert()如果小于或等于10则抛出错误信息
+![19-1.png](img/19-1.png)
+2.调用testCustomError函数，输入一个 uint 类型的参数 _withdrawAmount，，它使用自定义错误 InsufficientBalance，如果合约余额小于 _withdrawAmount，则会使用 revert 抛出一个带有自定义错误消息的异常，消息中包含合约余额和要提取的金额。
+![19-2.png](img/19-2.png)
+3.部署另一个例子Account合约，调用deposit函数表示要存储的金额，首先将原有的balance保存在oldBalance中，然后计算新的余额newBalance。调用balance查看。
+![19-3.png](img/19-3.png)
+4.调用withdraw函数取款，在取款之前，使用require函数检查balance是否大于等于_amount，如果不是，则抛出异常Underflow。如果balance小于_amount，则使用revert函数抛出异常Underflow。如果balance不小于_amount，则更新balance的值，并使用assert函数再次检查balance是否小于等于oldBalance。
+![19-4.png](img/19-4.png)
