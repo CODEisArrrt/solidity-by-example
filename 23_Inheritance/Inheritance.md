@@ -71,7 +71,6 @@ contract F is A, B {
 }
 ```
 
-
 ## remix验证
 1.部署A,B,C合约，B继承A，返回"B";C继承A返回"C",验证
 ![23-1.png](img/23-1.png)
