@@ -47,3 +47,10 @@ function decrement(uint i) public noReentrancy {
     }
 }
 ```
+# remix测试
+1. 部署合约FunctionModifier，可以看到owner为msg.sender，x = 10。
+![20-1.png](./img/20-1.png)
+2. 调用changeOwner（）函数，非msg.sender会调用失败，调用成功修改owner。
+![20-2.png](./img/20-2.png)
+3. modifier可以防止重入攻击，调用decrement（）函数输入1，x显示为9。
+![20-3.png](./img/20-3.png)
