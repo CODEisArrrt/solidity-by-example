@@ -128,3 +128,11 @@ contract ArrayReplaceFromEnd {
     }
 }
 ```
+
+## remix验证
+1.部署Array合约，调用push函数写入元素，调用getArr查看数组元素，调用getLength查看数组长度
+![13-1](img/13-1.png)
+2.调用pop函数 删除从右往左第一个元素，验证
+![13-2](img/13-2.png)
+3.调用get函数，索引数组中的元素,调用examples函数，创建数组，该数组被初始化为全零，因为在 Solidity 中，动态数组在声明时会自动初始化为全零。
+![13-3](img/13-3.png)
