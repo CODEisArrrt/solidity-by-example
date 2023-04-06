@@ -47,3 +47,15 @@ try/catch与合约创建的示例
         }
     }
 ```
+# remix验证
+部署合约，调用tryCatchExternalCall（）函数输入数值0，调用失败，释放Log("external call failed")。
+![36-1.png](./img/36-1.png)
+调用tryCatchExternalCall（）函数输入数值1，调用成功，释放Log("my func was called")。
+![36-2.png](./img/36-2.png)
+调用tryCatchNewContract（）函数输入地址0x0000000000000000000000000000000000000000，require（）异常，释放Log("invalid address")。
+![36-3.png](./img/36-3.png)
+调用tryCatchNewContract（）函数输入地址0x0000000000000000000000000000000000000001，assert（）异常，释放LogBytes("")。
+![36-4.png](./img/36-4.png)
+调用tryCatchNewContract（）函数输入地址0x0000000000000000000000000000000000000002，释放Log("Foo created")。
+![36-5.png](./img/36-5.png)
+
