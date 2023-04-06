@@ -48,6 +48,6 @@ contract UncheckedMath {
 3.更改函数sumOfCubes中的unchecked，改为为sumOfCubes2，对比两个函数gas消耗
 ![45-3.png](img/45-3.png)
 sumOfCubes
-![45-4.PNG](img/45-4.png)
+![45-4.png](img/45-4.png)
 sumOfCubes2
-![45-5,PNG](img/45-5.png)
+![45-5,png](img/45-5.png)
