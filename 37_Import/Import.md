@@ -64,3 +64,10 @@ import "https://github.com/owner/repo/blob/branch/path/to/Contract.sol";
 // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.5/contracts/utils/cryptography/ECDSA.sol
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.5/contracts/utils/cryptography/ECDSA.sol";
 ```
+
+
+## remix验证
+1.创建本地文件夹
+![37-1.png](img/37-1.png)
+2.部署Import合约，初始化Foo.sol。通过获取其名称来测试Foo.sol。
+![37-2.png](img/37-2.png)
