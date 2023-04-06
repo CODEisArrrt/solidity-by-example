@@ -42,7 +42,7 @@ function notPayable() public {}
 # remix验证
 1. 部署合约Payable，调用deposit（）函数，存入1ETH，账户余额为1ETH。
 ![28-1.png](./img/28-1.png)
-2. 调用withdraw（）函数，提取出1EtH，账户余额为0。
+2. 调用withdraw（）函数，提取出1ETH，账户余额为0。
 ![28-2.png](./img/28-2.png)
 3. 调用transfer（）函数，转账1ETH，目标地址增加1ETH，当前地址减少1ETH。
 ![28-3.png](./img/28-3.png)

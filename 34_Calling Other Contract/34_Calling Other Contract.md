@@ -38,3 +38,10 @@ function setXandSendEther(Callee _callee, uint _x) public payable {
     (uint x, uint value) = _callee.setXandSendEther{value: msg.value}(_x);
 }
 ```
+# remix验证
+部署两个合约，调用Caller合约中的setX（）函数输入目标合约地址与X数值1，Callee合约中setX（）函数被调用，X被修改为1。
+![34-1.png](./img/34-1.png)
+调用Caller合约中的setXandSendEther（）函数输入目标合约地址与X数值2，Callee合约中setX（）函数被调用，X被修改为2。
+![34-2.png](./img/34-2.png)
+调用Caller合约中的setXFromAddress（）函数输入目标合约地址与X数值3，Callee合约中setX（）函数被调用，X被修改为3。
+![34-3.png](./img/34-3.png)
