@@ -74,3 +74,8 @@ contract SendEther {
     }
 }
 ```
+
+
+## remix验证
+1.部署ReceiveEther、SendEther合约 推荐使用sendViaCall发送以太币
+![29-1.png](img/29-1.png)
