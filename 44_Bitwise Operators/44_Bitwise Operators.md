@@ -140,7 +140,7 @@ contract MostSignificantBitAssembly {
         assembly {
             let f := shl(7, gt(x, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF))
             x := shr(f, x)
-            // or can be replaced with add
+            // 或者可以用 add 来替代
             msb := or(msb, f)
         }
         assembly {
@@ -180,3 +180,11 @@ contract MostSignificantBitAssembly {
     }
 }
 ```
+# remix验证
+1. 对位运算符进行验证。
+![44-1.png](./img/44-1.png)
+![44-2.png](./img/44-2.png)
+2. 对最高有效位进行验证。
+![44-3.png](./img/44-3.png)
+3. 对汇编语言中的最高有效位进行验证。
+![44-4.png](./img/44-4.png)

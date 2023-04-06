@@ -134,7 +134,7 @@ contract MostSignificantBitAssembly {
         assembly {
             let f := shl(7, gt(x, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF))
             x := shr(f, x)
-            // or can be replaced with add
+            // 或者可以用 add 来替代
             msb := or(msb, f)
         }
         assembly {
