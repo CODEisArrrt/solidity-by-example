@@ -23,3 +23,8 @@ Receive是fallback的一种变体，当msg.data为0时触发。
         return address(this).balance;
     }
 ```
+# remix验证
+使用calldata低级别调用不存在的函数，显示调用成功，执行fallback（）函数。
+![30-1.png](./img/30-1.png)
+msg.data为0时，触发receive（）函数。
+![30-2.png](./img/30-2.png)
