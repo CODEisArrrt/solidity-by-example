@@ -19,22 +19,22 @@ contract Car {
 
 contract CarFactory {
     Car[] public cars;
-
+//创建一个新的汽车合约，并将其添加到 cars 数组中，不发送以太币。
     function create(address _owner, string memory _model) public {
         Car car = new Car(_owner, _model);
         cars.push(car);
     }
-
+//创建一个新的汽车合约，将指定数量的以太币发送到该合约，并将其添加到 cars 数组中。
     function createAndSendEther(address _owner, string memory _model) public payable {
         Car car = (new Car){value: msg.value}(_owner, _model);
         cars.push(car);
     }
-
+//使用指定的 salt 值创建一个新的汽车合约，并将其添加到 cars 数组中，不发送以太币。
     function create2(address _owner, string memory _model, bytes32 _salt) public {
         Car car = (new Car){salt: _salt}(_owner, _model);
         cars.push(car);
     }
-
+//使用指定的 salt 值创建一个新的汽车合约，将指定数量的以太币发送到该合约，并将其添加到 cars 数组中。
     function create2AndSendEther(
         address _owner,
         string memory _model,
@@ -43,7 +43,7 @@ contract CarFactory {
         Car car = (new Car){value: msg.value, salt: _salt}(_owner, _model);
         cars.push(car);
     }
-
+//返回指定索引的汽车合约的所有者地址、型号、合约地址和余额。
     function getCar(
         uint _index
     )
@@ -57,3 +57,10 @@ contract CarFactory {
     }
 }
 ```
+
+
+## remix验证
+1.合约的构造函数需要传入两个参数，owner 和 model，用于初始化合约的属性.传入参数部署Car合约，验证
+![35-1.png](img/35-1.png)
+2.部署CarFactory合约，用于创建新的汽车合约。例如调用create()函数，创建一个新的汽车合约，调用getCar()函数返回指定索引的汽车合约的所有者地址、型号、合约地址和余额。
+![35-2.png](img/35-2.png)
