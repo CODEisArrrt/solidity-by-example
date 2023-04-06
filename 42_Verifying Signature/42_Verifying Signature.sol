@@ -62,7 +62,7 @@ contract VerifySignature {
             );
     }
 
-    /* 4. Verify signature
+    /* 4. 验证签名
     signer = 0xB273216C05A8c0D4F0a4Dd0d7Bae1D2EfFE636dd
     to = 0x14723A09ACff6D2A60DcdF7aA4AFf308FDDC160C
     amount = 123
