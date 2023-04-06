@@ -64,3 +64,10 @@ contract UniswapExample {
     }
 }
 ```
+
+
+## remix验证
+1.部署Counter 合约，调用increment()函数，增加计数器数值
+![27-1.png](img/27-1.png)
+2.部署MyContract合约，调用incrementCounter函数，输入Counter合约地址，调用ICounter 接口中的函数来操作计数器。incrementCounter() 函数用于增加计数器的值，getCount() 函数用于获取计数器的值。
+![27-2.png](img/27-2.png)
