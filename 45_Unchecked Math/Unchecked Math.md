@@ -39,3 +39,15 @@ contract UncheckedMath {
     }
 }
 ```
+
+## remix验证
+1.部署UncheckedMath合约，调用add函数x=3，y=4，未发生上溢
+![45-1.png](img/45-1.png)
+2.调用sub函数x=3，y=4，发生下溢
+![45-2.png](img/45-2.png)
+3.更改函数sumOfCubes中的unchecked，改为为sumOfCubes2，对比两个函数gas消耗
+![45-3.png](img/45-3.png)
+sumOfCubes
+![45-4.PNG](img/45-4.png)
+sumOfCubes2
+![45-5,PNG](img/45-5.png)
