@@ -93,3 +93,15 @@ contract TestContract {
     }
 }
 ```
+
+# remix验证
+1.部署合约Factory，调用deploy函数，传入参数将会把一个新合约部署到区块链上，并返回新合约地址
+![53-1.png](img/53-1.png)
+2.部署合约FactoryAssembly，调用getBytecode函数，传入TestContract构造函数的参数_owner和_foo，获取要部署的合约的字节码。
+![53-2.png](img/53-2.png)
+3.调用getAddress函数，传入步骤2获取的字节码和一个随机数_salt，计算要部署的合约的地址。
+![53-3.png](img/53-3.png)
+4.调用deploy函数，传入步骤2获取的字节码和步骤3的_salt。在函数执行成功后，检查Deployed事件日志，其中应包含已部署TestContract的地址，该地址应等于步骤2计算出的地址。
+![53-4.png](img/53-4.png)
+5.传入合约拥有者地址和一个整数，部署TestContract合约。调用合约函数查看合约信息
+![53-5.png](img/53-5.png)
