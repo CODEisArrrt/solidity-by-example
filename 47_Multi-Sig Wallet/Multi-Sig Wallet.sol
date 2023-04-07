@@ -6,7 +6,7 @@ The wallet owners can
 submit a transaction
 approve and revoke approval of pending transcations
 anyone can execute a transcation after enough owners has approved it.
-
+```
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
@@ -180,6 +180,7 @@ contract MultiSigWallet {
         );
     }
 }
+```
 Here is a contract to test sending transactions from the multi-sig wallet
 
 
@@ -197,3 +198,4 @@ contract TestContract {
         return abi.encodeWithSignature("callMe(uint256)", 123);
     }
 }
+
