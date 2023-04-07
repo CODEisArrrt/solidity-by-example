@@ -68,3 +68,12 @@ contract Helper {
     }
 }
 ```
+# remix验证
+部署合约Proxy和Helper，在Helper合约中调用getBytecode1（）函数获取合约字节码
+![56-1.png](./img/56-1.png)
+复制合约字节码，调用合约Proxy中的deploy（）函数获取新部署合约地址
+![56-2.png](./img/56-2.png)
+通过合约地址在remix打开该合约，与TestContract1合约一致。
+![56-3.png](./img/56-3.png)
+以上述操作同样部署TestContract2，结果一致。
+![56-4.png](./img/56-4.png)
