@@ -73,3 +73,6 @@ contract MinimalProxy {
     }
 }
 ```
+# remix验证
+部署合约MinimalProxy，调用 clone（） 函数，会将目标合约的地址转换成 20 个字节的 bytes20 类型，返回新合约的地址。
+![54-1.png](./img/54-1.png)
