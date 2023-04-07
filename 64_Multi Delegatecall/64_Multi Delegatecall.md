@@ -62,3 +62,6 @@ contract Helper {
     }
 }
 ```
+# remix验证
+部署合约MultiDelegatecall和TestMultiDelegatecall，调用func1（）函数，释放事件。
+![2-1.png](./img/2-1.png)
