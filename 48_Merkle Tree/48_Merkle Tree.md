@@ -81,3 +81,6 @@ contract TestMerkleProof is MerkleProof {
     */
 }
 ``` 
+# remix验证
+部署合约MerkleProof，调用verify并输入上文参数验证，结果为true。
+![48-1.png](./img/48-1.png)
