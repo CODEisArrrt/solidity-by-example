@@ -51,7 +51,7 @@ contract BiDirectionalPaymentChannel {
     modifier checkBalances(uint[2] memory _balances) {
         require(
             address(this).balance >= _balances[0] + _balances[1],
-            "合约余额必须大于等于用户的总余额"
+            "balance of contract must be >= to the total balance of users"
         );
         _;
     }
@@ -63,8 +63,8 @@ contract BiDirectionalPaymentChannel {
         uint _expiresAt,
         uint _challengePeriod
     ) payable checkBalances(_balances) {
-        require(_expiresAt > block.timestamp, "到期时间必须大于现在");
-        require(_challengePeriod > 0, "挑战期必须大于 0");
+        require(_expiresAt > block.timestamp, "Expiration must be > now");
+        require(_challengePeriod > 0, "Challenge period must be > 0");
 
         for (uint i = 0; i < _users.length; i++) {
             address payable user = _users[i];
@@ -118,14 +118,14 @@ contract BiDirectionalPaymentChannel {
 
         require(
             verify(_signatures, address(this), signers, _balances, _nonce),
-            "无效签名"
+            "Invalid signature"
         );
 
         _;
     }
 
     modifier onlyUser() {
-        require(isUser[msg.sender], "不是用户");
+        require(isUser[msg.sender], "Not user");
         _;
     }
 
@@ -139,8 +139,8 @@ contract BiDirectionalPaymentChannel {
         checkSignatures(_signatures, _balances, _nonce)
         checkBalances(_balances)
     {
-        require(block.timestamp < expiresAt, "挑战期已过期");
-        require(_nonce > nonce, "Nonce 必须大于当前 nonce");
+        require(block.timestamp < expiresAt, "Expired challenge period");
+        require(_nonce > nonce, "Nonce must be greater than the current nonce");
 
         for (uint i = 0; i < _balances.length; i++) {
             balances[users[i]] = _balances[i];
@@ -153,15 +153,25 @@ contract BiDirectionalPaymentChannel {
     }
 
     function withdraw() public onlyUser {
-        require(block.timestamp >= expiresAt, "挑战期尚未过期");
+        require(block.timestamp >= expiresAt, "Challenge period has not expired yet");
 
         uint amount = balances[msg.sender];
         balances[msg.sender] = 0;
 
         (bool sent, ) = msg.sender.call{value: amount}("");
-        require(sent, "无法发送以太币");
+        require(sent, "Failed to send Ether");
 
         emit Withdraw(msg.sender, amount);
     }
 }
 ```
+
+
+## remix
+1.传入参数_users：包含两个地址的可支付地址数组，表示参与通道的两个用户。
+_balances: 一个包含两个无符号整数的数组，表示每个用户的初始余额。
+_expiresAt: 一个无符号整数，表示通道的过期时间戳。（时间戳须大于现在）
+_challengePeriod: 一个无符号整数，表示在退出挑战期间内的时间差。
+部署合约：
+![59-1.png](img/59-1.png)
+2.
