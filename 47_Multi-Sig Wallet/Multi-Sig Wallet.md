@@ -214,3 +214,5 @@ contract TestContract {
 ![47-3.png](img/47-3.png)
 4.调用getOwners函数查看所有者地址，调用getTransactionCount()函数查看当前交易数，并使用getTransaction函数索引交易信息
 ![47-4.png](img/47-4.png)
+5.部署TestContract测试合约，调用 getData 函数的调用按钮，可以看到返回值为十六进制编码的字符串，表示调用 "callMe(uint256)" 函数，并传入参数 123，再调用callMe 函数，可以看到 i 的值增加了 123。
+![47-5.png](img/47-5.png)
