@@ -37,11 +37,11 @@ contract CounterV2 {
 contract BuggyProxy {
     address public implementation;
     address public admin;
-
+//当合约部署时，将msg.sender设置为管理员地址。
     constructor() {
         admin = msg.sender;
     }
-
+//用于委托调用实现合约的函数。
     function _delegate() private {
         (bool ok, bytes memory res) = implementation.delegatecall(msg.data);
         require(ok, "delegatecall failed");
@@ -54,7 +54,7 @@ contract BuggyProxy {
     receive() external payable {
         _delegate();
     }
-
+//用于升级实现合约的代码，只有管理员才有权限调用该函数。
     function upgradeTo(address _implementation) external {
         require(msg.sender == admin, "not authorized");
         implementation = _implementation;
@@ -244,3 +244,13 @@ contract TestSlot {
     }
 }
 ```
+
+# remix验证
+1.部署BuggyProxy合约，调用admin函数查看管理员地址
+![55-1.png](img/55-1.png)
+2.调用upgradeTo函数，输入要升级到新合约的地址参数，调用implementation验证是否成功
+![55-2.png](img/55-2.png)
+3.部署Dev合约，调用selectors()函数查看Proxy的三个函数的函数选择器
+![55-3.png](img/55-3.png)
+4.部署Proxy合约，调用changeAdmin函数，使调用者成为管理员；调用upgrandeTo函数升级合约
+![55-4.png](img/55-4.png)
