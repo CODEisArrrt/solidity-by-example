@@ -245,7 +245,7 @@ contract TestSlot {
 }
 ```
 
-# remix验证
+## remix验证
 1.部署BuggyProxy合约，调用admin函数查看管理员地址
 ![55-1.png](img/55-1.png)
 2.调用upgradeTo函数，输入要升级到新合约的地址参数，调用implementation验证是否成功
