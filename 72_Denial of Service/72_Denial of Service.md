@@ -87,3 +87,11 @@ contract KingOfEther {
     }
 }
 ```
+
+# remix验证
+部署合约KingOfEther，1地址通过发送1 以太币来调用claimThrone()函数成为了国王。
+![72-1.png](./img/72-1.png)
+2地址通过发送2 以太币来调用claimThrone()函数成为了国王。1地址收到了1 以太币的退款。
+![72-2.png](./img/72-2.png)
+部署Attack合约并将KingOfEther的地址作为参数。调用attack函数并发送3 以太币。当前的国王是Attack合约。
+![72-3.png](./img/72-3.png)
