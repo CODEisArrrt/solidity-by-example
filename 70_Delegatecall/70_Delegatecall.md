@@ -136,3 +136,8 @@ contract Attack {
 ```
 ## 预防性技术
 * 使用无状态库
+# remix验证
+1. 部署合约Lib和HackMe以及Attack，在Attack合约中调用attack（）函数，Hackme合约owner被修改为Attack地址。
+![70-1.png](./img/70-1.png)
+2. 部署合约Lib和HackMe以及Attack，在Attack合约中调用attack（）函数，Hackme合约owner被修改为Attack地址。在attack()函数内，第一次调用doSomething()会更改存储在HackMe中的lib地址。现在，lib的地址被设置为Attack，第二次调用doSomething()会调用Attack.doSomething()，owner被修改。
+![70-2.png](./img/70-2.png)
