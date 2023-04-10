@@ -76,3 +76,7 @@ contract Attack {
 使用SafeMath可以防止算术溢出和下溢。
 
 Solidity 0.8默认情况下在发生溢出/下溢时会抛出错误。
+
+## remix验证
+1.部署TimeLock合约。部署Attack合约，并传递TimeLock合约的地址给它。
+![67-1.png](img/67-1.png)

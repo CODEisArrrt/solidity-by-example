@@ -153,3 +153,17 @@ contract TimeLock {
     }
 }
 ```
+
+
+## remix验证
+1.部署TimeLock合约，调用queue函数 传入参数
+_target：验证中因为调用的是Timelock自己的函数，填入合约地址。
+_value：不用转入ETH，这里填0。
+_func：函数签名，例如 "foo(address,uint256)"。
+_data：这里填要传入的参数，也就是新管理员的地址。但是要把地址填充为32字节的数据，以满足以太坊ABI编码标准。可以使用hashex网站进行参数的ABI编码。例子：
+编码前地址：0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2
+编码后地址：0x000000000000000000000000ab8483f64d9c6d1ecf9b849ae677dd3315835cb2
+_timestamp：可以执行交易的时间戳。
+![65-1.png](img/65-1.png)
+2.调用getTxId函数 传入上一步的参数，查看交易id；再调用cancel函数 ，输入getTxId函数返回的交易id，完成取消交易。
+![65-2.png](img/65-2.png)
