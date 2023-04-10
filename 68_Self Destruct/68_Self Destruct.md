@@ -91,3 +91,8 @@ contract EtherGame {
     }
 }
 ```
+# remix验证
+部署合约EtherGame，模拟两个不同玩家各转入1ETH，余额显示为2ETH。
+![68-1.png](./img/68-1.png)
+部署合约Attack，输入合约EtherGame地址，调用attack（）函数并转入5ETH，结果发现虽然达到7个ETH，但并不能设置胜利者地址。
+![68-2.png](./img/68-2.png)
