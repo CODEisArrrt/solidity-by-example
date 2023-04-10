@@ -64,3 +64,7 @@ constructor() public {
     bar = new Bar();
 }
 ```
+
+# remix验证
+部署合约Mal，部署合约Foo，并使用Mal的地址，调用Foo.callBar()，执行的是Mal.log()。
+![74-1.png](./img/74-1.png)
