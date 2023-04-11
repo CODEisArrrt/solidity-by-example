@@ -1,14 +1,3 @@
-# 80.Echidna
-
-使用[Echidna](https://github.com/crytic/echidna)进行模糊测试的示例。
-1. 将Solidity合约保存为TestEchidna.sol。
-2. 在存储合约的文件夹中执行以下命令。
-```solidity
-docker run -it --rm -v $PWD:/code trailofbits/eth-security-toolbox
-```
-在 Docker 中，您的代码将存储在 /code 路径下。
-3. 请查看下方的评论并执行 echidna-test 命令。
-```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
@@ -70,14 +59,7 @@ contract TestAssert {
         }
     }
 }
-```
 
-Echidna可以对时间戳进行模糊测试。时间戳范围可以在配置中设置，默认为7天。
-合约调用者也可以在配置中设置。默认账户为：
-* 0x10000
-* 0x20000
-* 0x00a329C0648769a73afAC7F9381e08fb43DBEA70
-```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8;
 
@@ -135,4 +117,3 @@ contract EchidnaTestTimeAndCaller {
         return false;
     }
 }
-```
