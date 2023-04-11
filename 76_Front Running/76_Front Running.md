@@ -157,3 +157,6 @@ contract SecuredFindThisHash {
     }
 }
 ```
+# remix验证
+部署FindThisHash并转入10ETH，切换地址为B调用solve（“Ethereum”），C地址在此交易完成前以更高的gas price再次调用solve（“Ethereum”）的话，C地址调用成功，获得10ETH。
+![76-1.png](./img/76-1.png)
