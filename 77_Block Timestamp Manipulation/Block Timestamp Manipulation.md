@@ -40,3 +40,9 @@ contract Roulette {
 ```
 ## 预防技术
 不要使用block.timestamp作为熵和随机数的来源。
+
+## remix验证
+1.传入10 eth部署合约Roulette
+![77-1.png](img/77-1.png)
+2.调用spin合约，成功后调用pastBlockTime查看成功时间戳
+![77-2.png](img/77-2.png)
