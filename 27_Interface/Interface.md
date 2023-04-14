@@ -20,7 +20,7 @@ contract Counter {
         count += 1;
     }
 }
-
+//接口
 interface ICounter {
     function count() external view returns (uint);
 
@@ -28,10 +28,12 @@ interface ICounter {
 }
 
 contract MyContract {
+    //接受一个地址参数_counter，调用ICounter接口中的increment函数来增加_counter地址对应的计数器
     function incrementCounter(address _counter) external {
         ICounter(_counter).increment();
     }
-
+    
+    //接受一个地址参数_counter，返回ICounter接口中的count函数返回的计数器值
     function getCount(address _counter) external view returns (uint) {
         return ICounter(_counter).count();
     }

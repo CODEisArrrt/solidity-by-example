@@ -11,13 +11,18 @@ contract Array {
     uint[] public arr2 = [1, 2, 3];
     // 固定长度的数组，所有元素都初始化为0
     uint[10] public myFixedSizeArr;
-
+    //获取数组arr中索引为i的元素的值，并将其作为无符号整数返回。
     function get(uint i) public view returns (uint) {
         return arr[i];
     }
 
     // Solidity 可以返回整个数组.
     // 但是对于长度可以无限增长的数组，应该避免使用此类函数.
+    /*
+    获取数组arr的值，返回一个包含所有元素的uint类型数组。
+    由于函数声明了view关键字，因此不会修改合约状态。
+    因此，任何人都可以调用此函数来获取数组的当前状态。
+    */
     function getArr() public view returns (uint[] memory) {
         return arr;
     }
@@ -33,7 +38,7 @@ contract Array {
         // 这将使数组长度减少1
         arr.pop();
     }
-
+    //读取数组arr长度
     function getLength() public view returns (uint) {
         return arr.length;
     }

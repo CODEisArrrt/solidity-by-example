@@ -2,7 +2,7 @@
 
 Solidity支持for、while和do while循环.
 
-不要编写无限循环，因为这会达到gas限制，导致您的交易失败.
+不要编写无限循环，因为这会达到gas limit，导致您的交易失败.
 
 由于上述原因，while和do while循环很少使用.
 

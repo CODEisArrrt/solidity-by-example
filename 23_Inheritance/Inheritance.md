@@ -7,7 +7,7 @@ Solidity 支持多重继承。合约可以使用 is 关键字继承其他合约.
 
 继承的顺序很重要。
 
-必须按照从“最基础”的到“最派生”的顺序列出父合约。    
+必须按照从“最基础”的到“最高等”的顺序列出父合约。    
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -62,7 +62,7 @@ contract E is C, B {
     }
 }
 
-// 继承必须按照从“最基础”的到“最派生”的顺序进行排序。
+// 继承必须按照从“最早”的到“最晚”的顺序进行排序。
 // 交换 A 和 B 的顺序将会导致编译错误。
 contract F is A, B {
     function foo() public pure override(A, B) returns (string memory) {

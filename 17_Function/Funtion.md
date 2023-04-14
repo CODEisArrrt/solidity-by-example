@@ -18,7 +18,7 @@ contract Function {
     }
 
     // 返回值可以分配给它们的名称.
-    // 在这种情况下，返回语句可以省略.
+    // 在这种情况下，可以省略返回语句
     function assigned() public pure returns (uint x, bool b, uint y) {
         x = 1;
         b = true;
@@ -26,7 +26,11 @@ contract Function {
     }
 
     // 在调用返回多个值的另一个函数时使用解构赋值
-
+    /*
+    调用了另一个函数returnMany()，它返回了三个值，我们使用解构赋值将这三个值分别赋值给了i、b和j这三个变量。
+    定义了一个元组，它包含了三个值，但我们只需要其中的第一个和第三个值，因此我们使用逗号将第二个值省略掉，然后使用解构赋值将这两个值分别赋值给了变量x和y。
+    最后，我们将i、b、j、x和y这五个变量作为返回值返回给调用者
+    */
     function destructuringAssignments()
         public
         pure
@@ -64,10 +68,12 @@ contract XYZ {
         string memory c
     ) public pure returns (uint) {}
 
+    //按照函数定义中参数的顺序依次传递参数值
     function callFunc() external pure returns (uint) {
         return someFuncWithManyInputs(1, 2, 3, address(0), true, "c");
     }
 
+    //按照函数定义中参数的名称及其对应的值进行传递
     function callFuncWithKeyValue() external pure returns (uint) {
         return
             someFuncWithManyInputs({a: address(0), b: true, c: "c", x: 1, y: 2, z: 3});

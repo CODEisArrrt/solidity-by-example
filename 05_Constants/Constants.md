@@ -14,6 +14,9 @@ contract Constants {
     uint public constant MY_UINT = 123;
 }
 ```
+函数定义两个不可修改的常量
+1.MY_ADDRESS：一个公共的地址类型常量，其值为 0x777788889999AaAAbBbbCcccddDdeeeEfFFfCcCc。
+2.MY_UINT：一个公共的无符号整数类型常量，其值为 123。
 
 ## remix验证
 1.编译并部署代码

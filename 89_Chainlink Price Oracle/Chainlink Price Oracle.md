@@ -42,3 +42,7 @@ interface AggregatorV3Interface {
         );
 }
 ```
+
+## remix验证
+1.部署ChainlinkPriceOracle合约
+![89-1.png](img/89-1.png)

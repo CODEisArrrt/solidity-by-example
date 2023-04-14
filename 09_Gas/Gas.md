@@ -3,17 +3,17 @@
 您支付的是gas使用量*gas价格的以太币数量，其中
 
 gas是计算单位
-gas使用量是交易中使用的总gas量
-gas价格是指你愿意支付多少gas
+gas spent是交易中使用的总gas量
+gas price是指你愿意支付多少gas
 gas价格越高的交易，优先级越高
 
 未使用的gas将被退还.
 
-Gas 限制
+Gas Limit
 可以使用的gas量有两个限制
 
-gas 限制 (您愿意为您的交易使用的最大gas量，由您设定)
-区块gas限制 (一个区块允许的最大gas量，由网络设定)
+Gas Limit (您愿意为您的交易使用的最大gas量，由您设定)
+block gas limit (一个区块允许的最大gas量，由网络设定)
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -22,7 +22,7 @@ pragma solidity ^0.8.17;
 contract Gas {
     uint public i = 0;
 
-    // 使用完所有的gas会使交易失败.
+    // 使用完所有gas会使交易失败.
     // 状态更改被撤消.
     // 消耗的gas不会退回.
     function forever() public {
