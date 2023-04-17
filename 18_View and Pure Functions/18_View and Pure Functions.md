@@ -1,10 +1,7 @@
 # 18.View and Pure Functions
 Getter函数可以声明为view或pure。
-
 View函数声明不会改变状态。
-
 Pure函数声明不会改变或读取状态变量。
-
 包含view关键字的函数，能读取但也不能写入状态变量。
 ```solidity
 function addToX(uint y) public view returns (uint) {

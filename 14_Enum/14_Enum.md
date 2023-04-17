@@ -17,7 +17,7 @@ enum Status {
 ```solidity
 Status public status;
 
-    // 返回值为无符号整数uint
+    // 返回值为无符号整数uint。
     // 待处理 - 0
     // 已发货 - 1
     // 已接受 - 2
@@ -27,13 +27,13 @@ function get() public view returns (Status) {
     return status;
 }
 ```
-通过将uint传入输入来更新状态
+通过将uint传入输入来更新状态。
 ```solidity
 function set(Status _status) public {
     status = _status;
 }
 ```
-你可以通过以下方式更新到特定的枚举
+你可以通过以下方式更新到特定的枚举。
 ```solidity
 function cancel() public {
     status = Status.Canceled;

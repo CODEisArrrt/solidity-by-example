@@ -32,5 +32,5 @@ contract C is A {
 }
 ```
 # remix验证
-部署合约A，C，调用C，显示已被覆盖
+部署合约A，C，调用C，显示已被覆盖。
 ![24-1.png](./img/24-1.png)

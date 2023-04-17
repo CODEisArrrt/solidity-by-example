@@ -29,7 +29,7 @@ function changeOwner(address _newOwner) public onlyOwner validAddress(_newOwner)
     owner = _newOwner;
 }
 ```
-修饰器可以在函数之前and/or之后被调用；这个修饰器防止在函数执行时调用它。
+修饰器可以在函数之前and/or之后被调用。这个修饰器防止在函数执行时调用它。
 ```solidity
 modifier noReentrancy() {
     require(!locked, "No reentrancy");
