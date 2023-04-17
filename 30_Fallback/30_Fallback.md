@@ -17,7 +17,7 @@ Receive是fallback的一种变体，当msg.data为0时触发。
         emit Log("receive", gasleft());
     }
 ```
-辅助函数用于检查此合约的余额
+辅助函数用于检查此合约的余额。
 ```solidity
     function getBalance() public view returns (uint) {
         return address(this).balance;
