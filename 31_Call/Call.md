@@ -1,14 +1,14 @@
 # Call
-call是与其他合约进行交互的低级函数。
+call是与其他合约进行交互的低级别函数。
 
-当您仅通过调用回退函数发送以太时，这是推荐的方法。
+当您仅通过调用回退函数发送以太币时，这是推荐的方法。
 
-然而，这不是调用现有函数的推荐方式。
+然而，这不是调用现在函数的推荐方式。
 
-低级别的调用不推荐的原因：
-回滚不会向上溢出
-类型检查被绕过
-函数存在性检查被省略
+低级别函数的调用不推荐的原因：
+如出现错误并回滚，该回滚不会被传递到更高级别的调用者
+在低级调用中，通常不进行类型检查
+低级调用通常不会检查调用的函数是否存在
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -16,11 +16,11 @@ pragma solidity ^0.8.17;
 
 contract Receiver {
     event Received(address caller, uint amount, string message);
-
+//在这个合约中，fallback函数会触发Received事件，并将调用者的地址、发送的以太币数量和一个字符串"Fallback was called"作为参数传递给事件。
     fallback() external payable {
         emit Received(msg.sender, msg.value, "Fallback was called");
     }
-
+//foo函数也会触发Received事件，并将调用者的地址、发送的以太币数量和参数_message作为参数传递给事件。最后，foo函数将参数_x加1并返回该值。
     function foo(string memory _message, uint _x) public payable returns (uint) {
         emit Received(msg.sender, msg.value, _message);
 

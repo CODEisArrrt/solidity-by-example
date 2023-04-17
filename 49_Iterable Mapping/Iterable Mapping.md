@@ -14,18 +14,23 @@ library IterableMapping {
         mapping(address => bool) inserted;
     }
 
+    //映射（Map）中获取一个地址键（key）对应的值（value）。
     function get(Map storage map, address key) public view returns (uint) {
         return map.values[key];
     }
 
+    //接受一个存储在区块链上的映射（Map）和一个整数索引作为参数，并返回该映射中对应索引的键（address 类型）。
     function getKeyAtIndex(Map storage map, uint index) public view returns (address) {
         return map.keys[index];
     }
 
+    //返回存储在映射中键的数量。该映射作为存储参数传递，并使用存储修饰符声明，因此该函数只能在合约中使用。
     function size(Map storage map) public view returns (uint) {
         return map.keys.length;
     }
 
+    //在存储映射中设置一个键值对。
+    //首先检查键是否已经存在于映射中。如果是，则更新该键的值。否则，将该键插入到映射中，并将键、值和索引添加到相应的存储变量中。最后，将该键添加到映射的键列表中。
     function set(Map storage map, address key, uint val) public {
         if (map.inserted[key]) {
             map.values[key] = val;
@@ -37,6 +42,14 @@ library IterableMapping {
         }
     }
 
+    /*
+    首先，函数会检查该键是否存在于映射中。如果不存在，函数会直接返回，不进行任何操作。
+    如果键存在于映射中，函数会执行以下操作：
+    1.删除插入标志：将该键的插入标志从映射中删除，表示该键已被删除。
+    2.删除值：将该键对应的值从映射中删除，即将该键的值设为默认值。
+    3.更新索引：获取该键在索引数组中的索引，将该索引指向最后一个键的位置，并将最后一个键的索引指向该键的位置。同时，删除该键的索引。
+    4.更新键数组：将该键在键数组中的位置替换为最后一个键，并将最后一个键从键数组中删除。
+    */
     function remove(Map storage map, address key) public {
         if (!map.inserted[key]) {
             return;
@@ -58,6 +71,11 @@ library IterableMapping {
 }
 
 contract TestIterableMap {
+    /*测试可迭代映射的智能合约
+    其中使用了IterableMapping库来实现可迭代映射。
+    在testIterableMap函数中，首先插入了四个键值对，其中键为地址，值为0、100、200、300。
+    然后使用for循环遍历映射，对于每个键值对，验证其值是否正确。
+    接着删除了键为地址1的键值对，再次验证映射的大小和键的顺序是否正确。*/
     using IterableMapping for IterableMapping.Map;
 
     IterableMapping.Map private map;

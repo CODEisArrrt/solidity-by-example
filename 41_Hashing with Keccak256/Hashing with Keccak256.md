@@ -3,9 +3,9 @@ keccak256计算输入的Keccak-256哈希值。
 
 一些用例包括：
 
-## 从输入创建确定性唯一ID
-## 提交-揭示方案
-## 紧凑的加密签名（通过签署哈希而不是较大的输入）
+ 从输入中创建确定性唯一ID
+ Commit-Reveal 方案
+ 紧凑的加密签名（通过签署哈希而不是较大的输入）
 
 ```solidity
 // SPDX-License-Identifier: MIT

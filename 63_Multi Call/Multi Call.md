@@ -1,10 +1,12 @@
 # Multi Call
-一个合约的例子，使用 for 循环和 staticcall 聚合多个查询。
+一个合约的例子，使用 for 循环和 staticcall 聚合多个查询的合约示例。
 
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
-//此函数接受两个数组 - 一个包含要调用的合约地址，另一个包含要发送到这些合约的数据。它循环遍历每个合约和数据对，对具有给定数据的合约执行静态调用，并将结果存储在数组中。最后，它返回结果数组。
+    /*此函数接受两个数组 - 一个包含要调用的合约地址，另一个包含要发送到这些合约的数据。
+    它循环遍历每个合约和数据对，对具有给定数据的合约执行静态调用，并将结果存储在数组中。
+    最后，它返回结果数组。*/
 contract MultiCall {
     function multiCall(
         address[] calldata targets,
@@ -37,7 +39,8 @@ contract TestMultiCall {
     function test(uint _i) external pure returns (uint) {
         return _i;
     }
-//此函数接受一个整数并使用abi.encodeWithSelector函数对其进行编码，同时包括test函数的选择器。然后，可以将此编码数据作为参数传递给multiCall函数，以便在TestMultiCall合约上调用test函数并获取结果。
+    /*此函数接受一个整数并使用abi.encodeWithSelector函数对其进行编码，同时包括test函数的选择器。
+    然后，可以将此编码数据作为参数传递给multiCall函数，以便在TestMultiCall合约上调用test函数并获取结果。*/
     function getData(uint _i) external pure returns (bytes memory) {
         return abi.encodeWithSelector(this.test.selector, _i);
     }

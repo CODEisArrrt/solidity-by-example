@@ -13,12 +13,12 @@ fallback() external payable
 如果msg.data为空，则调用receive()，否则调用fallback()。
 
 应该使用哪种方法？
-在2019年12月之后，使用带有重入保护的调用是推荐的方法。
+在2019年12月之后，结合重入保护的调用是推荐使用的方法。
 
 通过以下方式防止重入：
 
 在调用其他合同之前进行所有状态更改
-使用重入保护修饰符
+使用重入保护修饰器
 
 ```solidity
 // SPDX-License-Identifier: MIT

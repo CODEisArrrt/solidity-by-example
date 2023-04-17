@@ -1,14 +1,15 @@
 # Contract that Creates other Contracts
-使用 new 关键字，可以由其他合约创建合约。自 0.8.0 版本以来，new 关键字支持通过指定 salt 选项创建 create2 功能。
+
+合约可以使用new关键字创建其他合约。自 0.8.0 版本以来，new 关键字支持通过指定 salt 选项创建 create2 功能。
 
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
 contract Car {
-    address public owner;
-    string public model;
-    address public carAddr;
+    address public owner;//car所有者地址
+    string public model;//car型号
+    address public carAddr;//car合约地址
 
     constructor(address _owner, string memory _model) payable {
         owner = _owner;

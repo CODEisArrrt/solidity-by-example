@@ -1,5 +1,5 @@
 #Time Lock
-TimeLock 是一种合约，在未来发布交易并在最短等待期后执行交易。
+TimeLock是一个合约，它发布一个将来要执行的交易。在最短等待时间之后，交易就可以执行了。
 
 时间锁常用于 DAO 中。
 
@@ -55,7 +55,7 @@ contract TimeLock {
     }
 
     receive() external payable {}
-//获取交易ID的函数。
+    //获取交易ID的函数。
     function getTxId(
         address _target,
         uint _value,
@@ -98,7 +98,7 @@ contract TimeLock {
 
         emit Queue(txId, _target, _value, _func, _data, _timestamp);
     }
-//执行交易的函数。
+    //执行交易的函数。
     function execute(
         address _target,
         uint _value,
@@ -141,7 +141,7 @@ contract TimeLock {
 
         return res;
     }
-//取消交易的函数。
+    //取消交易的函数。
     function cancel(bytes32 _txId) external onlyOwner {
         if (!queued[_txId]) {
             revert NotQueuedError(_txId);

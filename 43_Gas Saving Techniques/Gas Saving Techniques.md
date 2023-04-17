@@ -1,13 +1,13 @@
 # Gas Saving Techniques
 一些节省gas的技巧。
 
-用calldata替换memory
-将状态变量加载到memory中
+用calldata替换储存器
+将状态变量加载到储存器中
 用++i替换for循环i++
 缓存数组元素
 短路
 
-```dolidity
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
@@ -15,11 +15,11 @@ pragma solidity ^0.8.17;
 contract GasGolf {
     // 开始- 50908 gas
     // 使用calldata- 49163 gas
-    // 将状态变量加载到memory中- 48952 gas
+    // 将状态变量加载到储存器中- 48952 gas
     // 短路- 48634 gas
-    // 循环自增- 48244 gas
+    // 循环增量- 48244 gas
     // 缓存数组长度- 48209 gas
-    // 将数组元素加载到memory中- 48047 gas
+    // 将数组元素加载到储存器中- 48047 gas
     // 不检查i的溢出/下溢- 47309 gas
 
     uint public total;
@@ -37,6 +37,7 @@ contract GasGolf {
 
     // gas优化
     // [1, 2, 3, 4, 5, 100]
+    //该函数使用了 unchecked 关键字，表示在运行时不检查整数溢出。
     function sumIfEvenAndLessThan99(uint[] calldata nums) external {
         uint _total = total;
         uint len = nums.length;

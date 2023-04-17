@@ -18,7 +18,7 @@ contract Factory {
     }
 }
 
-// 这是使用汇编的旧方法
+    // 这是使用汇编的旧方法
 contract FactoryAssembly {
     event Deployed(address addr, uint salt);
 
@@ -44,10 +44,10 @@ contract FactoryAssembly {
         return address(uint160(uint(hash)));
     }
 
-    // 3. 部署合约
-    // 注意：
-    // 检查Deployed事件日志，其中包含已部署TestContract的地址。
-    // 日志中的地址应等于上面计算出的地址。
+        // 3. 部署合约
+        // 注意：
+        // 检查Deployed事件日志，其中包含已部署TestContract的地址。
+        // 日志中的地址应等于上面计算出的地址。
     function deploy(bytes memory bytecode, uint _salt) public payable {
         address addr;
 

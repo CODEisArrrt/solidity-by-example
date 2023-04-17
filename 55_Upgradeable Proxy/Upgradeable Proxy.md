@@ -37,11 +37,11 @@ contract CounterV2 {
 contract BuggyProxy {
     address public implementation;
     address public admin;
-//当合约部署时，将msg.sender设置为管理员地址。
+    //当合约部署时，将msg.sender设置为管理员地址。
     constructor() {
         admin = msg.sender;
     }
-//用于委托调用实现合约的函数。
+    //用于委托调用实现合约的函数。
     function _delegate() private {
         (bool ok, bytes memory res) = implementation.delegatecall(msg.data);
         require(ok, "delegatecall failed");
@@ -54,7 +54,7 @@ contract BuggyProxy {
     receive() external payable {
         _delegate();
     }
-//用于升级实现合约的代码，只有管理员才有权限调用该函数。
+    //用于升级实现合约的代码，只有管理员才有权限调用该函数。
     function upgradeTo(address _implementation) external {
         require(msg.sender == admin, "not authorized");
         implementation = _implementation;
@@ -74,7 +74,7 @@ contract Dev {
 contract Proxy {
     // 所有函数/变量应为私有的，将所有调用转发到fallback
 
-    // -1表示未知的preimage
+    // -1表示未知的原像
 
     // 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc
     bytes32 private constant IMPLEMENTATION_SLOT =
@@ -108,6 +108,7 @@ contract Proxy {
         return StorageSlot.getAddressSlot(IMPLEMENTATION_SLOT).value;
     }
 
+    //设置合约的实现地址。
     function _setImplementation(address _implementation) private {
         require(_implementation.code.length > 0, "implementation is not contract");
         StorageSlot.getAddressSlot(IMPLEMENTATION_SLOT).value = _implementation;
@@ -136,10 +137,12 @@ contract Proxy {
     // 用户接口  //
     function _delegate(address _implementation) internal virtual {
         assembly {
-            // 复制msg.data。我们在这个内联汇编块中完全控制内存，因为它将不会返回Solidity代码。我们将Solidity的划痕垫覆盖在内存位置0上。
+            // 复制msg.data。我们完全控制了这个内联程序集块中的内存，
+            //因为它将不会返回Solidity代码。
+            //我们将Solidity数据覆盖在内存位置0上。
            
 
-            // calldatacopy(t, f, s) - 将大小为s的calldata从位置f复制到位置t的mem中
+            // calldatacopy(t, f, s) - 将大小为s的calldata从位置f复制到位置t的内存状态中
             // calldatasize() - call data的大小（以字节为单位）calldatacopy(0, 0, calldatasize())
 
             // 调用实现。
@@ -147,9 +150,9 @@ contract Proxy {
 
             // delegatecall(g, a, in, insize, out, outsize) -
             // - 调用地址为a的合约
-            // - 使用输入mem[in…(in+insize))
-            // - 提供g gas
-            // - 并将输出区域mem[out…(out+outsize))中的数据返回
+            // - 使用输入内存状态[in…(in+insize))
+            // - 提供 gas
+            // - 并将输出区域内存状态[out…(out+outsize))中的数据返回
             // - 在发生错误（例如gas用尽）时返回0，在成功时返回1
             let result := delegatecall(gas(), _implementation, 0, calldatasize(), 0, 0)
 
@@ -161,10 +164,10 @@ contract Proxy {
             switch result
             // delegatecall在发生错误时返回0。
             case 0 {
-                // revert(p, s) - 结束执行，撤销状态更改，返回数据mem[p…(p+s))
+                // revert(p, s) - 结束执行，撤销状态更改，返回数据内存状态[p…(p+s))
             }
             default {
-                // return(p, s) - 结束执行，返回数据mem[p…(p+s))
+                // return(p, s) - 结束执行，返回数据内存状态[p…(p+s))
                 return(0, returndatasize())
             }
         }
@@ -183,6 +186,7 @@ contract Proxy {
     }
 }
 
+    //代理管理员合约，用于管理代理合约的管理员和实现
 contract ProxyAdmin {
     address public owner;
 
@@ -190,17 +194,20 @@ contract ProxyAdmin {
         owner = msg.sender;
     }
 
+    //确保只有合约所有者才能执行某些函数
     modifier onlyOwner() {
         require(msg.sender == owner, "not owner");
         _;
     }
 
+    //通过代理合约的静态调用获取代理管理员的地址。
     function getProxyAdmin(address proxy) external view returns (address) {
         (bool ok, bytes memory res) = proxy.staticcall(abi.encodeCall(Proxy.admin, ()));
         require(ok, "call failed");
         return abi.decode(res, (address));
     }
 
+    //通过代理合约的静态调用获取代理实现的地址。
     function getProxyImplementation(address proxy) external view returns (address) {
         (bool ok, bytes memory res) = proxy.staticcall(
             abi.encodeCall(Proxy.implementation, ())
@@ -209,10 +216,12 @@ contract ProxyAdmin {
         return abi.decode(res, (address));
     }
 
+    //用于更改代理合约的管理员。
     function changeProxyAdmin(address payable proxy, address admin) external onlyOwner {
         Proxy(proxy).changeAdmin(admin);
     }
 
+    //用于升级代理合约的实现。
     function upgrade(address payable proxy, address implementation) external onlyOwner {
         Proxy(proxy).upgradeTo(implementation);
     }
@@ -231,7 +240,7 @@ library StorageSlot {
         }
     }
 }
-//使用 StorageSlot.getAddressSlot 函数来获取一个地址类型的槽位，并通过 value 属性来读写该槽位的值。
+    //使用 StorageSlot.getAddressSlot 函数来获取一个地址类型的槽位，并通过 value 属性来读写该槽位的值。
 contract TestSlot {
     bytes32 public constant slot = keccak256("TEST_SLOT");
 
