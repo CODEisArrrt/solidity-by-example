@@ -5,7 +5,7 @@
 
 boolean//布尔型
 uint256//256位正整数
-int256//256位整数（包括负数
+int256//256位整数(包括负数)
 address//地址类型
 
 ```solidity
@@ -68,4 +68,4 @@ contract Primitives {
 ```
 ## remix验证
 编译并部署代码查看数据类型
-![1-1.png](png/3-1.png)
+![3-1.png](png/3-1.png)
