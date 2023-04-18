@@ -1,7 +1,7 @@
 # remix和remix的用法
 我们推荐使用 remix 来开发简单合约和快速学习 Solidity。remix是以太坊官方推荐的智能合约开发IDE（集成开发环境），适合新手，可以在浏览器中快速部署测试智能合约，你不需要在本地安装任何程序。
 网址：[remix.ethereum.org](https://remix.ethereum.org)
-在浏览器打开remix进入主界面，在左侧界面中点击+号新建工作空间并命名。
+在浏览器打开remix进入主界面，在左侧界面中点击+号新建工作空间并命名（例命名为Solidity by Example）。
 ![0-1.png](./img/0-1.png)
 ![0-2.png](./img/0-2.png)
 最左边的菜单有四个按钮，分别对应文件，搜索，编译，部署。点新建（Create New File）按钮，就可以创建一个空白的solidity合约。
