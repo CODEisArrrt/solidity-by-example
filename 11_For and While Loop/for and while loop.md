@@ -5,11 +5,8 @@ Solidity支持for、while和do while循环.
 不要编写无限循环，因为这会达到gas limit，导致您的交易失败.
 
 由于上述原因，while和do while循环很少使用.
-
+###for循环示例
 ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-
 contract Loop {
     function loop() public {
         // for循环
@@ -34,5 +31,5 @@ contract Loop {
 ```
 
 ## remix验证
-1.部署合约，调用loop函数
+1.部署合约，调用loop函数进行循环验证测试
 ![11-1.png](img/11-1.png)

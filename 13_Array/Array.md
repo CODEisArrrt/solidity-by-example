@@ -1,60 +1,70 @@
 # Array
 数组可以在编译时具有固定长度，也可以具有动态长度
 
+####初始化数组的几种方式
 ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-
-contract Array {
-    // 初始化数组的几种方式
-    uint[] public arr;
+uint[] public arr;
     uint[] public arr2 = [1, 2, 3];
     // 固定长度的数组，所有元素都初始化为0
     uint[10] public myFixedSizeArr;
-    //获取数组arr中索引为i的元素的值，并将其作为无符号整数返回。
+```
+
+####获取数组arr中索引为i的元素的值，并将其作为无符号整数返回
+```solidity
     function get(uint i) public view returns (uint) {
         return arr[i];
     }
+```
 
-    // Solidity 可以返回整个数组.
-    // 但是对于长度可以无限增长的数组，应该避免使用此类函数.
-    /*
-    获取数组arr的值，返回一个包含所有元素的uint类型数组。
-    由于函数声明了view关键字，因此不会修改合约状态。
-    因此，任何人都可以调用此函数来获取数组的当前状态。
-    */
+####Solidity 可以返回整个数组.
+但是对于长度可以无限增长的数组，应该避免使用此类函数.
+获取数组arr的值，返回一个包含所有元素的uint类型数组。
+```solidity
+//由于函数声明了view关键字，因此不会修改合约状态，任何人都可以调用此函数来获取数组的当前状态。
     function getArr() public view returns (uint[] memory) {
         return arr;
     }
+```
 
+####在数组末尾添加元素
+这将使数组长度增加1.
+```solidity
     function push(uint i) public {
-        // 在数组末尾添加元素
-        // 这将使数组长度增加1.
         arr.push(i);
     }
+```
 
+####删除数组中的最后一个元素
+这将使数组长度减少1
+```solidity
     function pop() public {
-        // 删除数组中的最后一个元素
-        // 这将使数组长度减少1
         arr.pop();
     }
-    //读取数组arr长度
+```
+
+####读取数组arr长度
+```solidity
     function getLength() public view returns (uint) {
         return arr.length;
     }
+```
 
+####删除操作不会改变数组的长度。
+它将索引处的值重置为其默认值，在这种情况下为0。
+```solidity
     function remove(uint index) public {
-        // delete 不会改变数组长度
-        // 它将索引处的值重置为其默认值，这里为0 value,
         delete arr[index];
     }
+```
 
+####在内存中创建数组，只能创建固定大小的数组
+```solidity
     function examples() external {
-        // 在内存中创建数组，只能创建固定大小的数组
         uint[] memory a = new uint[](5);
     }
-}
 ```
+
+
 ### 删除数组元素的示例
 通过将元素从右到左移动来删除数组元素
 
@@ -96,7 +106,7 @@ contract ArrayRemoveByShifting {
     }
 }
 ```
-通过将最后一个元素复制到要删除的位置来删除数组元素
+####通过将最后一个元素复制到要删除的位置来删除数组元素
 
 
 ```solidity
@@ -109,9 +119,9 @@ contract ArrayReplaceFromEnd {
     // 删除一个元素会在数组中创建一个间隙.
     // 保持数组紧凑的一个技巧是将最后一个元素移动到要删除的位置.
     function remove(uint index) public {
-        // Move the last element into the place to delete
+        // 将最后一个元素移动到要删除的位置。
         arr[index] = arr[arr.length - 1];
-        // Remove the last element
+        // 移除最后一个元素
         arr.pop();
     }
 
@@ -136,8 +146,10 @@ contract ArrayReplaceFromEnd {
 
 ## remix验证
 1.部署Array合约，调用push函数写入元素，调用getArr查看数组元素，调用getLength查看数组长度
-![13-1](img/13-1.png)
+![13-1.jpg](img/13-1.jpg)
 2.调用pop函数 删除从右往左第一个元素，验证
-![13-2](img/13-2.png)
-3.调用get函数，索引数组中的元素,调用examples函数，创建数组，该数组被初始化为全零，因为在 Solidity 中，动态数组在声明时会自动初始化为全零。
-![13-3](img/13-3.png)
+![13-2.jpg](img/13-2.jpg)
+3.调用get函数，索引数组中的元素。
+![13-3.jpg](img/13-3.jpg)
+4.调用remove函数，删除索引位置元素，不会改变数组的长度，将删除元素重置为默认值。
+![13-4.jpg](img/13-4.jpg)

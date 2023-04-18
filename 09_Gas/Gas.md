@@ -16,9 +16,6 @@ Gas Limit (您愿意为您的交易使用的最大gas量，由您设定)
 block gas limit (一个区块允许的最大gas量，由网络设定)
 
 ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-
 contract Gas {
     uint public i = 0;
 
@@ -39,4 +36,4 @@ contract Gas {
 1.部署合约
 ![9-1.png](img/9-1.png)
 2.调用forever()进入循环消耗gas 交易失败
-![9-2.png](img/9-2.png)
+![9-2.jpg](img/9-2.jpg)
