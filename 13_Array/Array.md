@@ -1,7 +1,7 @@
 # Array
 数组可以在编译时具有固定长度，也可以具有动态长度
 
-####初始化数组的几种方式
+## 初始化数组的几种方式
 ```solidity
 uint[] public arr;
     uint[] public arr2 = [1, 2, 3];
@@ -9,14 +9,14 @@ uint[] public arr;
     uint[10] public myFixedSizeArr;
 ```
 
-####获取数组arr中索引为i的元素的值，并将其作为无符号整数返回
+## 获取数组arr中索引为i的元素的值，并将其作为无符号整数返回
 ```solidity
     function get(uint i) public view returns (uint) {
         return arr[i];
     }
 ```
 
-####Solidity 可以返回整个数组.
+## Solidity 可以返回整个数组.
 但是对于长度可以无限增长的数组，应该避免使用此类函数.
 获取数组arr的值，返回一个包含所有元素的uint类型数组。
 ```solidity
@@ -26,7 +26,7 @@ uint[] public arr;
     }
 ```
 
-####在数组末尾添加元素
+##在数组末尾添加元素
 这将使数组长度增加1.
 ```solidity
     function push(uint i) public {
@@ -34,7 +34,7 @@ uint[] public arr;
     }
 ```
 
-####删除数组中的最后一个元素
+## 删除数组中的最后一个元素
 这将使数组长度减少1
 ```solidity
     function pop() public {
@@ -65,7 +65,7 @@ uint[] public arr;
 ```
 
 
-### 删除数组元素的示例
+## 删除数组元素的示例
 通过将元素从右到左移动来删除数组元素
 
 ```solidity
@@ -106,7 +106,7 @@ contract ArrayRemoveByShifting {
     }
 }
 ```
-####通过将最后一个元素复制到要删除的位置来删除数组元素
+## 通过将最后一个元素复制到要删除的位置来删除数组元素
 
 
 ```solidity

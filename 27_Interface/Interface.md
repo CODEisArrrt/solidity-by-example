@@ -1,7 +1,7 @@
 # Interface
 您可以通过声明接口与其他合约交互。
 
-接口
+## 接口
 
 不能有任何函数实现
 可以继承其他接口
@@ -9,10 +9,8 @@
 不能声明构造函数
 不能声明状态变量
 
+简单合约
 ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-
 contract Counter {
     uint public count;
 
@@ -20,13 +18,15 @@ contract Counter {
         count += 1;
     }
 }
-//接口
+```
+
+### 接口
+```solidity
 interface ICounter {
     function count() external view returns (uint);
 
     function increment() external;
 }
-
 contract MyContract {
     //接受一个地址参数_counter，调用ICounter接口中的increment函数来增加_counter地址对应的计数器
     function incrementCounter(address _counter) external {
@@ -38,8 +38,10 @@ contract MyContract {
         return ICounter(_counter).count();
     }
 }
+```
 
-// Uniswap 列子
+### Uniswap 列子
+```solidity
 interface UniswapV2Factory {
     function getPair(
         address tokenA,
@@ -70,6 +72,6 @@ contract UniswapExample {
 
 ## remix验证
 1.部署Counter 合约，调用increment()函数，增加计数器数值
-![27-1.png](img/27-1.png)
+![27-1.jpg](img/27-1.jpg)
 2.部署MyContract合约，调用incrementCounter函数，输入Counter合约地址，调用ICounter 接口中的函数来操作计数器。incrementCounter() 函数用于增加计数器的值，getCount() 函数用于获取计数器的值。
-![27-2.png](img/27-2.png)
+![27-2.jpg](img/27-2.jpg)
