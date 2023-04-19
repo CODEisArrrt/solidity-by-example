@@ -1,0 +1,103 @@
+# 60.English Auction
+NFT的英式拍卖
+
+#### 拍卖
+1. NFT的卖家部署这个合约。
+2. 拍卖持续7天。
+3. 参与者可以通过存入比当前最高出价更高的ETH来竞标。
+4. 所有竞标者如果不是当前最高出价者，都可以撤回他们的竞标。
+#### 拍卖结束后
+1.最高出价者成为NFT的新拥有者。
+2.卖家获得ETH的最高出价。
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.17;
+
+interface IERC721 {
+    function safeTransferFrom(address from, address to, uint tokenId) external;
+
+    function transferFrom(address, address, uint) external;
+}
+
+contract EnglishAuction {
+    event Start();
+    event Bid(address indexed sender, uint amount);
+    event Withdraw(address indexed bidder, uint amount);
+    event End(address winner, uint amount);
+
+    IERC721 public nft;
+    uint public nftId;
+
+    address payable public seller;
+    uint public endAt;
+    bool public started;
+    bool public ended;
+
+    address public highestBidder;
+    uint public highestBid;
+    mapping(address => uint) public bids;
+
+    constructor(address _nft, uint _nftId, uint _startingBid) {
+        nft = IERC721(_nft);
+        nftId = _nftId;
+
+        seller = payable(msg.sender);
+        highestBid = _startingBid;
+    }
+
+    function start() external {
+        require(!started, "started");
+        require(msg.sender == seller, "not seller");
+
+        nft.transferFrom(msg.sender, address(this), nftId);
+        started = true;
+        endAt = block.timestamp + 7 days;
+
+        emit Start();
+    }
+
+    function bid() external payable {
+        require(started, "not started");
+        require(block.timestamp < endAt, "ended");
+        require(msg.value > highestBid, "value < highest");
+
+        if (highestBidder != address(0)) {
+            bids[highestBidder] += highestBid;
+        }
+
+        highestBidder = msg.sender;
+        highestBid = msg.value;
+
+        emit Bid(msg.sender, msg.value);
+    }
+
+    function withdraw() external {
+        uint bal = bids[msg.sender];
+        bids[msg.sender] = 0;
+        payable(msg.sender).transfer(bal);
+
+        emit Withdraw(msg.sender, bal);
+    }
+
+    function end() external {
+        require(started, "not started");
+        require(block.timestamp >= endAt, "not ended");
+        require(!ended, "ended");
+
+        ended = true;
+        if (highestBidder != address(0)) {
+            nft.safeTransferFrom(address(this), highestBidder, nftId);
+            seller.transfer(highestBid);
+        } else {
+            nft.safeTransferFrom(address(this), seller, nftId);
+        }
+
+        emit End(highestBidder, highestBid);
+    }
+}
+```
+# remix验证
+部署合约EnglishAuction，并调用start（）函数开始拍卖。
+![60-1.png](./img/60-1.png)
+调用bid（）函数竞拍，输入100wei，显示highestBid和highestBidder皆变成该地址与该数额。
+![60-2.png](./img/60-2.png)
