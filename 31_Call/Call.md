@@ -16,11 +16,11 @@ pragma solidity ^0.8.17;
 
 contract Receiver {
     event Received(address caller, uint amount, string message);
-//在这个合约中，fallback函数会触发Received事件，并将调用者的地址、发送的以太币数量和一个字符串"Fallback was called"作为参数传递给事件。
+    //在这个合约中，fallback函数会触发Received事件，并将调用者的地址、发送的以太币数量和一个字符串"Fallback was called"作为参数传递给事件。
     fallback() external payable {
         emit Received(msg.sender, msg.value, "Fallback was called");
     }
-//foo函数也会触发Received事件，并将调用者的地址、发送的以太币数量和参数_message作为参数传递给事件。最后，foo函数将参数_x加1并返回该值。
+    //foo函数也会触发Received事件，并将调用者的地址、发送的以太币数量和参数_message作为参数传递给事件。最后，foo函数将参数_x加1并返回该值。
     function foo(string memory _message, uint _x) public payable returns (uint) {
         emit Received(msg.sender, msg.value, _message);
 
@@ -55,6 +55,6 @@ contract Caller {
 
 ## remix验证
 1.部署Caller、Receiver合约，调用testCallFoo函数，输入Caller合约地址，验证。如果调用成功，它将返回 true 和一个包含函数返回值的字节数组。如果调用失败，它将返回 false 和一个包含错误信息的字节数组。无论调用是否成功，Caller 合约都会触发一个 Response 事件。
-![31-1.png](img/31-1.png)
+![31-1.jpg](img/31-1.jpg)
 2.当 testCallDoesNotExist 函数被调用时，它会使用指定的以太币调用 Receiver 合约中不存在的函数。由于该函数不存在，它将触发 fallback 函数，并返回 false 和一个包含 fallback 函数事件信息的字节数组。无论调用是否成功，Caller 合约都会触发一个 Response 事件。
-![31-2.png](img/31-2.png)
+![31-2.jpg](img/31-2.jpg)
