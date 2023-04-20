@@ -32,7 +32,12 @@ contract HashFunction {
         return keccak256(abi.encodePacked(_text, _anotherText));
     }
 }
+```
 
+## 哈希碰撞
+尝试哈希值相同
+下列函数将_word参数编码为字节数组，并通过keccak256哈希函数计算其哈希值，然后将其与answer变量的值进行比较。如果两个哈希值相等，则返回true，否则返回false。
+```solidity
 contract GuessTheMagicWord {
     bytes32 public answer =
         0x60298f78cc0b47170ba79c10aa3851d7648bd96f2f8e46a19dbc777c36fb0c00;
@@ -47,8 +52,8 @@ contract GuessTheMagicWord {
 
 ## remix验证
 1.部署HashFunction合约，调用collision函数，传入string，尝试进行哈希碰撞
-![41-1.png](img/41-1.png)
+![41-1.jpg](img/41-1.jpg)
 2.调用hash函数，输入一个字符串、一个整数和一个地址。验证返回哈希值。
-![41-2.png](img/41-2.png)
+![41-2.jpg](img/41-2.jpg)
 3.部署GuessTheMagicWord合约，调用answer显示哈希，调用guess函数，输入“solidity”验证
-![41-3.png](img/41-3.png)
+![41-3.jpg](img/41-3.jpg)

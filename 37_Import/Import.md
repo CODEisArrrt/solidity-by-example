@@ -9,7 +9,7 @@
 └── Foo.sol
 Foo.sol
 ```
-
+### foo.sol
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
@@ -29,8 +29,9 @@ contract Foo {
     string public name = "Foo";
 }
 ```
-Import.sol
 
+
+### Import.sol
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -70,4 +71,4 @@ import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.5
 1.创建本地文件夹
 ![37-1.png](img/37-1.png)
 2.部署Import合约，初始化Foo.sol。通过获取其名称来测试Foo.sol。
-![37-2.png](img/37-2.png)
+![37-2.jpg](img/37-2.jpg)

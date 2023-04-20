@@ -1,4 +1,5 @@
 # ABI Encode
+函数参数编码为字节码
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -50,7 +51,9 @@ contract AbiEncode {
 
 
 ## remix验证
-1.部署AbiEncode合约，调用test函数输入一个合约地址和一段字节码，验证
+1.部署AbiEncode合约，调用test函数输入一个合约地址和一段字节码，验证调用成功
 ![39-1.png](img/39-1.png)
-2.验证encodeWithSignature、encodeWithSelector、encodeCall，三个错误函数编码
-![39-2.png](img/39-2.png)
+2.调用不成功则抛出异常
+![39-2.jpg](img/39-2.jpg)
+3.验证encodeWithSignature、encodeWithSelector、encodeCall，三个函数编码
+![39-3.jpg](img/39-3.jpg)
