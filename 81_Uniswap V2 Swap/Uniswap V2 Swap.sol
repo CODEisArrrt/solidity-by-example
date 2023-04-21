@@ -13,7 +13,7 @@ contract UniswapV2SwapExamples {
     IERC20 private weth = IERC20(WETH);
     IERC20 private dai = IERC20(DAI);
 
-    // Swap WETH to DAI
+    // 将WETH兑换成DAI
     function swapSingleHopExactAmountIn(
         uint amountIn,
         uint amountOutMin
@@ -66,7 +66,7 @@ contract UniswapV2SwapExamples {
         return amounts[2];
     }
 
-    // Swap WETH to DAI
+    // 将WETH换成DAI
     function swapSingleHopExactAmountOut(
         uint amountOutDesired,
         uint amountInMax
@@ -87,7 +87,7 @@ contract UniswapV2SwapExamples {
             block.timestamp
         );
 
-        // Refund WETH to msg.sender
+        // 将WETH退还给msg.sender
         if (amounts[0] < amountInMax) {
             weth.transfer(msg.sender, amountInMax - amounts[0]);
         }
@@ -95,7 +95,7 @@ contract UniswapV2SwapExamples {
         return amounts[1];
     }
 
-    // Swap DAI -> WETH -> USDC
+    // 兑换 DAI -> WETH -> USDC
     function swapMultiHopExactAmountOut(
         uint amountOutDesired,
         uint amountInMax
@@ -117,7 +117,7 @@ contract UniswapV2SwapExamples {
             block.timestamp
         );
 
-        // Refund DAI to msg.sender
+        // 将 DAI 退还给 msg.sender
         if (amounts[0] < amountInMax) {
             dai.transfer(msg.sender, amountInMax - amounts[0]);
         }

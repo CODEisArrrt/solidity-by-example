@@ -1,21 +1,22 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-// import Foo.sol from current directory
+// 从当前目录导入Foo.soly
 import "./Foo.sol";
 
-// import {symbol1 as alias, symbol2} from "filename";
+// 从“文件名”导入{symbol1 as alias, symbol2}
 import {Unauthorized, add as func, Point} from "./Foo.sol";
 
 contract Import {
-    // Initialize Foo.sol
+    // 初始化Foo.sol
     Foo public foo = new Foo();
 
-    // Test Foo.sol by getting it's name.
+    // 通过获取其名称来测试Foo.sol。
     function getFooName() public view returns (string memory) {
         return foo.name();
     }
 }
+//您还可以通过简单地复制URL来从GitHub导入
 // https://github.com/owner/repo/blob/branch/path/to/Contract.sol
 import "https://github.com/owner/repo/blob/branch/path/to/Contract.sol";
 

@@ -2,22 +2,20 @@
 pragma solidity ^0.8.17;
 
 /*
-Wallet is a simple contract where only the owner should be able to transfer
-Ether to another address. Wallet.transfer() uses tx.origin to check that the
-caller is the owner. Let's see how we can hack this contract
+Wallet是一个简单的合约，只有所有者才能将以太币转移到另一个地址。
+Wallet.transfer()使用tx.origin来检查调用者是否为所有者。
+让我们看看如何攻击这个合约。
 */
 
 /*
-1. Alice deploys Wallet with 10 Ether
-2. Eve deploys Attack with the address of Alice's Wallet contract.
-3. Eve tricks Alice to call Attack.attack()
-4. Eve successfully stole Ether from Alice's wallet
+1. Alice部署Wallet并存入10个以太币
+2. Eve部署Attack并传入Alice的Wallet合约地址
+3. Eve欺骗Alice调用Attack.attack()
+4. Eve成功从Alice的钱包中窃取了以太币
 
-What happened?
-Alice was tricked into calling Attack.attack(). Inside Attack.attack(), it
-requested a transfer of all funds in Alice's wallet to Eve's address.
-Since tx.origin in Wallet.transfer() is equal to Alice's address,
-it authorized the transfer. The wallet transferred all Ether to Eve.
+发生了什么？
+Alice被欺骗调用Attack.attack()。在Attack.attack()内部，它请求将Alice钱包中的所有资金转移到Eve的地址。
+由于Wallet.transfer()中的tx.origin等于Alice的地址，它授权了转移。钱包将所有以太币转移到了Eve。
 */
 
 contract Wallet {

@@ -7,65 +7,40 @@ contract Todos {
         bool completed;
     }
 
-    // An array of 'Todo' structs
+    // 一个 'Todo' 结构体的数组
     Todo[] public todos;
 
     function create(string calldata _text) public {
-        // 3 ways to initialize a struct
-        // - calling it like a function
+        // 有三种初始化结构体的方法
+        //  - 像调用函数一样调用它
         todos.push(Todo(_text, false));
 
-        // key value mapping
+        // 键值映射
         todos.push(Todo({text: _text, completed: false}));
 
-        // initialize an empty struct and then update it
+        // 初始化一个空的结构体，然后更新它
         Todo memory todo;
         todo.text = _text;
-        // todo.completed initialized to false
+        // todo.completed 初始化为 false
 
         todos.push(todo);
     }
 
-    // Solidity automatically created a getter for 'todos' so
-    // you don't actually need this function.
+    // Solidity 自动为 'todos' 创建了一个 getter 函数，你实际上不需要这个函数。
     function get(uint _index) public view returns (string memory text, bool completed) {
         Todo storage todo = todos[_index];
         return (todo.text, todo.completed);
     }
 
-    // update text
+    // 更新文本
     function updateText(uint _index, string calldata _text) public {
         Todo storage todo = todos[_index];
         todo.text = _text;
     }
 
-    // update completed
+    // 更新完成状态
     function toggleCompleted(uint _index) public {
         Todo storage todo = todos[_index];
         todo.completed = !todo.completed;
     }
-}
-Declaring and importing Struct
-File that the struct is declared in
-
-
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-// This is saved 'StructDeclaration.sol'
-
-struct Todo {
-    string text;
-    bool completed;
-}
-File that imports the struct above
-
-
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-
-import "./StructDeclaration.sol";
-
-contract Todos {
-    // An array of 'Todo' structs
-    Todo[] public todos;
 }

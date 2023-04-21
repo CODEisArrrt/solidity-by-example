@@ -2,24 +2,24 @@
 pragma solidity ^0.8.17;
 
 /*
-Bank is a contract that calls Logger to log events.
-Bank.withdraw() is vulnerable to the reentrancy attack.
-So a hacker tries to drain Ether from Bank.
-But actually the reentracy exploit is a bait for hackers.
-By deploying Bank with HoneyPot in place of the Logger, this contract becomes
-a trap for hackers. Let's see how.
+Bank 是一个调用 Logger 记录事件的合约。
+Bank.withdraw() 存在重新进入攻击漏洞。
+所以黑客试图从 Bank 中取走以太币。
+但实际上，重新进入攻击漏洞是用来引诱黑客的。
+通过在 Logger 的位置上放置 HoneyPot 并部署 Bank，这个合约就成为了黑客的陷阱。让我们看看发生了什么。
 
-1. Alice deploys HoneyPot
-2. Alice deploys Bank with the address of HoneyPot
-3. Alice deposits 1 Ether into Bank.
-4. Eve discovers the reentrancy exploit in Bank.withdraw and decides to hack it.
-5. Eve deploys Attack with the address of Bank
-6. Eve calls Attack.attack() with 1 Ether but the transaction fails.
 
-What happened?
-Eve calls Attack.attack() and it starts withdrawing Ether from Bank.
-When the last Bank.withdraw() is about to complete, it calls logger.log().
-Logger.log() calls HoneyPot.log() and reverts. Transaction fails.
+1. Alice 部署 HoneyPot
+2. Alice 部署 Bank，并将 HoneyPot 的地址传递给它
+3. Alice 往 Bank 中存入 1 个以太币。
+4. Eve 发现 Bank.withdraw 中的重新进入攻击漏洞，并决定攻击它。
+5. Eve 部署 Attack，并将 Bank 的地址传递给它
+6. Eve 调用 Attack.attack()，但交易失败了。
+
+发生了什么？
+Eve 调用 Attack.attack()，并开始从 Bank 中提取以太币。
+当最后一个 Bank.withdraw() 即将完成时，它调用 logger.log()。
+logger.log() 调用 HoneyPot.log() 并抛出异常。交易失败了。
 */
 
 contract Bank {
@@ -55,7 +55,7 @@ contract Logger {
     }
 }
 
-// Hacker tries to drain the Ethers stored in Bank by reentrancy.
+// 黑客试图通过重入攻击来耗尽存储在银行中的以太币。
 contract Attack {
     Bank bank;
 
@@ -79,7 +79,7 @@ contract Attack {
     }
 }
 
-// Let's say this code is in a separate file so that others cannot read it.
+// 让我们假设这段代码在一个单独的文件中，这样其他人就无法读取它。
 contract HoneyPot {
     function log(address _caller, uint _amount, string memory _action) public {
         if (equal(_action, "Withdraw")) {
@@ -87,7 +87,7 @@ contract HoneyPot {
         }
     }
 
-    // Function to compare strings using keccak256
+    // 使用keccak256比较字符串的函数
     function equal(string memory _a, string memory _b) public pure returns (bool) {
         return keccak256(abi.encode(_a)) == keccak256(abi.encode(_b));
     }

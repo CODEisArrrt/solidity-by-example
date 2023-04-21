@@ -2,9 +2,9 @@
 pragma solidity ^0.8.17;
 
 contract Event {
-    // Event declaration
-    // Up to 3 parameters can be indexed.
-    // Indexed parameters helps you filter the logs by the indexed parameter
+    // 事件声明
+    // 最多可以有3个参数被索引。
+    // 索引的参数可以帮助你通过索引参数过滤日志
     event Log(address indexed sender, string message);
     event AnotherLog();
 

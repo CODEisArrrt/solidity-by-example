@@ -2,7 +2,7 @@
 pragma solidity ^0.8.17;
 
 library IterableMapping {
-    // Iterable mapping from address to uint;
+    // 可迭代映射，从地址到uint;
     struct Map {
         address[] keys;
         mapping(address => uint) values;

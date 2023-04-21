@@ -19,7 +19,7 @@ contract ChainlinkPriceOracle {
             uint timeStamp,
             uint80 answeredInRound
         ) = priceFeed.latestRoundData();
-        // for ETH / USD price is scaled up by 10 ** 8
+        // 对于ETH/美元价格，价格被放大了10的8次方
         return price / 1e8;
     }
 }

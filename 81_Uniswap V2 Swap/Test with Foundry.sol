@@ -19,7 +19,7 @@ contract UniswapV2SwapExamplesTest is Test {
 
     function setUp() public {}
 
-    // Swap WETH -> DAI
+    // 将WETH交换成DAI
     function testSwapSingleHopExactAmountIn() public {
         uint wethAmount = 1e18;
         weth.deposit{value: wethAmount}();
@@ -32,9 +32,9 @@ contract UniswapV2SwapExamplesTest is Test {
         assertGe(daiAmountOut, daiAmountMin, "amount out < min");
     }
 
-    // Swap DAI -> WETH -> USDC
+    // 兑换 DAI -> WETH -> USDC
     function testSwapMultiHopExactAmountIn() public {
-        // Swap WETH -> DAI
+        // 将 WETH -> DAI
         uint wethAmount = 1e18;
         weth.deposit{value: wethAmount}();
         weth.approve(address(uni), wethAmount);
@@ -42,7 +42,7 @@ contract UniswapV2SwapExamplesTest is Test {
         uint daiAmountMin = 1;
         uni.swapSingleHopExactAmountIn(wethAmount, daiAmountMin);
 
-        // Swap DAI -> WETH -> USDC
+        // 将 DAI -> WETH -> USDC
         uint daiAmountIn = 1e18;
         dai.approve(address(uni), daiAmountIn);
 
@@ -56,7 +56,7 @@ contract UniswapV2SwapExamplesTest is Test {
         assertGe(usdcAmountOut, usdcAmountOutMin, "amount out < min");
     }
 
-    // Swap WETH -> DAI
+    // 将 WETH -> DAI
     function testSwapSingleHopExactAmountOut() public {
         uint wethAmount = 1e18;
         weth.deposit{value: wethAmount}();
@@ -72,18 +72,18 @@ contract UniswapV2SwapExamplesTest is Test {
         assertEq(daiAmountOut, daiAmountDesired, "amount out != amount out desired");
     }
 
-    // Swap DAI -> WETH -> USDC
+    // 将 DAI -> WETH -> USDC
     function testSwapMultiHopExactAmountOut() public {
-        // Swap WETH -> DAI
+        // 将 WETH -> DAI
         uint wethAmount = 1e18;
         weth.deposit{value: wethAmount}();
         weth.approve(address(uni), wethAmount);
 
-        // Buy 100 DAI
+        // 购买100 DAI
         uint daiAmountOut = 100 * 1e18;
         uni.swapSingleHopExactAmountOut(daiAmountOut, wethAmount);
 
-        // Swap DAI -> WETH -> USDC
+        // 兑换 DAI -> WETH -> USDC
         dai.approve(address(uni), daiAmountOut);
 
         uint amountOutDesired = 1e6;

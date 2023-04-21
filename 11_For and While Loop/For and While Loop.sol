@@ -3,19 +3,19 @@ pragma solidity ^0.8.17;
 
 contract Loop {
     function loop() public {
-        // for loop
+        // for循环
         for (uint i = 0; i < 10; i++) {
             if (i == 3) {
-                // Skip to next iteration with continue
+                // 使用continue跳到下一次迭代
                 continue;
             }
             if (i == 5) {
-                // Exit loop with break
+                // 使用break退出循环
                 break;
             }
         }
 
-        // while loop
+        // 循环结构
         uint j;
         while (j < 10) {
             j++;

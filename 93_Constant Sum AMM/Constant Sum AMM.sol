@@ -12,8 +12,7 @@ contract CSAMM {
     mapping(address => uint) public balanceOf;
 
     constructor(address _token0, address _token1) {
-        // NOTE: This contract assumes that token0 and token1
-        // both have same decimals
+        // 注意：此合约假定 token0 和 token1，具有相同的小数位数
         token0 = IERC20(_token0);
         token1 = IERC20(_token1);
     }
@@ -48,7 +47,7 @@ contract CSAMM {
         tokenIn.transferFrom(msg.sender, address(this), _amountIn);
         uint amountIn = tokenIn.balanceOf(address(this)) - resIn;
 
-        // 0.3% fee
+        // 0.3% 费用
         amountOut = (amountIn * 997) / 1000;
 
         (uint res0, uint res1) = isToken0

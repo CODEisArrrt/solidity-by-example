@@ -3,18 +3,18 @@ pragma solidity ^0.8.17;
 
 // gas golf
 contract GasGolf {
-    // start - 50908 gas
-    // use calldata - 49163 gas
-    // load state variables to memory - 48952 gas
-    // short circuit - 48634 gas
-    // loop increments - 48244 gas
-    // cache array length - 48209 gas
-    // load array elements to memory - 48047 gas
-    // uncheck i overflow/underflow - 47309 gas
+    // 开始- 50908 gas
+    // 使用calldata- 49163 gas
+    // 将状态变量加载到储存器中- 48952 gas
+    // 短路- 48634 gas
+    // 循环增量- 48244 gas
+    // 缓存数组长度- 48209 gas
+    // 将数组元素加载到储存器中- 48047 gas
+    // 不检查i的溢出/下溢- 47309 gas
 
     uint public total;
 
-    // start - not gas optimized
+    // 开始- 未经过gas优化
     // function sumIfEvenAndLessThan99(uint[] memory nums) external {
     //     for (uint i = 0; i < nums.length; i += 1) {
     //         bool isEven = nums[i] % 2 == 0;
@@ -25,7 +25,7 @@ contract GasGolf {
     //     }
     // }
 
-    // gas optimized
+    // gas优化
     // [1, 2, 3, 4, 5, 100]
     function sumIfEvenAndLessThan99(uint[] calldata nums) external {
         uint _total = total;

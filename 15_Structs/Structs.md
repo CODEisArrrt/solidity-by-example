@@ -33,7 +33,7 @@
         todos.push(todo);
     }
 
-    // Solidity 自动为 'todos' 创建了一个 getter 函数，所以你实际上不需要这个函数。
+    // Solidity 自动为 'todos' 创建了一个 getter 函数，你实际上不需要这个函数。
     function get(uint _index) public view returns (string memory text, bool completed) {
         Todo storage todo = todos[_index];
         return (todo.text, todo.completed);

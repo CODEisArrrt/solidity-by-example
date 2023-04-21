@@ -2,29 +2,27 @@
 pragma solidity ^0.8.17;
 
 /*
-Opening a channel
-1. Alice and Bob fund a multi-sig wallet
-2. Precompute payment channel address
-3. Alice and Bob exchanges signatures of initial balances
-4. Alice and Bob creates a transaction that can deploy a payment channel from
-   the multi-sig wallet
+打开通道
+1. Alice 和 Bob 资助多重签名钱包
+2. 预计算支付通道地址  
+3. Alice 和 Bob 交换初始余额的签名
+4. Alice 和 Bob 创建一个可以从多重签名钱包部署支付通道的交易
 
-Update channel balances
-1. Repeat steps 1 - 3 from opening a channel
-2. From multi-sig wallet create a transaction that will
-   - delete the transaction that would have deployed the old payment channel
-   - and then create a transaction that can deploy a payment channel with the
-     new balances
+更新通道余额
+1. 从打开通道中重复步骤 1-3
+2. 从多重签名钱包创建一个交易，该交易将
+   - 删除将部署旧的支付通道的交易
+   - 然后创建一个可以使用新余额部署支付通道的交易
 
-Closing a channel when Alice and Bob agree on the final balance
-1. From multi-sig wallet create a transaction that will
-   - send payments to Alice and Bob
-   - and then delete the transaction that would have created the payment channel
+当 Alice 和 Bob 同意最终余额时关闭通道
+1. 从多重签名钱包创建一个交易，该交易将
+   - 向 Alice 和 Bob 发送付款
+   - 然后删除将创建支付通道的交易
 
-Closing a channel when Alice and Bob do not agree on the final balances
-1. Deploy payment channel from multi-sig
-2. call challengeExit() to start the process of closing a channel
-3. Alice and Bob can withdraw funds once the channel is expired
+当 Alice 和 Bob 不同意最终余额时关闭通道
+1. 从多重签名钱包部署支付通道
+2. 调用 challengeExit() 开始关闭通道的过程
+3. 一旦通道过期，Alice 和 Bob 可以提取资金
 */
 
 import "github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.5/contracts/utils/cryptography/ECDSA.sol";
@@ -52,7 +50,7 @@ contract BiDirectionalPaymentChannel {
         _;
     }
 
-    // NOTE: deposit from multi-sig wallet
+    // 注意：从多重签名钱包存款
     constructor(
         address payable[2] memory _users,
         uint[2] memory _balances,
@@ -85,8 +83,8 @@ contract BiDirectionalPaymentChannel {
     ) public pure returns (bool) {
         for (uint i = 0; i < _signatures.length; i++) {
             /*
-            NOTE: sign with address of this contract to protect
-                  agains replay attack on other contracts
+            注意：使用此合约的地址进行签名以保护
+                  其他合约免受重放攻击
             */
             bool valid = _signers[i] ==
                 keccak256(abi.encodePacked(_contract, _balances, _nonce))
@@ -106,7 +104,7 @@ contract BiDirectionalPaymentChannel {
         uint[2] memory _balances,
         uint _nonce
     ) {
-        // Note: copy storage array to memory
+        // 注意：将存储数组复制到内存中
         address[2] memory signers;
         for (uint i = 0; i < users.length; i++) {
             signers[i] = users[i];

@@ -60,7 +60,7 @@ contract UniswapV3Flash {
 
         FlashCallbackData memory decoded = abi.decode(data, (FlashCallbackData));
 
-        // Repay borrow
+        // 偿还借款
         if (fee0 > 0) {
             token0.transferFrom(decoded.caller, address(this), fee0);
             token0.transfer(address(pool), decoded.amount0 + fee0);

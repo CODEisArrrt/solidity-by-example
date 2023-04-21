@@ -2,7 +2,7 @@
 pragma solidity ^0.8.17;
 
 library StorageSlot {
-    // Wrap address in a struct so that it can be passed around as a storage pointer
+    // 将地址包装在结构体中，以便可以将其作为存储指针传递
     struct AddressSlot {
         address value;
     }
@@ -11,7 +11,7 @@ library StorageSlot {
         bytes32 slot
     ) internal pure returns (AddressSlot storage pointer) {
         assembly {
-            // Get the pointer to AddressSlot stored at slot
+            // 获取存储在槽位上的AddressSlot的指针
             pointer.slot := slot
         }
     }

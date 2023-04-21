@@ -2,22 +2,22 @@
 pragma solidity ^0.8;
 
 /*
-Invariant - price of trade and amount of liquidity are determined by this equation
+不变量 - 交易价格和流动性量由以下方程确定
 
 An^n sum(x_i) + D = ADn^n + D^(n + 1) / (n^n prod(x_i))
 
-Topics
-0. Newton's method x_(n + 1) = x_n - f(x_n) / f'(x_n)
-1. Invariant
-2. Swap
-   - Calculate Y
-   - Calculate D
-3. Get virtual price
-4. Add liquidity
-   - Imbalance fee
-5. Remove liquidity
-6. Remove liquidity one token
-   - Calculate withdraw one token
+主题
+0. 牛顿法 x_(n + 1) = x_n - f(x_n) / f'(x_n)
+1. 不变量
+2. 交换
+   - 计算 Y
+   - 计算 D
+3. 获取虚拟价格
+4. 添加流动性
+   - 不平衡费用
+5. 移除流动性
+6. 移除一个代币的流动性
+   - 计算撤回一个代币
    - getYD
 TODO: test?
 */
@@ -29,29 +29,28 @@ library Math {
 }
 
 contract StableSwap {
-    // Number of tokens
+    // 令牌数量
     uint private constant N = 3;
-    // Amplification coefficient multiplied by N^(N - 1)
-    // Higher value makes the curve more flat
-    // Lower value makes the curve more like constant product AMM
+    // 放大系数乘以N的N-1次方
+    // 较高的值使曲线更平缓
+    // 较低的值使曲线更类似于恒定产品AMM
     uint private constant A = 1000 * (N ** (N - 1));
     // 0.03%
     uint private constant SWAP_FEE = 300;
-    // Liquidity fee is derived from 2 constraints
-    // 1. Fee is 0 for adding / removing liquidity that results in a balanced pool
-    // 2. Swapping in a balanced pool is like adding and then removing liquidity
-    //    from a balanced pool
-    // swap fee = add liquidity fee + remove liquidity fee
+    // 流动性费用来自两个限制条件
+    // 1. 对于导致平衡池的添加/移除流动性，费用为0
+    // 2. 在平衡池中交换就像从平衡池中添加然后移除流动性
+    //    添加流动性费用+移除流动性费用=交换费用
     uint private constant LIQUIDITY_FEE = (SWAP_FEE * N) / (4 * (N - 1));
     uint private constant FEE_DENOMINATOR = 1e6;
 
     address[N] public tokens;
-    // Normalize each token to 18 decimals
-    // Example - DAI (18 decimals), USDC (6 decimals), USDT (6 decimals)
+    // 将每个代币标准化为18个小数位
+    // 例如-DAI（18个小数位），USDC（6个小数位），USDT（6个小数位
     uint[N] private multipliers = [1, 1e12, 1e12];
     uint[N] public balances;
 
-    // 1 share = 1e18, 18 decimals
+    // 1份= 1e18，18个小数位
     uint private constant DECIMALS = 18;
     uint public totalSupply;
     mapping(address => uint) public balanceOf;
@@ -66,7 +65,7 @@ contract StableSwap {
         totalSupply -= _amount;
     }
 
-    // Return precision-adjusted balances, adjusted to 18 decimals
+    // 返回精度调整后的余额，调整为18个小数位
     function _xp() private view returns (uint[N] memory xp) {
         for (uint i; i < N; ++i) {
             xp[i] = balances[i] * multipliers[i];
@@ -74,14 +73,14 @@ contract StableSwap {
     }
 
     /**
-     * @notice Calculate D, sum of balances in a perfectly balanced pool
-     * If balances of x_0, x_1, ... x_(n-1) then sum(x_i) = D
-     * @param xp Precision-adjusted balances
+     * @notice 计算 D，一个完全平衡的池中余额的总和
+     * 如果 x_0、x_1、...、x_(n-1) 的余额，则 sum(x_i) = D
+     * @param xp 经过精度调整的余额
      * @return D
      */
     function _getD(uint[N] memory xp) private pure returns (uint) {
         /*
-        Newton's method to compute D
+        使用牛顿法计算D
         -----------------------------
         f(D) = ADn^n + D^(n + 1) / (n^n prod(x_i)) - An^n sum(x_i) - D 
         f'(D) = An^n + (n + 1) D^n / (n^n prod(x_i)) - 1
@@ -101,8 +100,8 @@ contract StableSwap {
             s += xp[i];
         }
 
-        // Newton's method
-        // Initial guess, d <= s
+        // 牛顿迭代法
+        // 初始猜测，d <= s
         uint d = s;
         uint d_prev;
         for (uint i; i < 255; ++i) {
@@ -122,11 +121,11 @@ contract StableSwap {
     }
 
     /**
-     * @notice Calculate the new balance of token j given the new balance of token i
-     * @param i Index of token in
-     * @param j Index of token out
-     * @param x New balance of token i
-     * @param xp Current precision-adjusted balances
+     * @notice 计算给定 token i 的新余额后，token j 的新余额
+     * @param i token i 的索引
+     * @param j token j 的索引
+     * @param x token i 的新余额
+     * @param xp 当前精度调整后的余额
      */
     function _getY(
         uint i,
@@ -135,7 +134,7 @@ contract StableSwap {
         uint[N] memory xp
     ) private pure returns (uint) {
         /*
-        Newton's method to compute y
+        牛顿迭代法计算y
         -----------------------------
         y = x_j
 
@@ -145,7 +144,7 @@ contract StableSwap {
         y_(n+1) = --------------
                    2y_n + b - D
 
-        where
+        其中
         s = sum(x_k), k != j
         p = prod(x_k), k != j
         b = s + D / (An^n)
@@ -172,9 +171,9 @@ contract StableSwap {
         c = (c * d) / (N * a);
         uint b = s + d / a;
 
-        // Newton's method
+        // 牛顿法
         uint y_prev;
-        // Initial guess, y <= d
+        // 初始猜测, y <= d
         uint y = d;
         for (uint _i; _i < 255; ++_i) {
             y_prev = y;
@@ -187,13 +186,12 @@ contract StableSwap {
     }
 
     /**
-     * @notice Calculate the new balance of token i given precision-adjusted
-     * balances xp and liquidity d
-     * @dev Equation is calculate y is same as _getY
-     * @param i Index of token to calculate the new balance
-     * @param xp Precision-adjusted balances
-     * @param d Liquidity d
-     * @return New balance of token i
+     * @notice 计算给定精度调整后的余额xp和流动性d后，代币i的新余额
+     * @dev 计算y的方程式与_getY相同
+     * @param i 要计算新余额的代币索引
+     * @param xp 精度调整后的余额
+     * @param d 流动性d
+     * @return 代币i的新余额
      */
     function _getYD(uint i, uint[N] memory xp, uint d) private pure returns (uint) {
         uint a = A * N;
@@ -214,9 +212,9 @@ contract StableSwap {
         c = (c * d) / (N * a);
         uint b = s + d / a;
 
-        // Newton's method
+        // 牛顿法
         uint y_prev;
-        // Initial guess, y <= d
+        // 初始猜测, y <= d
         uint y = d;
         for (uint _i; _i < 255; ++_i) {
             y_prev = y;
@@ -228,8 +226,8 @@ contract StableSwap {
         revert("y didn't converge");
     }
 
-    // Estimate value of 1 share
-    // How many tokens is one share worth?
+    // 估计一股的价值
+    // 一个股份值多少代币？
     function getVirtualPrice() external view returns (uint) {
         uint d = _getD(_xp());
         uint _totalSupply = totalSupply;
@@ -240,28 +238,28 @@ contract StableSwap {
     }
 
     /**
-     * @notice Swap dx amount of token i for token j
-     * @param i Index of token in
-     * @param j Index of token out
-     * @param dx Token in amount
-     * @param minDy Minimum token out
+     * @notice 交换 i 索引的代币的 dx 数量，以换取 j 索引的代币
+     * @param i 代币索引
+     * @param j 代币索引
+     * @param dx 输入代币数量
+     * @param minDy 最小输出代币数量
      */
     function swap(uint i, uint j, uint dx, uint minDy) external returns (uint dy) {
         require(i != j, "i = j");
 
         IERC20(tokens[i]).transferFrom(msg.sender, address(this), dx);
 
-        // Calculate dy
+        // 计算 dy
         uint[N] memory xp = _xp();
         uint x = xp[i] + dx * multipliers[i];
 
         uint y0 = xp[j];
         uint y1 = _getY(i, j, x, xp);
-        // y0 must be >= y1, since x has increased
-        // -1 to round down
+        // y0必须大于等于y1，因为x已经增加了
+        // -1是为了向下取整
         dy = (y0 - y1 - 1) / multipliers[j];
 
-        // Subtract fee from dy
+        // 从dy中减去费用
         uint fee = (dy * SWAP_FEE) / FEE_DENOMINATOR;
         dy -= fee;
         require(dy >= minDy, "dy < min");
@@ -276,7 +274,7 @@ contract StableSwap {
         uint[N] calldata amounts,
         uint minShares
     ) external returns (uint shares) {
-        // calculate current liquidity d0
+        // 计算当前流动性d0
         uint _totalSupply = totalSupply;
         uint d0;
         uint[N] memory old_xs = _xp();
@@ -284,7 +282,7 @@ contract StableSwap {
             d0 = _getD(old_xs);
         }
 
-        // Transfer tokens in
+        // 将代币转移入
         uint[N] memory new_xs;
         for (uint i; i < N; ++i) {
             uint amount = amounts[i];
@@ -296,11 +294,11 @@ contract StableSwap {
             }
         }
 
-        // Calculate new liquidity d1
+        // 计算新的流动性d1
         uint d1 = _getD(new_xs);
         require(d1 > d0, "liquidity didn't increase");
 
-        // Reccalcuate D accounting for fee on imbalance
+        // 重新计算D，考虑到失衡费用。
         uint d2;
         if (_totalSupply > 0) {
             for (uint i; i < N; ++i) {
@@ -315,12 +313,12 @@ contract StableSwap {
             d2 = d1;
         }
 
-        // Update balances
+        // 更新余额
         for (uint i; i < N; ++i) {
             balances[i] += amounts[i];
         }
 
-        // Shares to mint = (d2 - d0) / d0 * total supply
+        // 股份发行量 = （d2 - d0）/ d0 * 总供应量
         // d1 >= d2 >= d0
         if (_totalSupply > 0) {
             shares = ((d2 - d0) * _totalSupply) / d0;
@@ -351,11 +349,11 @@ contract StableSwap {
     }
 
     /**
-     * @notice Calculate amount of token i to receive for shares
-     * @param shares Shares to burn
-     * @param i Index of token to withdraw
-     * @return dy Amount of token i to receive
-     *         fee Fee for withdraw. Fee already included in dy
+     * @notice 计算赎回股份所获得的代币i的数量
+     * @param shares 要赎回的股份
+     * @param i 要提取的代币的索引
+     * @return dy 要获得的代币i的数量
+     *          fee 提取的费用。费用已包含在dy中
      */
     function _calcWithdrawOneToken(
         uint shares,
@@ -364,16 +362,16 @@ contract StableSwap {
         uint _totalSupply = totalSupply;
         uint[N] memory xp = _xp();
 
-        // Calculate d0 and d1
+        // 计算d0和d1
         uint d0 = _getD(xp);
         uint d1 = d0 - (d0 * shares) / _totalSupply;
 
-        // Calculate reduction in y if D = d1
+        // 如果D = d1，计算y的减少量
         uint y0 = _getYD(i, xp, d1);
         // d1 <= d0 so y must be <= xp[i]
         uint dy0 = (xp[i] - y0) / multipliers[i];
 
-        // Calculate imbalance fee, update xp with fees
+        // d1小于等于d0，因此y必须小于等于xp [i]。
         uint dx;
         for (uint j; j < N; ++j) {
             if (j == i) {
@@ -385,9 +383,9 @@ contract StableSwap {
             xp[j] -= (LIQUIDITY_FEE * dx) / FEE_DENOMINATOR;
         }
 
-        // Recalculate y with xp including imbalance fees
+        // 重新计算包括不平衡费用的xp的y值。
         uint y1 = _getYD(i, xp, d1);
-        // - 1 to round down
+        // -1 向下取整
         dy = (xp[i] - y1 - 1) / multipliers[i];
         fee = dy0 - dy;
     }
@@ -400,10 +398,10 @@ contract StableSwap {
     }
 
     /**
-     * @notice Withdraw liquidity in token i
-     * @param shares Shares to burn
-     * @param i Token to withdraw
-     * @param minAmountOut Minimum amount of token i that must be withdrawn
+     * @notice 从代币i中提取流动性
+     * @param shares 要销毁的份额
+     * @param i 要提取的代币
+     * @param minAmountOut 必须提取的最小代币i数量 
      */
     function removeLiquidityOneToken(
         uint shares,

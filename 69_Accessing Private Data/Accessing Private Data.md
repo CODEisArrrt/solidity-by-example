@@ -29,11 +29,11 @@ pragma solidity ^0.8.17;
 contract Vault {
     // 槽0
     uint public count = 123;
-    //槽 1
+    // 槽1
     address public owner = msg.sender;
     bool public isTrue = true;
     uint16 public u16 = 31;
-    // 槽 2
+    // 槽2
     bytes32 private password;
 
     // 常量不使用存储

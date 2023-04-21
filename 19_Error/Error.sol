@@ -3,16 +3,16 @@ pragma solidity ^0.8.17;
 
 contract Error {
     function testRequire(uint _i) public pure {
-        // Require should be used to validate conditions such as:
-        // - inputs
-        // - conditions before execution
-        // - return values from calls to other functions
+        // Require应用于验证条件，例如：
+        // - 输入
+        // - 执行前的条件
+        // - 对其他函数的调用的返回值
         require(_i > 10, "Input must be greater than 10");
     }
 
     function testRevert(uint _i) public pure {
-        // Revert is useful when the condition to check is complex.
-        // This code does the exact same thing as the example above
+        // 当要检查的条件复杂时，Revert很有用。
+        // 此代码与上面的示例完全相同
         if (_i <= 10) {
             revert("Input must be greater than 10");
         }
@@ -21,15 +21,13 @@ contract Error {
     uint public num;
 
     function testAssert() public view {
-        // Assert should only be used to test for internal errors,
-        // and to check invariants.
+        // Assert仅应用于测试内部错误，并检查不变量。
 
-        // Here we assert that num is always equal to 0
-        // since it is impossible to update the value of num
+        // 我们在这里声明，由于不可能更新num的值，因此num始终等于0。
         assert(num == 0);
     }
 
-    // custom error
+    // 自定义错误
     error InsufficientBalance(uint balance, uint withdrawAmount);
 
     function testCustomError(uint _withdrawAmount) public view {
@@ -37,42 +35,5 @@ contract Error {
         if (bal < _withdrawAmount) {
             revert InsufficientBalance({balance: bal, withdrawAmount: _withdrawAmount});
         }
-    }
-}
-Here is another example
-
-
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-
-contract Account {
-    uint public balance;
-    uint public constant MAX_UINT = 2 ** 256 - 1;
-
-    function deposit(uint _amount) public {
-        uint oldBalance = balance;
-        uint newBalance = balance + _amount;
-
-        // balance + _amount does not overflow if balance + _amount >= balance
-        require(newBalance >= oldBalance, "Overflow");
-
-        balance = newBalance;
-
-        assert(balance >= oldBalance);
-    }
-
-    function withdraw(uint _amount) public {
-        uint oldBalance = balance;
-
-        // balance - _amount does not underflow if balance >= _amount
-        require(balance >= _amount, "Underflow");
-
-        if (balance < _amount) {
-            revert("Underflow");
-        }
-
-        balance -= _amount;
-
-        assert(balance <= oldBalance);
     }
 }

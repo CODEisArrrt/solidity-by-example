@@ -23,7 +23,7 @@ contract ChainlinkPriceOracle {
             uint timeStamp,
             uint80 answeredInRound
         ) = priceFeed.latestRoundData();
-        // 对于以太坊/美元价格，价格被放大了10的8次方
+        // 对于EYH/美元价格，价格被放大了10的8次方
         return price / 1e8;
     }
 }

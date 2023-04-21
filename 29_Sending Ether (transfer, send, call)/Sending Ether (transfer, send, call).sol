@@ -3,25 +3,26 @@ pragma solidity ^0.8.17;
 
 contract ReceiveEther {
     /*
-    Which function is called, fallback() or receive()?
+    哪个函数被调用，fallback()还是receive()？
 
-           send Ether
+           发送以太币
+
                |
-         msg.data is empty?
+         msg.data 是否为空？
               / \
             yes  no
             /     \
-receive() exists?  fallback()
+receive()是否存在？  fallback()
          /   \
         yes   no
         /      \
     receive()   fallback()
     */
 
-    // Function to receive Ether. msg.data must be empty
+    // 接收以太币的函数。msg.data必须为空
     receive() external payable {}
 
-    // Fallback function is called when msg.data is not empty
+    // 当msg.data不为空时调用这个回退函数
     fallback() external payable {}
 
     function getBalance() public view returns (uint) {
@@ -31,20 +32,20 @@ receive() exists?  fallback()
 
 contract SendEther {
     function sendViaTransfer(address payable _to) public payable {
-        // This function is no longer recommended for sending Ether.
+        // 这个函数不再推荐用于发送以太币。
         _to.transfer(msg.value);
     }
 
     function sendViaSend(address payable _to) public payable {
-        // Send returns a boolean value indicating success or failure.
-        // This function is not recommended for sending Ether.
+        // 发送返回一个布尔值，表示成功或失败。
+        // 这个函数不推荐用于发送以太币。
         bool sent = _to.send(msg.value);
         require(sent, "Failed to send Ether");
     }
 
     function sendViaCall(address payable _to) public payable {
-        // Call returns a boolean value indicating success or failure.
-        // This is the current recommended method to use.
+        // 调用返回一个布尔值，表示成功或失败。
+        // 这是目前推荐使用的方法。
         (bool sent, bytes memory data) = _to.call{value: msg.value}("");
         require(sent, "Failed to send Ether");
     }

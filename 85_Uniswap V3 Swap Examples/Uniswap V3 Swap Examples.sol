@@ -60,9 +60,9 @@ interface ISwapRouter {
         uint160 sqrtPriceLimitX96;
     }
 
-    /// @notice Swaps amountIn of one token for as much as possible of another token
-    /// @param params The parameters necessary for the swap, encoded as ExactInputSingleParams in calldata
-    /// @return amountOut The amount of the received token
+    /// @notice 将一个代币的 amountIn 进行兑换，以获得尽可能多的另一个代币
+    /// @param params 兑换所需的参数，以 calldata 中的 ExactInputSingleParams 编码形式提供
+    /// @return amountOut 获得代币的数量
     function exactInputSingle(
         ExactInputSingleParams calldata params
     ) external payable returns (uint amountOut);
@@ -75,9 +75,10 @@ interface ISwapRouter {
         uint amountOutMinimum;
     }
 
-    /// @notice Swaps amountIn of one token for as much as possible of another along the specified path
-    /// @param params The parameters necessary for the multi-hop swap, encoded as ExactInputParams in calldata
-    /// @return amountOut The amount of the received token
+    /// @notice  在指定路径上将一个代币的 amountIn 尽可能多的交换另一个代币
+    /// @param params 多跳交换所需的参数，以 calldata 中的 ExactInputParams 编码
+    /// @return amountOut 接收到的代币数量
+
     function exactInput(
         ExactInputParams calldata params
     ) external payable returns (uint amountOut);

@@ -18,10 +18,9 @@ contract Receiver {
 contract Caller {
     event Response(bool success, bytes data);
 
-    // Let's imagine that contract Caller does not have the source code for the
-    // contract Receiver, but we do know the address of contract Receiver and the function to call.
+    // 假设合约调用者没有合约接收者的源代码，但我们知道合约接收者的地址和要调用的函数。
     function testCallFoo(address payable _addr) public payable {
-        // You can send ether and specify a custom gas amount
+        // 你可以发送ether并指定自定义的 gas 数量。
         (bool success, bytes memory data) = _addr.call{value: msg.value, gas: 5000}(
             abi.encodeWithSignature("foo(string,uint256)", "call foo", 123)
         );
@@ -29,7 +28,7 @@ contract Caller {
         emit Response(success, data);
     }
 
-    // Calling a function that does not exist triggers the fallback function.
+    // 调用不存在的函数会触发回退函数。
     function testCallDoesNotExist(address payable _addr) public payable {
         (bool success, bytes memory data) = _addr.call{value: msg.value}(
             abi.encodeWithSignature("doesNotExist()")

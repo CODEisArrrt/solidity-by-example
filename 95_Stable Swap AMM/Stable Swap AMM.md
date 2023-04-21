@@ -178,7 +178,7 @@ contract StableSwap {
 
         // 牛顿法
         uint y_prev;
-        // Initial guess, y <= d
+        // 初始猜测, y <= d
         uint y = d;
         for (uint _i; _i < 255; ++_i) {
             y_prev = y;

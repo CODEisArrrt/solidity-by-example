@@ -23,7 +23,7 @@ contract UncheckedMath {
     }
 
     function sumOfCubes(uint x, uint y) external pure returns (uint) {
-        // Wrap complex math logic inside unchecked
+        // 将复杂的数学逻辑包装在unchecked中
         unchecked {
             uint x3 = x * x * x;
             uint y3 = y * y * y;

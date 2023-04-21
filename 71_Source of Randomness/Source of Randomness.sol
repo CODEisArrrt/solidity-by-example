@@ -2,26 +2,25 @@
 pragma solidity ^0.8.17;
 
 /*
-NOTE: cannot use blockhash in Remix so use ganache-cli
+注意：无法在Remix中使用blockhash，因此请使用ganache-cli
 
 npm i -g ganache-cli
 ganache-cli
-In remix switch environment to Web3 provider
+在Remix中切换环境到Web3提供程序
 */
 
 /*
-GuessTheRandomNumber is a game where you win 1 Ether if you can guess the
-pseudo random number generated from block hash and timestamp.
+GuessTheRandomNumber是一个游戏，如果你能猜出从区块哈希和时间戳生成的伪随机数，你就能赢得1 Ether。
 
-At first glance, it seems impossible to guess the correct number.
-But let's see how easy it is win.
+乍一看，似乎不可能猜出正确的数字。
+但是让我们看看赢得游戏有多么容易。
 
-1. Alice deploys GuessTheRandomNumber with 1 Ether
-2. Eve deploys Attack
-3. Eve calls Attack.attack() and wins 1 Ether
+1. Alice部署GuessTheRandomNumber并放入1 Ether
+2. Eve部署Attack
+3. Eve调用Attack.attack()并赢得1 Ether
 
-What happened?
-Attack computed the correct answer by simply copying the code that computes the random number.
+发生了什么？
+Attack通过简单地复制计算随机数的代码，计算出了正确的答案。
 */
 
 contract GuessTheRandomNumber {
@@ -50,7 +49,7 @@ contract Attack {
         guessTheRandomNumber.guess(answer);
     }
 
-    // Helper function to check balance
+    // 检查余额的辅助函数
     function getBalance() public view returns (uint) {
         return address(this).balance;
     }

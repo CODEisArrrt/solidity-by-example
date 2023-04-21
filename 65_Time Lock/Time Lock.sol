@@ -60,11 +60,11 @@ contract TimeLock {
     }
 
     /**
-     * @param _target Address of contract or account to call
-     * @param _value Amount of ETH to send
-     * @param _func Function signature, for example "foo(address,uint256)"
-     * @param _data ABI encoded data send.
-     * @param _timestamp Timestamp after which the transaction can be executed.
+     * @param _target 要调用的合约或账户的地址
+     * @param _value 要发送的以太币数量
+     * @param _func 函数签名，例如 "foo(address,uint256)"
+     * @param _data ABI ABI编码的数据发送。
+     * @param _timestamp 可以执行交易的时间戳。
      */
     function queue(
         address _target,
@@ -113,17 +113,17 @@ contract TimeLock {
 
         queued[txId] = false;
 
-        // prepare data
+        // 准备数据
         bytes memory data;
         if (bytes(_func).length > 0) {
             // data = func selector + _data
             data = abi.encodePacked(bytes4(keccak256(bytes(_func))), _data);
         } else {
-            // call fallback with data
+            // 调用回退函数并附带数据
             data = _data;
         }
 
-        // call target
+        // 调用目标
         (bool ok, bytes memory res) = _target.call{value: _value}(data);
         if (!ok) {
             revert TxFailedError();

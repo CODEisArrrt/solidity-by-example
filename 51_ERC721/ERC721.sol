@@ -55,16 +55,16 @@ contract ERC721 is IERC721 {
         bool approved
     );
 
-    // Mapping from token ID to owner address
+    // 从令牌ID到所有者地址的映射
     mapping(uint => address) internal _ownerOf;
 
-    // Mapping owner address to token count
+    // 将所有者地址映射到令牌
     mapping(address => uint) internal _balanceOf;
 
-    // Mapping from token ID to approved address
+    // 从令牌ID映射到批准地址
     mapping(uint => address) internal _approvals;
 
-    // Mapping from owner to operator approvals
+    // 从所有者到操作者批准的映射
     mapping(address => mapping(address => bool)) public isApprovedForAll;
 
     function supportsInterface(bytes4 interfaceId) external pure returns (bool) {

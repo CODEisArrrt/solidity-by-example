@@ -26,7 +26,7 @@ contract MultiSigWallet {
         uint numConfirmations;
     }
 
-    // mapping from tx index => owner => bool
+    // 从交易索引 => 拥有者 => 布尔值的映射
     mapping(uint => mapping(address => bool)) public isConfirmed;
 
     Transaction[] public transactions;

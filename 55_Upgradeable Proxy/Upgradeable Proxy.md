@@ -143,7 +143,8 @@ contract Proxy {
            
 
             // calldatacopy(t, f, s) - 将大小为s的calldata从位置f复制到位置t的内存状态中
-            // calldatasize() - call data的大小（以字节为单位）calldatacopy(0, 0, calldatasize())
+            // calldatasize() - call data的大小（以字节为单位）
+            calldatacopy(0, 0, calldatasize())
 
             // 调用实现。
             // out和outsize都为0，因为我们还不知道大小。

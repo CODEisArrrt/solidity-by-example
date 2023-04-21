@@ -2,18 +2,15 @@
 pragma solidity ^0.8.17;
 
 /*
-Roulette is a game where you can win all of the Ether in the contract
-if you can submit a transaction at a specific timing.
-A player needs to send 10 Ether and wins if the block.timestamp % 15 == 0.
+轮盘是一种游戏，您可以在特定时间提交交易以赢取合同中的所有以太币。
+玩家需要发送10 Ether，如果block.timestamp％15 == 0，则赢了。
 */
 
 /*
-1. Deploy Roulette with 10 Ether
-2. Eve runs a powerful miner that can manipulate the block timestamp.
-3. Eve sets the block.timestamp to a number in the future that is divisible by
-   15 and finds the target block hash.
-4. Eve's block is successfully included into the chain, Eve wins the
-   Roulette game.
+1. 使用10 Ether部署轮盘
+2. Eve运行一个强大的矿工，可以操纵块时间戳。
+3. Eve将block.timestamp设置为未来的一个可以被15整除的数字，并找到目标块哈希。
+4. Eve的块成功包含在链中，Eve赢得了轮盘游戏。
 */
 
 contract Roulette {

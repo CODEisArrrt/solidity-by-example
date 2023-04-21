@@ -20,19 +20,19 @@ contract TestUniswapOptimalOneSidedSupply {
     }
 
     /*
-    s = optimal swap amount
-    r = amount of reserve for token a
-    a = amount of token a the user currently has (not added to reserve yet)
-    f = swap fee percent
+    s = 最佳交换金额 
+    r = 代币a的储备量
+    a = 用户当前持有的代币a数量（尚未添加到储备中）
+    f = 交易手续费百分比
     s = (sqrt(((2 - f)r)^2 + 4(1 - f)ar) - (2 - f)r) / (2(1 - f))
     */
     function getSwapAmount(uint r, uint a) public pure returns (uint) {
         return (sqrt(r * (r * 3988009 + a * 3988000)) - r * 1997) / 1994;
     }
 
-    /* Optimal one-sided supply
-    1. Swap optimal amount from token A to token B
-    2. Add liquidity
+    /* 最佳单边供应
+    1. 从代币 A 到代币 B 进行最佳兑换
+    2. 添加流动性
     */
     function zap(address _tokenA, address _tokenB, uint _amountA) external {
         require(_tokenA == WETH || _tokenB == WETH, "!weth");

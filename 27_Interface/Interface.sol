@@ -25,7 +25,7 @@ contract MyContract {
     }
 }
 
-// Uniswap example
+// Uniswap 示例
 interface UniswapV2Factory {
     function getPair(
         address tokenA,

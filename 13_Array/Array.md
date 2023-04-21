@@ -26,7 +26,7 @@ uint[] public arr;
     }
 ```
 
-##在数组末尾添加元素
+## 在数组末尾添加元素
 这将使数组长度增加1.
 ```solidity
     function push(uint i) public {
@@ -42,14 +42,14 @@ uint[] public arr;
     }
 ```
 
-####读取数组arr长度
+## 读取数组arr长度
 ```solidity
     function getLength() public view returns (uint) {
         return arr.length;
     }
 ```
 
-####删除操作不会改变数组的长度。
+## 删除操作不会改变数组的长度。
 它将索引处的值重置为其默认值，在这种情况下为0。
 ```solidity
     function remove(uint index) public {
@@ -57,7 +57,7 @@ uint[] public arr;
     }
 ```
 
-####在内存中创建数组，只能创建固定大小的数组
+## 在内存中创建数组，只能创建固定大小的数组
 ```solidity
     function examples() external {
         uint[] memory a = new uint[](5);

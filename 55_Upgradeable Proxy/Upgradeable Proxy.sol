@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-// Transparent upgradeable proxy pattern
+// 透明可升级代理模式
 
 contract CounterV1 {
     uint public count;
@@ -61,9 +61,9 @@ contract Dev {
 }
 
 contract Proxy {
-    // All functions / variables should be private, forward all calls to fallback
+    // 所有函数/变量应为私有的，将所有调用转发到fallback
 
-    // -1 for unknown preimage
+    // -1表示未知的原像
     // 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc
     bytes32 private constant IMPLEMENTATION_SLOT =
         bytes32(uint(keccak256("eip1967.proxy.implementation")) - 1);
@@ -101,7 +101,7 @@ contract Proxy {
         StorageSlot.getAddressSlot(IMPLEMENTATION_SLOT).value = _implementation;
     }
 
-    // Admin interface //
+    // 管理员接口 //
     function changeAdmin(address _admin) external ifAdmin {
         _setAdmin(_admin);
     }
@@ -121,41 +121,41 @@ contract Proxy {
         return _getImplementation();
     }
 
-    // User interface //
+    // 用户接口 //
     function _delegate(address _implementation) internal virtual {
         assembly {
-                // Copy msg.data. We take full control of memory in this inline assembly
-                // block because it will not return to Solidity code. We overwrite the
-            // Solidity scratch pad at memory position 0.
+            // 复制msg.data。我们完全控制了这个内联程序集块中的内存，
+            // 因为它将不会返回Solidity代码。
+            // 我们将Solidity数据覆盖在内存位置0上。
 
-            // calldatacopy(t, f, s) - copy s bytes from calldata at position f to mem at position t
-            // calldatasize() - size of call data in bytes
+            // calldatacopy(t, f, s) - 将长度为s的calldata从位置f复制到位置t的内存中
+            // calldatasize() - 调用数据的字节大小
             calldatacopy(0, 0, calldatasize())
 
-            // Call the implementation.
-            // out and outsize are 0 because we don't know the size yet.
+            // 调用实现。
+            // out和outsize都为0，因为我们还不知道大小。
 
             // delegatecall(g, a, in, insize, out, outsize) -
-            // - call contract at address a
-            // - with input mem[in…(in+insize))
-            // - providing g gas
-            // - and output area mem[out…(out+outsize))
-            // - returning 0 on error (eg. out of gas) and 1 on success
+            // - 调用地址为a的合约
+            // - 使用输入内存状态[in…(in+insize))
+            // - 提供 gas
+            // - 并将输出区域内存状态[out…(out+outsize))中的数据返回
+            // - 在发生错误（例如gas用尽）时返回0，在成功时返回1
             let result := delegatecall(gas(), _implementation, 0, calldatasize(), 0, 0)
 
-            // Copy the returned data.
-            // returndatacopy(t, f, s) - copy s bytes from returndata at position f to mem at position t
-            // returndatasize() - size of the last returndata
+            // 复制返回的数据
+            // returndatacopy(t, f, s) - 将大小为s的returndata从位置f复制到mem中的位置t
+            // returndatasize() - 上一次returndata的大小
             returndatacopy(0, 0, returndatasize())
 
             switch result
-            // delegatecall returns 0 on error.
+            // delegatecall在发生错误时返回0。
             case 0 {
-                // revert(p, s) - end execution, revert state changes, return data mem[p…(p+s))
+                // revert(p, s) - 结束执行，撤销状态更改，返回数据内存状态[p…(p+s))
                 revert(0, returndatasize())
             }
             default {
-                // return(p, s) - end execution, return data mem[p…(p+s))
+                // return(p, s) - 结束执行，返回数据内存状态[p…(p+s))
                 return(0, returndatasize())
             }
         }
