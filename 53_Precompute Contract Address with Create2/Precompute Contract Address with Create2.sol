@@ -1,7 +1,3 @@
-Precompute Contract Address with Create2
-Contract address can be precomputed, before the contract is deployed, using create2
-
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 

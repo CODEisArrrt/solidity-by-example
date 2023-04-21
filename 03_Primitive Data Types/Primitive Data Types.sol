@@ -1,11 +1,3 @@
-Primitive Data Types
-Here we introduce you to some primitive data types available in Solidity.
-
-boolean
-uint256
-int256
-address
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 

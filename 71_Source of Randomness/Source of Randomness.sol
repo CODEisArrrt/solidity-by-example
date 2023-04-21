@@ -1,8 +1,3 @@
-Source of Randomness
-Vulnerability
-blockhash and block.timestamp are not reliable sources for randomness.
-
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
@@ -60,5 +55,3 @@ contract Attack {
         return address(this).balance;
     }
 }
-Preventative Techniques
-Don't use blockhash and block.timestamp as source of randomness

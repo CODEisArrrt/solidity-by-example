@@ -1,7 +1,3 @@
-Stable Swap AMM
-Simplified version of Curve's stable swap AMM
-
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8;
 

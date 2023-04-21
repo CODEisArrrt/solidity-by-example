@@ -1,9 +1,3 @@
-Unchecked Math
-Overflow and underflow of numbers in Solidity 0.8 throw an error. This can be disabled by using unchecked.
-
-Disabling overflow / underflow check saves gas.
-
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 

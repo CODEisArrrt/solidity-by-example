@@ -1,12 +1,3 @@
-Multi-Sig Wallet
-Let's create an multi-sig wallet. Here are the specifications.
-
-The wallet owners can
-
-submit a transaction
-approve and revoke approval of pending transcations
-anyone can execute a transcation after enough owners has approved it.
-```
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
@@ -180,22 +171,3 @@ contract MultiSigWallet {
         );
     }
 }
-```
-Here is a contract to test sending transactions from the multi-sig wallet
-
-
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-
-contract TestContract {
-    uint public i;
-
-    function callMe(uint j) public {
-        i += j;
-    }
-
-    function getData() public pure returns (bytes memory) {
-        return abi.encodeWithSignature("callMe(uint256)", 123);
-    }
-}
-

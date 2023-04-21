@@ -1,7 +1,3 @@
-Iterable Mapping
-You cannot iterate through a mapping. So here is an example of how to create an iterable mapping.
-
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 

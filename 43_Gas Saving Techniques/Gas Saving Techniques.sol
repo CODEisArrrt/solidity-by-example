@@ -1,12 +1,3 @@
-Gas Saving Techniques
-Some gas saving techniques.
-
-Replacing memory with calldata
-Loading state variable to memory
-Replace for loop i++ with ++i
-Caching array elements
-Short circuit
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 

@@ -1,10 +1,9 @@
 # Precompute Contract Address with Create2
 在合约部署之前，可以使用create2预计算合约地址。
-
+## 新的语法方式
+这个语法是一个新的方式来调用create2而不需要使用汇编，你只需要传递salt
+        // https://docs.soliditylang.org/en/latest/control-structures.html#salted-contract-creations-create2
 ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-
 contract Factory {
     // 返回新部署合约的地址
     function deploy(
@@ -12,13 +11,13 @@ contract Factory {
         uint _foo,
         bytes32 _salt
     ) public payable returns (address) {
-        // 这个语法是一个新的方式来调用create2而不需要使用汇编，你只需要传递salt
-        // https://docs.soliditylang.org/en/latest/control-structures.html#salted-contract-creations-create2
         return address(new TestContract{salt: _salt}(_owner, _foo));
     }
 }
+```
 
-    // 这是使用汇编的旧方法
+## 使用汇编的旧方法
+```solidity
 contract FactoryAssembly {
     event Deployed(address addr, uint salt);
 
@@ -78,7 +77,11 @@ contract FactoryAssembly {
         emit Deployed(addr, _salt);
     }
 }
-
+```
+## TestContract
+在合约的构造函数中，需要传入_owner和_foo两个参数进行初始化，并且可以向合约发送以太币进行支付。
+该合约还包含一个公共函数getBalance，用于返回合约当前的以太币余额。
+```solidity
 contract TestContract {
     address public owner;
     uint public foo;
@@ -96,12 +99,12 @@ contract TestContract {
 
 ## remix验证
 1.部署合约Factory，调用deploy函数，传入参数将会把一个新合约部署到区块链上，并返回新合约地址
-![53-1.png](img/53-1.png)
+![53-1.jpg](img/53-1.jpg)
 2.部署合约FactoryAssembly，调用getBytecode函数，传入TestContract构造函数的参数_owner和_foo，获取要部署的合约的字节码。
-![53-2.png](img/53-2.png)
+![53-2.jpg](img/53-2.jpg)
 3.调用getAddress函数，传入步骤2获取的字节码和一个随机数_salt，计算要部署的合约的地址。
-![53-3.png](img/53-3.png)
+![53-3.jpg](img/53-3.jpg)
 4.调用deploy函数，传入步骤2获取的字节码和步骤3的_salt。在函数执行成功后，检查Deployed事件日志，其中应包含已部署TestContract的地址，该地址应等于步骤2计算出的地址。
-![53-4.png](img/53-4.png)
+![53-4.jpg](img/53-4.jpg)
 5.传入合约拥有者地址和一个整数，部署TestContract合约。调用合约函数查看合约信息
-![53-5.png](img/53-5.png)
+![53-5.jpg](img/53-5.jpg)

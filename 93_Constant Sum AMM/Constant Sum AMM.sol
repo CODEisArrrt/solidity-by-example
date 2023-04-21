@@ -1,9 +1,3 @@
-Constant Sum AMM
-Constant sum AMM X + Y = K
-
-Tokens trade one to one.
-
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 

@@ -1,7 +1,3 @@
-Array
-Array can have a compile-time fixed size or a dynamic size.
-
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 

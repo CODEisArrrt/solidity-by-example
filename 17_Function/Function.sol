@@ -1,9 +1,3 @@
-Function
-There are several ways to return outputs from a function.
-
-Public functions cannot accept certain data types as inputs or outputs
-
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 

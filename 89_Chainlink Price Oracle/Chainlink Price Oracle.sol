@@ -1,6 +1,3 @@
-Chainlink Price Oracle
-ETH / USD Price Oracle
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
