@@ -44,4 +44,4 @@ contract TestSlot {
 
 ## remix验证
 1.部署StorageSlot、TestSlot 合约，调用write函数，它将该地址存储在名为TEST_SLOT的存储槽中。调用get函数查看地址，调用TEST_SLOT验证生成的哈希
-![57-1.png](img/57-1.png)
+![57-1.jpg](img/57-1.jpg)

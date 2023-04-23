@@ -105,8 +105,8 @@ contract HoneyPot {
 
 ## remix验证
 1.部署 HoneyPot合约
-![75-1.png](img/75-1.png)
+![75-1.jpg](img/75-1.jpg)
 2.部署 Bank合约传入HoneyPot合约地址。并调用deposit函数存入1 eth
-![75-2.png](img/75-2.png)
+![75-2.jpg](img/75-2.jpg)
 3.部署Attack合约传入Bank合约地址。调用attack()函数攻击
-![75-3.png](img/75-3.png)
+![75-3.jpg](img/75-3.jpg)

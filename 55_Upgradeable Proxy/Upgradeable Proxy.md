@@ -257,10 +257,10 @@ contract TestSlot {
 
 ## remix验证
 1.部署BuggyProxy合约，调用admin函数查看管理员地址
-![55-1.png](img/55-1.png)
+![55-1.jpg](img/55-1.jpg)
 2.调用upgradeTo函数，输入要升级到新合约的地址参数，调用implementation验证是否成功
-![55-2.png](img/55-2.png)
+![55-2.jpg](img/55-2.jpg)
 3.部署Dev合约，调用selectors()函数查看Proxy的三个函数的函数选择器
-![55-3.png](img/55-3.png)
+![55-3.jpg](img/55-3.jpg)
 4.部署Proxy合约，调用changeAdmin函数，使调用者成为管理员；调用upgrandeTo函数升级合约
-![55-4.png](img/55-4.png)
+![55-4.jpg](img/55-4.jpg)

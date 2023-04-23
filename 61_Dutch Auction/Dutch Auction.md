@@ -66,6 +66,6 @@ contract DutchAuction {
 
 ## remix验证
 1.传入参数_startingPrice：起始价格，以wei为单位。_discountRate：折扣率，以wei为单位。_nft：ERC721合约的地址。_nftId：要拍卖的NFT的ID。部署合约
-![61-1.png](img/61-1.png)
+![61-1.hpg](img/61-1.jpg)
 2.调用getPrice()合约，查看当前价格，是否吻合折扣率
-![61-2.png](img/61-2.png)
+![61-2.jpg](img/61-2.jpg)

@@ -49,6 +49,6 @@ contract TestMultiCall {
 
 ## remix验证
 1.部署TestMultiCall合约，调用getData函数输入一个整数得到编码数据。
-![63-1.png](img/63-1.png)
+![63-1.jpg](img/63-1.jpg)
 2.然后，将getData函数的编码数据作为参数传递给multiCall函数，验证
-![63-2.png](img/63-2.png)
+![63-2.jpg](img/63-2.jpg)
