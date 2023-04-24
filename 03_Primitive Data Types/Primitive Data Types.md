@@ -56,6 +56,15 @@ Solidity 提供了两种字节类型：
     bytes1 b = 0x56; //  [01010110]
 ```
 
+## 枚举 enum
+举（enum）是solidity中用户定义的数据类型。它主要用于为uint分配名称，使程序易于阅读和维护。它与C语言中的enum类似，使用名称来代替从0开始的uint：
+```solidity
+    // 用enum将uint 0， 1， 2表示为Buy, Hold, Sell
+    enum ActionSet { Buy, Hold, Sell }
+    // 创建enum变量 action
+    ActionSet action = ActionSet.Buy;
+```
+enum的一个比较冷门的变量，几乎没什么人用。
 ## 默认值
 未分配的变量有一个默认值
 ```solidity

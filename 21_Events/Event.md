@@ -4,6 +4,12 @@
 监听事件并更新用户界面
 一种廉价的存储形式
 
+
+## Solidity中的事件（event）是EVM上日志的抽象，它具有两个特点：
+
+响应：应用程序（ether.js）可以通过RPC接口订阅和监听这些事件，并在前端做响应。
+经济：事件是EVM上比较经济的存储数据的方式，每个大概消耗2,000 gas；相比之下，链上存储一个新变量至少需要20,000 gas。
+
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;

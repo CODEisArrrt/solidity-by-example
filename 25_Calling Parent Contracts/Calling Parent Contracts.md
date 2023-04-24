@@ -1,7 +1,7 @@
 # Calling Parent Contracts
-可以直接调用父合约，也可以使用关键字super。
-
-使用关键字super，将直接调用所有父合约。
+子合约有两种方式调用父合约的函数，直接调用和利用super关键字。
+1. 直接调用：子合约可以直接用父合约名.函数名()的方式来调用父合约函数
+2. super关键字：子合约可以利用super.函数名()来调用最近的父合约函数。
 
 ```solidity
 // SPDX-License-Identifier: MIT
