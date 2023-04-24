@@ -1,3 +1,4 @@
+# 40.ABI Decode
 abi.encode将数据编码为字节。
 ```solidity
 function encode(
