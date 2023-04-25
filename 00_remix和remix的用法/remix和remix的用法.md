@@ -6,6 +6,7 @@
 ![0-2.png](./img/0-2.png)
 最左边的菜单有四个按钮，分别对应文件，搜索，编译，部署。点新建（Create New File）按钮，就可以创建一个空白的solidity合约。
 ![0-3.png](./img/0-3.png)
+
 ## 1. FILE EXPLORERS
 新建智能合约，右键文件夹后选择“New File”创建一个新的合约。
 ![0-4.png](./img/0-4.png)
