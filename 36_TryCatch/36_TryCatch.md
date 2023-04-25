@@ -1,6 +1,7 @@
 # 36.Try Catch
+在solidity中，try-catch只能被用于external函数或创建合约时constructor（被视为external函数）的调用。
 try/catch只能捕获来自外部函数调用和合约创建的错误。
-用于try/catch示例的external合约
+用于try/catch示例的external合约：
 ```solidity
 contract Foo {
     address public owner;

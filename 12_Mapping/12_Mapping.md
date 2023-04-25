@@ -53,11 +53,11 @@ function remove(address _addr1, uint _i) public {
 }
 ```
 # remix验证
-1. 部署合约Mapping，调用set（）函数输入address和uint，调用get（）函数查看。
+1. 部署合约Mapping，调用set（）函数输入address、uint，调用get（）函数输入address查看uint。
 ![12-1.png](./img/12-1.png)
-2. 调用remove（）函数，再次查看get（）函数，数值已被重置。
+2. 调用remove（）函数输入address，再次查看get（）函数，数值已被重置为0。
 ![12-2.png](./img/12-2.png)
-3. 部署合约NestedMapping，调用set（）函数输入address和uint，调用get（）函数查看。
+3. 部署合约NestedMapping，调用set（）函数输入address、uint和bool值，调用get（）函数输入address和uint查看bool值。
 ![12-3.png](./img/12-3.png)
-4. 调用remove（）函数，再次查看get（）函数，数值已被重置。
+4. 调用remove（）函数输入address和uint，再次查看get（）函数，数值已被重置。
 ![12-4.png](./img/12-4.png)

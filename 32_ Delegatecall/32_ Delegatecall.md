@@ -1,6 +1,14 @@
 # 32.Delegatecall
 delegatecall是类似于call的低级函数。
 当合约A执行delegatecall到合约B时，B的代码将在合约A的storage、msg.sender和msg.value下执行。
+delegatecall语法和call类似：
+```solidity
+目标合约地址.delegatecall(二进制编码);
+```
+其中二进制编码利用结构化编码函数abi.encodeWithSignature获得：
+```solidity
+abi.encodeWithSignature("函数签名", 逗号分隔的具体参数)
+```
 部署合约B，存储布局必须与合约A相同。
 ```solidity
 contract B {
