@@ -1,5 +1,6 @@
 # 48.Merkle Tree
 Merkle Tree允许你在不公开整个集合的情况下，加密证明一个元素包含在该集合中。
+Merkle Tree允许对大型数据结构的内容进行有效和安全的验证（Merkle Proof）。
 ```solidity
 
 // SPDX-License-Identifier: MIT
