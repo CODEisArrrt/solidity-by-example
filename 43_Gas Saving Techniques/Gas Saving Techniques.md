@@ -1,11 +1,11 @@
 # Gas Saving Techniques
 一些节省gas的技巧。
 
-用calldata替换储存器
-将状态变量加载到储存器中
-用++i替换for循环i++
-缓存数组元素
-短路
+1. 用calldata替换储存器
+2. 将状态变量加载到储存器中
+3. 用++i替换for循环i++
+4. 缓存数组元素
+5. 短路
 
 ```solidity
 // SPDX-License-Identifier: MIT
