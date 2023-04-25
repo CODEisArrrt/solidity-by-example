@@ -1,2 +1,1 @@
-# solidity-by-example
-solidity-by-example 的中文翻译
+基于solidity-by-example的中文solidity教程
