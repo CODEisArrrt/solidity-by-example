@@ -14,7 +14,7 @@
 当编写完智能合约代码后选中你的合约进行编译。下图中“COMPILER”一栏需要你选择solidity的版本，solidity版本迭代很快可能同样的代码在上个版本成功运行，这个版本就会报错。其默认为最新版本。一般情况下可以勾选自动编译（Auto compile）
 ![0-5.png](./img/0-5.png)
 ## 3. 部署&运行交易
-如果编译没有发生错误就可以开始部署合约，在“ENVIRONMENT”一栏需要选择部署环境，在“Remix VM”环境下你会将合约部署在本地中不会连接节点，可以用于测试之中；在“Injected Provider - MetaMask”下你会启用网页插件部署合约比如著名的MetaMask；请确认无误后再部署以免造成损失。
+如果编译没有发生错误就可以开始部署合约，在“ENVIRONMENT”一栏需要选择部署环境，在“Remix VM”环境下你会将合约部署在本地中不会连接节点，可以用于测试之中；在“Injected Provider - MetaMask”下你会启用网页插件部署合约比如使用率高的MetaMask；请确认无误后再部署以免造成损失。
 之后在“ACCOUNT”一栏输入你要部署的账户，在“GAS LIMIT”下输入所消耗燃料的上限后即可点击下方按钮部署合约。
 ![0-6.png](./img/0-6.png)
 ## 4.安装 ETHERSCAN - CONTRACT VERIFICATION 插件
