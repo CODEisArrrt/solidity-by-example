@@ -2,7 +2,8 @@
 在合约部署之前，可以使用create2预计算合约地址。
 ## 新的语法方式
 这个语法是一个新的方式来调用create2而不需要使用汇编，你只需要传递salt
-        // https://docs.soliditylang.org/en/latest/control-structures.html#salted-contract-creations-create2
+官方文档资料：
+    // https://docs.soliditylang.org/en/latest/control-structures.html#salted-contract-creations-create2
 ```solidity
 contract Factory {
     // 返回新部署合约的地址
