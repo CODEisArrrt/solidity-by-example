@@ -1,8 +1,8 @@
 # 16.Datalocations
-### 变量被声明为storage、memory或calldata，以明确指定数据的位置。
+## 变量被声明为storage、memory或calldata，以明确指定数据的位置。
 1.storage - 变量是状态变量（存储在区块链上）。
-2.memory - 变量在内存中存在，仅在函数被调用时存在。
-3.calldata - 特殊的数据位置，包含函数参数。
+2.memory - 变量在内存中存在，仅在函数被调用时存在，不上链。
+3.calldata - 特殊的数据位置，包含函数参数。和memory类似，存储在内存中，不上链。与memory的不同点在于calldata变量不能修改（immutable），一般用于函数的参数。
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
