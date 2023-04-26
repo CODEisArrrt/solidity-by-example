@@ -1,7 +1,10 @@
 # 12.Mapping
-地图是使用语法 mapping(keyType => valueType) 创建的。keyType 可以是任何内置值类型、字节、字符串或任何合约。valueType 可以是任何类型，包括另一个映射或数组。映射不可迭代。
+使用语法mapping(keyType => valueType)创建映射。
+keyType 可以是任何内置值类型、字节、字符串或任何合约。
+valueType 可以是任何类型，包括另一个映射或数组。
+映射不可迭代。
 ## Mapping映射
-将地址映射为无符号整数uint，地址映射到uint。
+从地址到无符号整数uint的映射。
 ```solidity
 mapping(address => uint) public myMap;
 ```

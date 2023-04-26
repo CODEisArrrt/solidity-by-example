@@ -16,6 +16,7 @@ function doSomething() public {
 
 }
 ```
+
 ### 2.状态变量
 状态变量是数据存储在链上的变量，所有合约内函数都可以访问 ，gas消耗高。状态变量在合约内、函数外声明：
 ```solidity
@@ -23,6 +24,7 @@ function doSomething() public {
 string public text = "Hello";
 uint public num = 123;
 ```
+
 ### 3.全局变量
 全局变量是全局范围工作的变量，都是solidity预留关键字。他们可以在函数内不声明直接使用：
 ```solidity
@@ -30,6 +32,7 @@ uint public num = 123;
 uint timestamp = block.timestamp; // 当前区块时间戳
 address sender = msg.sender; // 来电者的地址
 ```
+
 # remix验证
 部署合约Variables，调用显示为存储的状态变量
 ![4-1.png](./img/4-1.png)

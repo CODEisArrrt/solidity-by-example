@@ -1,6 +1,7 @@
 # 10.if/else
 Solidity支持条件语句if、else if和else。
 ### 1.if/else
+Solidity中的if-else语句与其他编程语言类似，用于根据条件执行不同的代码块。
 ```solidity
 function foo(uint x) public pure returns (uint) {
     if (x < 10) {

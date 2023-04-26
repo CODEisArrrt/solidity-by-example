@@ -51,7 +51,7 @@ function testExternalFunc() public pure returns (string memory) {
     return externalFunc();
 }
 ```
-5.状态变量
+5. 状态变量
 ```solidity
     string private privateVar = "my private variable";
     string internal internalVar = "my internal variable";
