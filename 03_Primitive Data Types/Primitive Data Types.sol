@@ -45,6 +45,11 @@ contract Primitives {
     bytes1 a = 0xb5; //  [10110101]
     bytes1 b = 0x56; //  [01010110]
 
+    // 用enum将uint 0， 1， 2表示为Buy, Hold, Sell
+    enum ActionSet { Buy, Hold, Sell }
+    // 创建enum变量 action
+    ActionSet action = ActionSet.Buy;
+
     // 默认值
     // 未分配的变量有一个默认值
     bool public defaultBoo; // false
