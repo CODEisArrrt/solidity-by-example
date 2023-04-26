@@ -1,8 +1,7 @@
 # Interface
 您可以通过声明接口与其他合约交互。
 
-## 接口
-
+接口类似于抽象合约，但它不实现任何功能。接口的规则：
 1. 不能包含状态变量
 2. 不能包含构造函数
 3. 不能继承除接口外的其他合约
@@ -23,7 +22,7 @@ contract Counter {
 }
 ```
 
-### 接口
+## 接口
 ```solidity
 interface ICounter {
     function count() external view returns (uint);
@@ -43,7 +42,7 @@ contract MyContract {
 }
 ```
 
-### Uniswap 列子
+## Uniswap 例子
 ```solidity
 interface UniswapV2Factory {
     function getPair(
