@@ -1,6 +1,6 @@
-# Reading and Writing to a State Variable
+# 7.Reading and Writing to a State Variable
 
-要写入或更新状态变量，您需要发送交易。
+要写入或更新状态变量，你需要发送交易。
 ```solidity
     // 存储数字的状态变量
     uint public num;
@@ -19,7 +19,7 @@
 ```
 
 ## remix验证
-1.部署合约 调用set写入状态变量
+1. 部署合约 调用set写入状态变量
 ![7-1.jpg](img/7-1.jpg)
-2.调用get可以不消耗gas读取变量
+2. 调用get可以不消耗gas读取变量
 ![7-2.jpg](img/7-2.jpg)
