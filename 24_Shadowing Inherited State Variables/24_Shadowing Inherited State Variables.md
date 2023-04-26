@@ -1,8 +1,8 @@
 # 24.Shadowing Inherited State Variables
 
-与函数不同，状态变量不能通过在子合约中重新声明来覆盖它。
+与函数不同，状态变量不能通过在子合约中重新声明来重写它。
 
-让我们学习如何正确地覆盖继承的状态变量。
+让我们学习如何正确地重写继承的状态变量。
 
 ```solidity
 contract A {
@@ -20,10 +20,9 @@ contract B is A {
     string public name = "Contract B";
 }
 ```
-这是覆盖继承状态变量的正确方法。
+这是重写继承状态变量的正确方法。
 ```solidity
 contract C is A {
-    // 这是覆盖继承状态变量的正确方法。
     constructor() {
         name = "Contract C";
     }
@@ -32,5 +31,5 @@ contract C is A {
 }
 ```
 # remix验证
-部署合约A，C，调用C，显示已被覆盖。
+部署合约A，C，调用C，显示已被重写。
 ![24-1.png](./img/24-1.png)

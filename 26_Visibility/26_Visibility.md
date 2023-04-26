@@ -2,13 +2,13 @@
 函数和状态变量必须声明它们是否可以被其他合约访问。
 函数可以声明为：
 
-* public - 任何合约和账户都可以调用。
-* private - 仅限于定义该函数的合约内部。
-* internal- 仅限于继承内部函数的合约内部。
-* external - 仅其他合约和账户可以调用。
+* public - 任何合约和账户都可以调用。(也可用于修饰状态变量，public变量会自动生成 getter函数，用于查询数值).
+* private - 仅限于定义该函数的合约内部访问，继承的合约也不能用（也可用于修饰状态变量）。
+* internal- 仅限于继承内部函数的合约内部访问，继承的合约可以用（也可用于修饰状态变量）。
+* external - 只能从合约外部访问（但是可以用this.f()来调用，f是函数名）。
 状态变量可以声明为public、private或internal，但不能声明为external。
-
-1.private函数只能在此合约内被调用,继承此合约的合约不能调用此函数。
+## 1.private
+1. private函数只能在此合约内被调用,继承此合约的合约不能调用此函数。
 ```solidity
     function privateFunc() private pure returns (string memory) {
         return "private function called";
@@ -18,6 +18,8 @@
         return privateFunc();
     }
 ```
+
+## 2.internal
 2.internal函数可以被以下情况调用：
 * 在该合约内部；
 * 在继承该合约的合约内部。
@@ -30,7 +32,9 @@ function internalFunc() internal pure returns (string memory) {
         return internalFunc();
     }
 ```
-3.public函数可以被调用：
+
+## 3. public
+3. public函数可以被调用：
 * 在本合约内部；
 * 在继承本合约的合约内部；
 * 被其他合约和账户调用。
@@ -39,7 +43,8 @@ function internalFunc() internal pure returns (string memory) {
         return "public function called";
     }
 ```
-4.external函数只能被其他合约和账户调用。
+## 4.external
+4. external函数只能被其他合约和账户调用。
 ```solidity
     function externalFunc() external pure returns (string memory) {
         return "external function called";
@@ -51,7 +56,7 @@ function testExternalFunc() public pure returns (string memory) {
     return externalFunc();
 }
 ```
-5. 状态变量
+## 5.状态变量
 ```solidity
     string private privateVar = "my private variable";
     string internal internalVar = "my internal variable";

@@ -23,7 +23,8 @@ contract Y {
 }
 ```
 
-有两种方法可以使用参数初始化父合约。 1.在继承列表中传递参数。
+有两种方法可以使用参数初始化父合约。 
+1. 在继承列表中传递参数。
 
 ```solidity
 contract B is X("Input to X"), Y("Input to Y") {
@@ -31,11 +32,10 @@ contract B is X("Input to X"), Y("Input to Y") {
 }
 ```
 
-2.在构造函数中传递参数，类似于函数修饰器。
+2. 在构造函数中传递参数，类似于函数修饰器。
 
 ```solidity
-contract C is X, Y {
-    // 在构造函数中传递参数，类似于函数修饰器。
+contract C is X, Y {。
     constructor(string memory _name, string memory _text) X(_name) Y(_text) {}
 }
 ```
