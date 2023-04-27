@@ -1,22 +1,22 @@
-# Hashing with Keccak256
+# 41.Hashing with Keccak256
 哈希函数（hash function）是一个密码学概念，它可以将任意长度的消息转换为一个固定长度的值，这个值也称作哈希（hash）
 ## Hash的性质
 一个好的哈希函数应该具有以下几个特性：
 
-单向性：从输入的消息到它的哈希的正向运算简单且唯一确定，而反过来非常难，只能靠暴力枚举。
-灵敏性：输入的消息改变一点对它的哈希改变很大。
-高效性：从输入的消息到哈希的运算高效。
-均一性：每个哈希值被取到的概率应该基本相等。
-抗碰撞性：
-    弱抗碰撞性：给定一个消息x，找到另一个消息x'使得hash(x) = hash(x')是困难的。
-    强抗碰撞性：找到任意x和x'，使得hash(x) = hash(x')是困难的。
+* 单向性：从输入的消息到它的哈希的正向运算简单且唯一确定，而反过来非常难，只能靠暴力枚举。
+* 灵敏性：输入的消息改变一点对它的哈希改变很大。
+* 高效性：从输入的消息到哈希的运算高效。
+* 均一性：每个哈希值被取到的概率应该基本相等。
+* 抗碰撞性：
+    * 弱抗碰撞性：给定一个消息x，找到另一个消息x'使得hash(x) =hash(x')是困难的。
+    * 强抗碰撞性：找到任意x和x'，使得hash(x) = hash(x')是困难的。
 keccak256计算输入的Keccak-256哈希值。
 
 ## Hash的应用
 
- 从输入中创建确定性唯一ID
- Commit-Reveal 方案
- 紧凑的加密签名（通过签署哈希而不是较大的输入）
+* 从输入中创建确定性唯一ID
+* 提交-揭示方案
+* 紧凑的加密签名（通过签署哈希而不是较大的输入）
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -62,9 +62,9 @@ contract GuessTheMagicWord {
 
 
 ## remix验证
-1.部署HashFunction合约，调用collision函数，传入string，尝试进行哈希碰撞
+1. 部署HashFunction合约，调用collision函数，传入string，尝试进行哈希碰撞
 ![41-1.jpg](img/41-1.jpg)
-2.调用hash函数，输入一个字符串、一个整数和一个地址。验证返回哈希值。
+2. 调用hash函数，输入一个字符串、一个整数和一个地址。验证返回哈希值。
 ![41-2.jpg](img/41-2.jpg)
-3.部署GuessTheMagicWord合约，调用answer显示哈希，调用guess函数，输入“solidity”验证
+3. 部署GuessTheMagicWord合约，调用answer显示哈希，调用guess函数，输入“solidity”验证
 ![41-3.jpg](img/41-3.jpg)
