@@ -59,7 +59,7 @@ contract E is X, Y {
     constructor() Y("Y was called") X("X was called") {}
 }
 ```
-# remix验证
+## remix验证
 1. 在继承列表中传递参数。部署父合约X/Y与子合约B，显示修改为B的参数
 ![22-1.png](./img/22-1.png)
 2. 在构造函数中传递参数，类似于函数修饰器。部署子合约C，显示为C的参数。

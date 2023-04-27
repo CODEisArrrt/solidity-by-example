@@ -33,3 +33,7 @@
 ![0-12.png](./img/0-12.png)
 4. 进入合约地址查看验证是否通过。
 ![0-13.png](./img/0-13.png)
+### 中文solidity资料推荐：
+1. [Solidity中文文档](https://solidity-cn.readthedocs.io/zh/develop/introduction-to-smart-contracts.html)（官方文档的中文翻译）
+
+2. [崔棉大师solidity教程](https://space.bilibili.com/286084162) web3技术教学博主

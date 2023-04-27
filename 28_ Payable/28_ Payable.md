@@ -39,7 +39,7 @@ function notPayable() public {}
         require(success, "Failed to send Ether");
     }
 ```
-# remix验证
+## remix验证
 1. 部署合约Payable，调用deposit（）函数，存入1ETH，账户余额为1ETH。
 ![28-1.png](./img/28-1.png)
 2. 调用withdraw（）函数，提取出1ETH，账户余额为0。

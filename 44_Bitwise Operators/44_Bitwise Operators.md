@@ -180,7 +180,7 @@ contract MostSignificantBitAssembly {
     }
 }
 ```
-# remix验证
+## remix验证
 1. 对位运算符进行验证。
 ![44-1.png](./img/44-1.png)
 ![44-2.png](./img/44-2.png)

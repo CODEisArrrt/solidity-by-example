@@ -99,7 +99,7 @@ contract ReEntrancyGuard {
     }
 }
 ```
-# remix验证
+## remix验证
 部署合约EtherStore，调用deposit()函数转入1ETH，显示余额为1ETH。
 ![66-1.png](./img/66-1.png)
 部署合约Attack，输入合约EtherStore的地址，然后调用attack（）函数并转入1ETH，会进行重入攻击，显示余额为2ETH。

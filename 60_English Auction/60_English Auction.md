@@ -96,7 +96,7 @@ contract EnglishAuction {
     }
 }
 ```
-# remix验证
+## remix验证
 部署合约EnglishAuction，并调用start（）函数开始拍卖。
 ![60-1.png](./img/60-1.png)
 调用bid（）函数竞拍，输入100wei，显示highestBid和highestBidder皆变成该地址与该数额。

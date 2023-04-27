@@ -50,7 +50,7 @@ function remove(address _addr1, uint _i) public {
     delete nested[_addr1][_i];
 }
 ```
-# remix验证
+## remix验证
 1. 部署合约Mapping，调用set（）函数输入address、uint，调用get（）函数输入address查看uint。
 ![12-1.png](./img/12-1.png)
 2. 调用remove（）函数输入address，再次查看get（）函数，数值已被重置为0。

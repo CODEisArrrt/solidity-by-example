@@ -25,7 +25,7 @@ contract EtherWallet {
 }
 ```
 
-# remix验证
+## remix验证
 部署钱包合约，通过CALLDATA调用receive（）转入1ETH，然后调用withdraw（）函数，调用者为owner时，调用成功。
 ![46-1.png](./img/46-1.png)
 调用者为其他地址时，调用失败。

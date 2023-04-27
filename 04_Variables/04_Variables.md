@@ -33,6 +33,6 @@ uint timestamp = block.timestamp; // 当前区块时间戳
 address sender = msg.sender; // 来电者的地址
 ```
 
-# remix验证
+## remix验证
 部署合约Variables，调用显示为存储的状态变量
 ![4-1.png](./img/4-1.png)

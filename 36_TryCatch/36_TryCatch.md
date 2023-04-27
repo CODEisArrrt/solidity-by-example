@@ -48,7 +48,7 @@ try/catch与合约创建的示例
         }
     }
 ```
-# remix验证
+## remix验证
 部署合约，调用tryCatchExternalCall（）函数输入数值0，调用失败，释放Log("external call failed")。
 ![36-1.png](./img/36-1.png)
 调用tryCatchExternalCall（）函数输入数值1，调用成功，释放Log("my func was called")。

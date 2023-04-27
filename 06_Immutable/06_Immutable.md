@@ -11,7 +11,7 @@ constructor(uint _myUint) {
     MY_UINT = _myUint;
 }
 ```
-# remix验证
+## remix验证
 部署合约Immutable，在部署时填入MY_UINT的数值123；
 调用MY_UINT后显示为123，调用MY_ADDRESS后显示为msg.sender。
 ![6-1.png](./img/6-1.png)

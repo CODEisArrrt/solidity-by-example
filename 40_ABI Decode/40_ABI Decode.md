@@ -23,7 +23,7 @@ function decode(
     (x, addr, arr, myStruct) = abi.decode(data, (uint, address, uint[], MyStruct));
 }
 ```
-# remix验证
+## remix验证
 部署合约，调用encode（）函数传入参数进行编码。
 ![40-1.png](./img/40-1.png)
 调用decode（）函数对上文编码后参数进行解码。

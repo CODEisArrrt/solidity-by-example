@@ -87,7 +87,7 @@
         return recoverSigner(ethSignedMessageHash, signature) == _signer;
     }
 ```
-# remix验证
+## remix验证
 部署合约，调用getMessageHash（）函数，对消息进行哈希处理。
 ![42-1.png](./img/42-1.png)
 调用getEthSignedMessageHash（）函数，输入messageHash生成签名。

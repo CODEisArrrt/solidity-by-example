@@ -19,6 +19,6 @@ function add(uint i, uint j) public pure returns (uint) {
     return i + j;
 }
 ```
-# remix验证
+## remix验证
 部署合约ViewAndPure，调用addToX（）函数，输入y值2，显示为3.
 ![18-1.png](./img/18-1.png)

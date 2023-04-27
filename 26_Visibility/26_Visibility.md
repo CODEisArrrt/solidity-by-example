@@ -78,6 +78,6 @@ function testInternalFunc() public pure override returns (string memory) {
     return internalFunc();
 }
 ```
-# remix验证
+## remix验证
 部署合约base和Child，在Child合约中调用testInternalFunc（）函数，显示调用成功，返回base合约中internalFunc（）函数的内容。
 ![26-1.png](./img/26-1.png)

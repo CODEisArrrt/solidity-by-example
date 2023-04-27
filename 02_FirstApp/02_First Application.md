@@ -23,7 +23,7 @@ function dec() public {
     }
 ```
 
-# remix验证
+## remix验证
 1. 部署合约Counter，调用count()和get()函数，结果显示为0。
 ![2-1.png](./img/2-1.png)
 2. 调用inc()函数，结果加1，显示为1。
