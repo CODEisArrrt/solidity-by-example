@@ -1,6 +1,5 @@
-# ABI Encode
+# 39.ABI Encode
 ABI (Application Binary Interface，应用二进制接口)是与以太坊智能合约交互的标准。数据基于他们的类型编码；并且由于编码后不包含类型信息，解码时需要注明它们的类型。
-
 
 函数参数编码为字节码
 

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-// 从当前目录导入Foo.soly
+// 从当前目录导入Foo.sol
 import "./Foo.sol";
 
 // 从“文件名”导入{symbol1 as alias, symbol2}

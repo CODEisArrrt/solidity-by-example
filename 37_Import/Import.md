@@ -1,4 +1,4 @@
-# Import
+# 37.Import
 在Solidity中，您可以导入本地和外部文件。
 
 import关键字导入外部源代码的方法。通过import关键字，可以引用我们写的其他文件中的合约或者函数，也可以直接导入别人写好的代码，非常方便。
@@ -8,9 +8,8 @@ import关键字导入外部源代码的方法。通过import关键字，可以�
 ```solidity
 ├── Import.sol
 └── Foo.sol
-Foo.sol
 ```
-### foo.sol
+foo.sol
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
@@ -30,20 +29,20 @@ contract Foo {
     string public name = "Foo";
 }
 ```
-
-
-### Import.sol
-
+ Import.sol
+* 从当前目录导入Foo.sol
 ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-
-// 从当前目录导入Foo.sol
 import "./Foo.sol";
-
-// 从“文件名”导入{symbol1 as alias, symbol2}
+```
+* 从“文件名”导入{symbol1 as alias, symbol2}
+```solidity
 import {Unauthorized, add as func, Point} from "./Foo.sol";
-
+```
+* 通过npm的目录导入，例子：
+```solidity
+import '@openzeppelin/contracts/access/Ownable.sol';
+```
+```solidity
 contract Import {
     // 初始化Foo.sol
     Foo public foo = new Foo();
@@ -54,10 +53,9 @@ contract Import {
     }
 }
 ```
+
 ## External
 您还可以通过简单地复制URL来从GitHub导入
-
-
 ```solidity
 // https://github.com/owner/repo/blob/branch/path/to/Contract.sol
 import "https://github.com/owner/repo/blob/branch/path/to/Contract.sol";

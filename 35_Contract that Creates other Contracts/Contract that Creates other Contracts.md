@@ -1,4 +1,4 @@
-# Contract that Creates other Contracts
+# 35.Contract that Creates other Contracts
 
 合约可以使用new关键字创建其他合约。自 0.8.0 版本以来，new 关键字支持通过指定 salt 选项创建 create2 功能。
 ## 创建汽车工厂智能合约
