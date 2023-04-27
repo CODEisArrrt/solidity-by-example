@@ -4,6 +4,8 @@ pragma solidity ^0.8.17;
 // 透明可升级代理模式
 
 contract CounterV1 {
+    address public implementation;
+    address public admin;
     uint public count;
 
     function inc() external {
@@ -12,6 +14,8 @@ contract CounterV1 {
 }
 
 contract CounterV2 {
+    address public implementation;
+    address public admin;
     uint public count;
 
     function inc() external {
@@ -26,6 +30,7 @@ contract CounterV2 {
 contract BuggyProxy {
     address public implementation;
     address public admin;
+    uint public count;
 
     constructor() {
         admin = msg.sender;
@@ -37,10 +42,12 @@ contract BuggyProxy {
     }
 
     fallback() external payable {
+    require(msg.sender != admin);
         _delegate();
     }
 
     receive() external payable {
+        require(msg.sender != admin);
         _delegate();
     }
 

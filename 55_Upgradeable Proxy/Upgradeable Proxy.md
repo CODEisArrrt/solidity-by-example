@@ -1,21 +1,66 @@
-# Upgradeable Proxy
+# 55.Upgradeable Proxy
 这是一个可升级代理合约的示例。
 教学用的合约可能有安全问题，不要用于生产环境。
 本示例展示了：
 
-如何使用delegatecall和在fallback被调用时返回数据。
-如何将管理员和实现的地址存储在特定的槽中。
+* 如何使用delegatecall和在fallback被调用时返回数据。
+* 如何将管理员和实现的地址存储在特定的槽中。
 
+## 透明代理
+透明代理的逻辑非常简单：管理员可能会因为“函数选择器冲突”，在调用逻辑合约的函数时，误调用代理合约的可升级函数。那么限制管理员的权限，不让他调用任何逻辑合约的函数，就能解决冲突：
 
+* 管理员变为工具人，仅能调用代理合约的可升级函数对合约升级，不能通过回调函数调用逻辑合约。
+* 其它用户不能调用可升级函数，但是可以调用逻辑合约的函数。
+
+### 代理合约
+它包含3个变量：
+
+* implementation：逻辑合约地址。
+* admin：admin地址。
+* count：正整数，可以通过逻辑合约的函数改变。
+它包含3个函数
+
+* 构造函数：初始化admin地址。
+* fallback()：回调函数，将调用委托给逻辑合约，不能由admin调用。
+* upgrade()：升级函数，改变逻辑合约地址，只能由admin调用。
 
 ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+contract BuggyProxy {
+    address public implementation;
+    address public admin;
+    uint public count;
 
-// 透明可升级代理模式
+    constructor() {
+        admin = msg.sender;
+    }
 
+    function _delegate() private {
+        (bool ok, bytes memory res) = implementation.delegatecall(msg.data);
+        require(ok, "delegatecall failed");
+    }
 
+    fallback() external payable {
+    require(msg.sender != admin);
+        _delegate();
+    }
+
+    receive() external payable {
+        require(msg.sender != admin);
+        _delegate();
+    }
+
+    function upgradeTo(address _implementation) external {
+        require(msg.sender == admin, "not authorized");
+        implementation = _implementation;
+    }
+}
+```
+### 逻辑合约
+逻辑合约包含3个状态变量，与保持代理合约一致，防止插槽冲突；旧逻辑合约包含函数inc()，新的包含函数inc（）和dec（）。
+```solidity
 contract CounterV1 {
+    address public implementation;
+    address public admin;
     uint public count;
 
     function inc() external {
@@ -24,44 +69,17 @@ contract CounterV1 {
 }
 
 contract CounterV2 {
+    address public implementation;
+    address public admin;
     uint public count;
 
     function inc() external {
         count += 1;
     }
 
-    function dec() external {
-        count -= 1;
-    }
 }
-
-contract BuggyProxy {
-    address public implementation;
-    address public admin;
-    //当合约部署时，将msg.sender设置为管理员地址。
-    constructor() {
-        admin = msg.sender;
-    }
-    //用于委托调用实现合约的函数。
-    function _delegate() private {
-        (bool ok, bytes memory res) = implementation.delegatecall(msg.data);
-        require(ok, "delegatecall failed");
-    }
-
-    fallback() external payable {
-        _delegate();
-    }
-
-    receive() external payable {
-        _delegate();
-    }
-    //用于升级实现合约的代码，只有管理员才有权限调用该函数。
-    function upgradeTo(address _implementation) external {
-        require(msg.sender == admin, "not authorized");
-        implementation = _implementation;
-    }
-}
-
+```
+```solidity
 contract Dev {
     function selectors() external view returns (bytes4, bytes4, bytes4) {
         return (
@@ -257,11 +275,19 @@ contract TestSlot {
 ```
 
 ## remix验证
-1.部署BuggyProxy合约，调用admin函数查看管理员地址
+1. 部署BuggyProxy合约、CounterV1合约和CounterV2合约，调用admin函数查看管理员地址
 ![55-1.jpg](img/55-1.jpg)
-2.调用upgradeTo函数，输入要升级到新合约的地址参数，调用implementation验证是否成功
+2. 调用upgradeTo函数，复制黏贴CounterV1合约的地址参数，调用implementation验证是否成功.
 ![55-2.jpg](img/55-2.jpg)
-3.部署Dev合约，调用selectors()函数查看Proxy的三个函数的函数选择器
-![55-3.jpg](img/55-3.jpg)
-4.部署Proxy合约，调用changeAdmin函数，使调用者成为管理员；调用upgrandeTo函数升级合约
-![55-4.jpg](img/55-4.jpg)
+3. 利用选择器0x371303c0，在代理合约中调用旧逻辑合约CounterV1的inc()函数。调用将失败，因为管理员不能调用逻辑合约。
+![55-3.png](img/55-3.png)
+4. 切换新钱包，利用选择器0x371303c0，在代理合约中调用旧逻辑合约CounterV1的inc()函数，count = 1，调用将成功。
+![55-4.png](img/55-4.png)
+5. 切换回管理员钱包，调用upgradeTo()函数，将implementation地址指向新逻辑合约CounterV2。
+![55-5.png](img/55-5.png)
+6. 切换新钱包，利用选择器0x371303c0，在代理合约中调用三次新逻辑合约CounterV2的inc()函数，再利用选择器0xb3bcfa82，在代理合约中调用一·次新逻辑合约CounterV2的dec()函数，最终count = 2。
+![55-6.png](img/55-6.png)
+7. 部署Dev合约，调用selectors()函数查看Proxy的三个函数的函数选择器.
+![55-7.jpg](img/55-7.jpg)
+8. 部署Proxy合约，调用changeAdmin函数，使调用者成为管理员；调用upgrandeTo函数升级合约.
+![55-8.jpg](img/55-8.jpg)
