@@ -26,7 +26,7 @@ uint public num = 123;
 ```
 
 ### 3.全局变量
-全局变量是全局范围工作的变量，都是solidity预留关键字。他们可以在函数内不声明直接使用：
+全局变量是全局范围工作的变量，都是solidity预留关键字。可以在函数内不声明直接使用：
 ```solidity
 // 这里是一些全局变量。
 uint timestamp = block.timestamp; // 当前区块时间戳

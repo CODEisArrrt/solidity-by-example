@@ -1,11 +1,11 @@
 # 26.Visibility
 函数和状态变量必须声明它们是否可以被其他合约访问。
 函数可以声明为：
-
-* public - 任何合约和账户都可以调用。(也可用于修饰状态变量，public变量会自动生成 getter函数，用于查询数值).
 * private - 仅限于定义该函数的合约内部访问，继承的合约也不能用（也可用于修饰状态变量）。
 * internal- 仅限于继承内部函数的合约内部访问，继承的合约可以用（也可用于修饰状态变量）。
+* public - 任何合约和账户都可以调用。(也可用于修饰状态变量，public变量会自动生成 getter函数，用于查询数值).
 * external - 只能从合约外部访问（但是可以用this.f()来调用，f是函数名）。
+* 
 状态变量可以声明为public、private或internal，但不能声明为external。
 ## 1.private
 1. private函数只能在此合约内被调用,继承此合约的合约不能调用此函数。
@@ -79,5 +79,5 @@ function testInternalFunc() public pure override returns (string memory) {
 }
 ```
 ## remix验证
-部署合约base和Child，在Child合约中调用testInternalFunc（）函数，显示调用成功，返回base合约中internalFunc（）函数的内容。
+1. 部署合约base和Child，在Child合约中调用testInternalFunc（）函数，显示调用成功，返回base合约中internalFunc（）函数的内容。
 ![26-1.png](./img/26-1.png)

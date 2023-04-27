@@ -1,5 +1,5 @@
 # 44.Bitwise Operators
-
+Bitwise Operators是一组用于执行位运算的运算符。
 ## 位运算符
 ```solidity
 

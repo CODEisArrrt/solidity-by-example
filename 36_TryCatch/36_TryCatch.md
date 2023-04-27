@@ -18,6 +18,7 @@ contract Foo {
     }
 }
 ```
+
 使用external call的try/catch示例。
 ```solidity
     // tryCatchExternalCall(0) => Log("external call failed")
@@ -30,6 +31,7 @@ contract Foo {
         }
     }
 ```
+
 try/catch与合约创建的示例
 ```solidity
     // tryCatchNewContract(0x0000000000000000000000000000000000000000) => Log("invalid address")

@@ -1,9 +1,10 @@
 # 24.Shadowing Inherited State Variables
 
-与函数不同，状态变量不能通过在子合约中重新声明来重写它。
+与函数不同，状态变量不能通过在子合约中重新声明来重写。
 
 让我们学习如何正确地重写继承的状态变量。
 
+首先写一个父合约
 ```solidity
 contract A {
     string public name = "Contract A";

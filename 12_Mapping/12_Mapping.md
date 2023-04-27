@@ -32,7 +32,7 @@ function remove(address _addr) public {
 ```solidity
 mapping(address => mapping(uint => bool)) public nested;
 ```
-你可以从嵌套映射中获取值，即使它没有被初始化。
+可以从嵌套映射中获取值，即使它没有被初始化。
 ```solidity
 function get(address _addr1, uint _i) public view returns (bool) {
     return nested[_addr1][_i];

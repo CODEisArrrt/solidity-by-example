@@ -27,13 +27,14 @@ Receive是fallback的一种变体，当msg.data为0时触发。
         return address(this).balance;
     }
 ```
+
 fallback可以选择使用字节作为输入和输出。
 ```solidity
 pragma solidity ^0.8.17;
 
 // TestFallbackInputOutput -> FallbackInputOutput -> Counter
-/*FallbackInputOutput 合约中定义了一个 fallback 函数，当该合约接收到以太币时，
-会将传入的数据 data 转发给目标合约，并返回目标合约的执行结果 res。*/
+    /*FallbackInputOutput 合约中定义了一个 fallback 函数，当该合约接收到以太币时，
+    会将传入的数据 data 转发给目标合约，并返回目标合约的执行结果 res。*/
 contract FallbackInputOutput {
     address immutable target;
 
@@ -47,8 +48,9 @@ contract FallbackInputOutput {
         return res;
     }
 }
-/*一个简单的计数器合约，包含一个公共变量 count，初始值为 0，
-以及两个函数，分别是查询函数 get() 和增加计数器值的函数 inc()。*/
+
+    /*一个简单的计数器合约，包含一个公共变量 count，初始值为 0，
+    以及两个函数，分别是查询函数 get() 和增加计数器值的函数 inc()。*/
 contract Counter {
     uint public count;
 
@@ -61,13 +63,14 @@ contract Counter {
         return count;
     }
 }
-/*
-测试合约，它包含一个测试函数 test()，
-该函数需要传入一个 fallback 合约地址 _fallback 和一个数据 data，
-它会将数据 data 转发给 _fallback 合约，并打印执行结果。
-另外，该合约还定义了一个辅助函数 getTestData()，
-用于返回两个测试数据，分别是查询计数器值和增加计数器值的函数调用数据。
-*/
+
+    /*
+    测试合约，它包含一个测试函数 test()，
+    该函数需要传入一个 fallback 合约地址 _fallback 和一个数据 data，
+    它会将数据 data 转发给 _fallback 合约，并打印执行结果。
+    另外，该合约还定义了一个辅助函数 getTestData()，
+    用于返回两个测试数据，分别是查询计数器值和增加计数器值的函数调用数据。
+    */
 contract TestFallbackInputOutput {
     event Log(bytes res);
 

@@ -27,7 +27,7 @@ contract DataLocations {
         // 使用存储变量执行某些操作。
     }
 
-    // 你可以返回内存变量
+    // 可以返回内存变量
     function g(uint[] memory _arr) public returns (uint[] memory) {
         // 使用memory数组执行某些操作。
     }
