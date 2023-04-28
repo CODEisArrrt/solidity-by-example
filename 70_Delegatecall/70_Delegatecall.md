@@ -4,6 +4,7 @@ delegatecall的使用很棘手，错误的使用或不正确的理解可能会�
 在使用delegatecall时，您必须记住两件事：
 1. delegatecall保留上下文（存储，调用者等...）
 2. 调用delegatecall的合约和被调用的合约的存储布局必须相同。
+
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
@@ -134,8 +135,10 @@ contract Attack {
     }
 }
 ```
-## 预防性技术
+### 预防性技术
 * 使用无状态库
+* 为了避免这种漏洞，开发人员应该避免在智能合约中使用delegatecall，并始终使用call或send来调用其他合约的函数。此外，开发人员还应该谨慎处理来自外部合约的数据，并使用安全的输入验证和过滤机制来防止攻击者利用漏洞。
+  
 ## remix验证
 1. 部署合约Lib和HackMe以及Attack，在Attack合约中调用attack（）函数，Hackme合约owner被修改为Attack地址。
 ![70-1.png](./img/70-1.png)

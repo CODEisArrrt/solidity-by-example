@@ -4,6 +4,7 @@
 重入攻击的一个攻击点就是合约转账ETH的地方：转账ETH的目标地址如果是合约，会触发对方合约的fallback（回退）函数，从而造成循环调用的可能。当在攻击合约中的fallback()或receive()函数中重新调用了目标合约的withdraw()函数
 假设合约A调用合约B。
 重入攻击漏洞允许B在A完成执行之前回调A。
+## 银行合约
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
@@ -53,7 +54,9 @@ contract EtherStore {
         return address(this).balance;
     }
 }
-
+```
+## 攻击合约
+```solidity
 contract Attack {
     EtherStore public etherStore;
 

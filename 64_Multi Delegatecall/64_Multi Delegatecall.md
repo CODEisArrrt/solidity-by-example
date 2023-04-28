@@ -1,4 +1,9 @@
 # 64.Multi Delegatecall
+Multi Delegatecall是一种Solidity中的特殊函数调用方式，它允许在一个合约内调用多个函数，从而可以简化复杂的操作。
+Multi Delegatecall的特点是将调用的函数合并在一起，共享合约状态，但是不会改变调用合约的上下文，即不会改变合约地址和合约存储状态。
+这种调用方式通常用于合约库的实现，可以将多个函数合并在一起，从而减少调用次数和gas消耗。
+但是需要注意的是，Multi Delegatecall需要确保调用的函数在同一合约中，且需要保证函数签名和参数类型一致。
+
 使用delegatecall在单个交易中调用多个函数的示例。
 ```solidity
 // SPDX-License-Identifier: MIT
