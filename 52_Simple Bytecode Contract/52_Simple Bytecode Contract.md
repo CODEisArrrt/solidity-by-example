@@ -1,5 +1,7 @@
 # 52.Simple Bytecode Contract
 字节码编写的合约的简单示例
+
+函数中，使用了汇编代码来创建新合约。汇编代码中的字节码为“69602a60005260206000f3600052600a6016f3”，它是一个EVM字节码，用于创建一个总是返回42的合约。
 ```solidity
 pragma solidity ^0.8.17;
 
@@ -19,7 +21,7 @@ contract Factory {
         emit Log(addr);
     }
 }
-
+//接口包含一个名为“getMeaningOfLife”的函数，用于返回数字42。
 interface IContract {
     function getMeaningOfLife() external view returns (uint);
 }
@@ -58,3 +60,9 @@ RETURN
 */
 
 ```
+
+## remix验证
+1. 部署Factory合约，调用Deploy（）函数。在Log事件中，记录合约的地址。
+![52-1.jpg](img/52-1.jpg)
+2. 使用记录的合约地址来调用IContract接口的新合约getMeaningOfLife函数，验证返回值为42。
+![52-2.jpg](img/52-2.jpg)

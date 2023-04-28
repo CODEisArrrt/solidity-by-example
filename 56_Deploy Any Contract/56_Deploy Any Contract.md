@@ -5,12 +5,17 @@
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
-
+    //简单的代理合约，允许创建新的合约并执行已有合约的函数。
+    //Proxy合约包含一个deploy函数，用于创建新合约。
+    /*使用Solidity的assembly语言来调用EVM的create函数来创建新合约。
+    一旦新合约被创建，将触发一个Deploy事件，其中包含新合约的地址。*/
 contract Proxy {
     event Deploy(address);
 
     receive() external payable {}
 
+    /*depiloy()使用Solidity的assembly语言来调用EVM的create函数来创建新合约。
+    一旦新合约被创建，将触发一个Deploy事件，其中包含新合约的地址。*/
     function deploy(bytes memory _code) external payable returns (address addr) {
         assembly {
             // create(v, p, n)函数：
@@ -24,13 +29,13 @@ contract Proxy {
 
         emit Deploy(addr);
     }
-
+    //execute()检查调用是否成功
     function execute(address _target, bytes memory _data) external payable {
         (bool success, ) = _target.call{value: msg.value}(_data);
         require(success, "failed");
     }
 }
-
+//TestContract1和TestContract2是两个简单的示例合约，用于演示如何使用Proxy合约。
 contract TestContract1 {
     address public owner = msg.sender;
 
@@ -51,7 +56,7 @@ contract TestContract2 {
         y = _y;
     }
 }
-
+    //Helper合约，用于获取字节码和调用数据。
 contract Helper {
     function getBytecode1() external pure returns (bytes memory) {
         bytes memory bytecode = type(TestContract1).creationCode;
