@@ -3,11 +3,6 @@
 
 支付可以双向进行，Alice 支付 Bob，Bob 支付 Alice。
 
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-
-/*
 打开通道
 1. Alice 和 Bob 资助多重签名钱包
 2. 预计算支付通道地址  
@@ -29,8 +24,10 @@ pragma solidity ^0.8.17;
 1. 从多重签名钱包部署支付通道
 2. 调用 challengeExit() 开始关闭通道的过程
 3. 一旦通道过期，Alice 和 Bob 可以提取资金
-*/
 
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.17;
 import "github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.5/contracts/utils/cryptography/ECDSA.sol";
 
 contract BiDirectionalPaymentChannel {
