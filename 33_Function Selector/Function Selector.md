@@ -12,8 +12,6 @@ addr.call(abi.encodeWithSignature("transfer(address,uint256)", 0xSomeAddress, 12
 也许您可以在代码中预先计算和内联函数选择器，从而节省一些gas？
 下面是如何计算函数选择器的示例。
 
-
-
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
