@@ -1,4 +1,4 @@
-# Arithmetic Overflow and Underflow
+# 67.Arithmetic Overflow and Underflow
 ##漏洞
 ### Solidity < 0.8
 Solidity中的整数会发生溢出/下溢，但没有任何错误提示。
@@ -78,5 +78,5 @@ contract Attack {
 Solidity 0.8默认情况下在发生溢出/下溢时会抛出错误。
 
 ## remix验证
-1.部署TimeLock合约。部署Attack合约，并传递TimeLock合约的地址给它。
+1. 部署TimeLock合约。部署Attack合约，并传递TimeLock合约的地址给它。
 ![67-1.jpg](img/67-1.jpg)

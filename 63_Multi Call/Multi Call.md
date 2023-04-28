@@ -1,4 +1,4 @@
-# Multi Call
+# 63.Multi Call
 一个合约的例子，使用 for 循环和 staticcall 聚合多个查询的合约示例。
 
 ```solidity
@@ -48,7 +48,7 @@ contract TestMultiCall {
 ```
 
 ## remix验证
-1.部署TestMultiCall合约，调用getData函数输入一个整数得到编码数据。
+1. 部署TestMultiCall合约，调用getData函数输入一个整数得到编码数据。
 ![63-1.jpg](img/63-1.jpg)
-2.然后，将getData函数的编码数据作为参数传递给multiCall函数，验证
+2. 然后，将getData函数的编码数据作为参数传递给multiCall函数，验证
 ![63-2.jpg](img/63-2.jpg)
