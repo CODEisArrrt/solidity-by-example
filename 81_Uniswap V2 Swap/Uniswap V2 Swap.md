@@ -1,8 +1,7 @@
-# Uniswap V2 Swap
-### swapExactTokensForTokens 将所有代币出售换成另一种代币。
+# 81.Uniswap V2 Swap
+swapExactTokensForTokens 将所有代币出售换成另一种代币。
 
-### swapTokensForExactTokens 由调用者指定购买特定数量的代币。
-
+swapTokensForExactTokens 由调用者指定购买特定数量的代币。
 
 ```solidity
 // SPDX-License-Identifier: MIT

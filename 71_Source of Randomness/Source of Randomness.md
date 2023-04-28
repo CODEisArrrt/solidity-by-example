@@ -1,7 +1,6 @@
-# Source of Randomness
+# 71.Source of Randomness
 ## 漏洞
 blockhash和block.timestamp不是可靠的随机性来源。
-
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -65,9 +64,9 @@ contract Attack {
 不要使用blockhash和block.timestamp作为随机性来源。
 
 ## remix验证
-1.因为无法在Remix中使用blockhash，因此切换至ganache-cli
+1. 因为无法在Remix中使用blockhash，因此切换至ganache-cli
 ![71-1.jpg](img/71-1.jpg)
-2.部署GuessTheRandomNumber并放入1 Ether
+2. 部署GuessTheRandomNumber并放入1 Ether
 ![71-2.jpg](img/71-2.jpg)
-3.部署Attack合约，调用attack()函数，输入GuessTheRandomNumber合约地址，获取1 ETH 验证
+3. 部署Attack合约，调用attack()函数，输入GuessTheRandomNumber合约地址，获取1 ETH 验证
 ![71-3.jpg](img/71-3.jpg)

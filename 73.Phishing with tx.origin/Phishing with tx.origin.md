@@ -1,4 +1,4 @@
-# Phishing with tx.origin
+# 73.Phishing with tx.origin
 ## msg.sender和tx.origin有什么区别？
 如果合约A调用B，B调用C，在C中msg.sender是B，tx.origin是A。
 
@@ -67,9 +67,9 @@ function transfer(address payable _to, uint256 _amount) public {
 ```
 
 ## remix验证
-1.部署Wallet合约并转入10 eth
+1. 署Wallet合约并转入10 eth
 ![73-1.jpg](img/73-1.jpg)
-2.部署attack合约传入Wallet合约地址为参数，调用attack合约，可以看到，盗取了eth
+2. 部署attack合约传入Wallet合约地址为参数，调用attack合约，可以看到，盗取了eth
 ![73-2.jpg](img/73-2.jpg)
-3.尝试使用msg.sender代替tx.origin，同样的方式用attack合约攻击，验证可看到攻击失败
+3. 尝试使用msg.sender代替tx.origin，同样的方式用attack合约攻击，验证可看到攻击失败
 ![73-3.jpg](img/73-3.jpg)

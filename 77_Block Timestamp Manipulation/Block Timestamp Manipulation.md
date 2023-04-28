@@ -1,8 +1,8 @@
-# Block Timestamp Manipulation
+# 77.Block Timestamp Manipulation
 ## 漏洞
 矿工可以通过以下限制来操纵block.timestamp：
-它不能比其父块早
-它不能太遥远的未来
+* 它不能比其父块早
+* 它不能太遥远的未来
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -42,7 +42,7 @@ contract Roulette {
 不要使用block.timestamp作为熵和随机数的来源。
 
 ## remix验证
-1.传入10 eth部署合约Roulette
+1. 传入10 eth部署合约Roulette
 ![77-1.jpg](img/77-1.jpg)
-2.调用spin合约，成功后调用pastBlockTime查看成功时间戳
+2. 调用spin合约，成功后调用pastBlockTime查看成功时间戳
 ![77-2.jpg](img/77-2.jpg)

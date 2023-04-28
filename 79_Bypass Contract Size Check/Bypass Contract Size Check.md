@@ -1,4 +1,4 @@
-# Bypass Contract Size Check
+# 79.Bypass Contract Size Check
 ## 漏洞
 如果一个地址是一个合约，那么存储在该地址的代码大小肯定大于0，对吧？
 
@@ -51,11 +51,11 @@ contract Hack {
 ```
 
 ## remix验证
-1.部署Target合约，调用 isContract函数输入一个合约地址，查看结果
+1. 部署Target合约，调用 isContract函数输入一个合约地址，查看结果
 ![79-1.jpg](img/79-1.jpg)
-2.部署FailedAttack合约，调用pwn函数输入上一步的Target合约地址，验证是否成功
+2. 部署FailedAttack合约，调用pwn函数输入上一步的Target合约地址，验证是否成功
 ![79-2.jpg](img/79-2.jpg)
-3.部署Hack合约，将Target合约地址作为参数传入构造函数。Hack合约的构造函数调用Target.isContract()方法，但此时Hack合约的代码大小为0，因此isContract()方法返回false。
+3. 部署Hack合约，将Target合约地址作为参数传入构造函数。Hack合约的构造函数调用Target.isContract()方法，但此时Hack合约的代码大小为0，因此isContract()方法返回false。
 ![79-3.jpg](img/79-3.jpg)
-4.Hack合约的构造函数调用Target.protected()方法，由于调用者是一个地址而不是合约，因此调用成功并将pwned变量设置为true。查看Target合约的pwned变量，应该为true，说明攻击成功。
+4. Hack合约的构造函数调用Target.protected()方法，由于调用者是一个地址而不是合约，因此调用成功并将pwned变量设置为true。查看Target合约的pwned变量，应该为true，说明攻击成功。
 ![79-4.jpg](img/79-4.jpg)

@@ -1,15 +1,15 @@
-#Discrete Staking Rewards
+# 91.Discrete Staking Rewards
 类似于质押奖励合约。不同之处在于奖励金额可能在每一秒钟发生变化。
 
-##离散型质押奖励
+## 离散型质押奖励
 合约包含以下变量：
-stakingToken：用于质押的代币合约地址。
-rewardToken：用于奖励的代币合约地址。
-balanceOf：记录每个地址的质押代币余额。
-totalSupply：记录总的质押代币供应量。
-rewardIndex：记录当前奖励指数。
-rewardIndexOf：记录每个地址的最近奖励指数。
-earned：记录每个地址已经获得的奖励代币数量。
+* stakingToken：用于质押的代币合约地址。
+* rewardToken：用于奖励的代币合约地址。
+* balanceOf：记录每个地址的质押代币余额。
+* totalSupply：记录总的质押代币供应量。
+* rewardIndex：记录当前奖励指数。
+* rewardIndexOf：记录每个地址的最近奖励指数。
+* earned：记录每个地址已经获得的奖励代币数量。
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
