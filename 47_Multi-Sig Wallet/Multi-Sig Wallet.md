@@ -11,8 +11,15 @@
 * 任何人都可以在足够多的所有者批准后执行交易。
 
 ### 事件
+MultisigWallet合约有5个事件：
+1. event Deposit（）：表示有人向合约地址存入了一定数量的以太币。
 ```solidity
     event Deposit(address indexed sender, uint amount, uint balance);
+```
+
+2. event SubmitTransaction（）：表示有一个交易被提交到合约中待执行。
+```solidity
+
     event SubmitTransaction(
         address indexed owner,
         uint indexed txIndex,
@@ -20,8 +27,19 @@
         uint value,
         bytes data
     );
+```
+
+3. event ConfirmTransaction():表示一个交易被确认。
+```solidity
     event ConfirmTransaction(address indexed owner, uint indexed txIndex);
+```
+
+4. event RevokeConfirmation():表示一个确认被撤销。
+```solidity
     event RevokeConfirmation(address indexed owner, uint indexed txIndex);
+```
+5. event ExecuteTransaction():表示一个待执行的交易被执行了。
+```solidity
     event ExecuteTransaction(address indexed owner, uint indexed txIndex);
 ```
 
@@ -45,7 +63,7 @@
     Transaction[] public transactions;
 ```
 
-### 修饰符
+### 修饰器
 ```solidity
 modifier onlyOwner() {
     require(isOwner[msg.sender], "not owner");
@@ -68,7 +86,7 @@ modifier notConfirmed(uint _txIndex) {
 }
 ```
 ### 函数
-MultiSigWallet合约有6个函数：
+MultiSigWallet合约有9个函数：
 1. 构造函数：多重签名合约的构造函数，需要传入所有的合约拥有者地址数组和所需的确认数。
 该函数首先会检查所传入的拥有者地址数组长度是否大于0，确认数是否大于0且小于等于拥有者数组长度。
 然后通过循环遍历所有拥有者地址，检查每个地址是否有效、是否唯一，并将其添加到拥有者数组中。
