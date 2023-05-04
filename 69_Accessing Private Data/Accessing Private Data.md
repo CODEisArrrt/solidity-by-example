@@ -5,25 +5,23 @@
 让我们看看如何读取私人数据。在此过程中，您将学习Solidity如何存储状态变量。
 
 
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
 
-/*
 注意：无法在JVM上使用web3，因此使用部署在Goerli上的合约
 注意：浏览器Web3已经过时，因此请使用truffle控制台中的Web3
 
 合约部署在Goerli上
 0x534E4Ce0ffF779513793cfd70308AF195827BD31
-*/
 
-/*
-# 存储
+
+### 存储
 - 2 ** 256个槽
 - 每个槽32个字节
 - 数据按声明顺序顺序存储
 - 存储被优化以节省空间。如果相邻变量适合单个32字节，则它们将从右侧开始打包到同一槽中
-*/
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.17;
 
 contract Vault {
     // 槽0
