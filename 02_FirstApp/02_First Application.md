@@ -1,21 +1,21 @@
-# 第一个应用程序 
+# 2.第一个应用程序 
 下面是一个简单的合约，可以在这个合约中获取、增加和减少存储的计数。
 
-1. 获取当前计数的函数。
+* 获取当前计数的函数。
 ```solidity
 function get() public view returns (uint) {
         return count;
     }
 ```
 
-2. 计数增加1的函数。
+* 计数增加1的函数。
 ```solidity
 function inc() public {
         count += 1;
     }
 ```
 
-3. 计数减少1的函数。
+* 计数减少1的函数。
 ```solidity
 function dec() public {
         // 如果计数为0，这个函数将会失败。

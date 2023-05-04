@@ -4,7 +4,7 @@
 
 让我们学习如何正确地重写继承的状态变量。
 
-首先写一个父合约
+* 首先写一个父合约
 ```solidity
 contract A {
     string public name = "Contract A";
@@ -14,14 +14,15 @@ contract A {
     }
 }
 ```
-在Solidity v0.6.0版本中禁止遮蔽，这样将无法编译。
+* 在Solidity v0.6.0版本中禁止遮蔽，这样将无法编译。
 
 ```solidity
 contract B is A {
     string public name = "Contract B";
 }
 ```
-这是重写继承状态变量的正确方法。
+
+* 这是重写继承状态变量的正确方法。
 ```solidity
 contract C is A {
     constructor() {

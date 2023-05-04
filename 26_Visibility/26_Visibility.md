@@ -8,7 +8,7 @@
 * 
 状态变量可以声明为public、private或internal，但不能声明为external。
 ## 1.private
-1. private函数只能在此合约内被调用,继承此合约的合约不能调用此函数。
+private函数只能在此合约内被调用,继承此合约的合约不能调用此函数。
 ```solidity
     function privateFunc() private pure returns (string memory) {
         return "private function called";
@@ -20,7 +20,7 @@
 ```
 
 ## 2.internal
-2.internal函数可以被以下情况调用：
+internal函数可以被以下情况调用：
 * 在该合约内部；
 * 在继承该合约的合约内部。
 ```solidity
@@ -34,7 +34,7 @@ function internalFunc() internal pure returns (string memory) {
 ```
 
 ## 3. public
-3. public函数可以被调用：
+public函数可以被调用：
 * 在本合约内部；
 * 在继承本合约的合约内部；
 * 被其他合约和账户调用。
@@ -44,13 +44,13 @@ function internalFunc() internal pure returns (string memory) {
     }
 ```
 ## 4.external
-4. external函数只能被其他合约和账户调用。
+external函数只能被其他合约和账户调用。
 ```solidity
     function externalFunc() external pure returns (string memory) {
         return "external function called";
     }
 ```
-这个函数无法编译，因为我们试图在这里调用一个external函数。
+* 这个函数无法编译，因为我们试图在这里调用一个external函数。
 ```solidity
 function testExternalFunc() public pure returns (string memory) {
     return externalFunc();
@@ -65,14 +65,14 @@ function testExternalFunc() public pure returns (string memory) {
     // 字符串类型的external变量 externalVar = "my external variable";
 ```
 
-继承的合约无法访问private函数和状态变量。
+* 继承的合约无法访问private函数和状态变量。
 ```solidity
 
 function testPrivateFunc() public pure returns (string memory) {
     return privateFunc();
 }
 ```
-internal函数调用可以在子合约中被调用。
+* internal函数调用可以在子合约中被调用。
 ```solidity
 function testInternalFunc() public pure override returns (string memory) {
     return internalFunc();
