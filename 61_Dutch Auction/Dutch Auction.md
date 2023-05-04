@@ -8,10 +8,9 @@ NFT的价格会随着时间的推移而降低。
 参与者可以通过存入大于智能合约计算的当前价格的ETH来购买。
 当买家购买NFT时，拍卖结束。
 
+
+声明了一个ERC721合约的接口，用于在DutchAuction合约中调用ERC721合约中的transferFrom函数。
 ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-//声明了一个ERC721合约的接口，用于在DutchAuction合约中调用ERC721合约中的transferFrom函数。
 interface IERC721 {
     function transferFrom(address _from, address _to, uint _nftId) external;
 }
@@ -41,13 +40,18 @@ contract DutchAuction {
         nft = IERC721(_nft);
         nftId = _nftId;
     }
-    //计算当前价格的函数，根据时间的流逝和折扣率来计算价格。
+}
+```
+计算当前价格的函数，根据时间的流逝和折扣率来计算价格。
+```solidity
     function getPrice() public view returns (uint) {
         uint timeElapsed = block.timestamp - startAt;
         uint discount = discountRate * timeElapsed;
         return startingPrice - discount;
     }
-    //购买函数，用于实现竞拍功能。如果在拍卖期限内且出价高于当前价格，则将NFT转移给买家，并退还多余的ETH给买家。最后销毁合约并将ETH发送给卖家。
+```
+购买函数，用于实现竞拍功能。如果在拍卖期限内且出价高于当前价格，则将NFT转移给买家，并退还多余的ETH给买家。最后销毁合约并将ETH发送给卖家。
+```solidity
     function buy() external payable {
         require(block.timestamp < expiresAt, "auction expired");
 
@@ -61,7 +65,7 @@ contract DutchAuction {
         }
         selfdestruct(seller);
     }
-}
+
 ```
 
 ## remix验证

@@ -6,22 +6,20 @@ Solidity中的整数会发生溢出/下溢，但没有任何错误提示。
 Solidity 0.8的默认行为是在发生溢出/下溢时抛出错误。
 
 
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.7.6;
+这个合约被设计成一个时间保险箱。
+用户可以向此合约存款，但至少需要等待一周后才能取款。
+用户也可以延长等待时间超过一周。
 
-// 这个合约被设计成一个时间保险箱。
-// 用户可以向此合约存款，但至少需要等待一周后才能取款。
-// 用户也可以延长等待时间超过一周。
-/*
 1. 部署TimeLock
 2. 部署Attack，将TimeLock的地址传递给Attack
 3. 调用Attack.attack发送1个以太币。您将立即能够取回您的以太币。
 
 发生了什么？
 攻击导致TimeLock.lockTime溢出，并在一周等待期结束之前取款。
-*/
 
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.7.6;
 contract TimeLock {
     mapping(address => uint) public balances;
     mapping(address => uint) public lockTime;

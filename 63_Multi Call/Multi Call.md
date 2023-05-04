@@ -1,12 +1,13 @@
 # 63.Multi Call
 一个合约的例子，使用 for 循环和 staticcall 聚合多个查询的合约示例。
 
+
+此函数接受两个数组 - 一个包含要调用的合约地址，另一个包含要发送到这些合约的数据。
+它循环遍历每个合约和数据对，对具有给定数据的合约执行静态调用，并将结果存储在数组中。
+最后，它返回结果数组。
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
-    /*此函数接受两个数组 - 一个包含要调用的合约地址，另一个包含要发送到这些合约的数据。
-    它循环遍历每个合约和数据对，对具有给定数据的合约执行静态调用，并将结果存储在数组中。
-    最后，它返回结果数组。*/
 contract MultiCall {
     function multiCall(
         address[] calldata targets,
@@ -28,7 +29,6 @@ contract MultiCall {
 ```
 
 用于测试 MultiCall 的合约：
-
 
 ```solidity
 // SPDX-License-Identifier: MIT
