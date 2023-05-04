@@ -1,7 +1,7 @@
 # 18.View and Pure Functions
 Getter函数可以声明为view或pure。
-View函数声明不会改变状态。
-Pure函数声明不会改变或读取状态变量。
+* View函数声明不会改变状态。
+* Pure函数声明不会改变或读取状态变量。
 不写pure也不写view，函数既可以读取也可以写入状态变量。
 
 ## view
