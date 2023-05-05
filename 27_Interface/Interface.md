@@ -43,6 +43,7 @@ contract MyContract {
 ```
 
 ## Uniswap 例子
+* UniswapV2Factory 是一个接口，其中定义了一个 getPair 函数，该函数接受两个参数 tokenA 和 tokenB，返回一个地址类型的 pair。
 ```solidity
 interface UniswapV2Factory {
     function getPair(
@@ -50,25 +51,32 @@ interface UniswapV2Factory {
         address tokenB
     ) external view returns (address pair);
 }
-
+```
+UniswapV2Pair 是另一个接口，其中定义了一个 getReserves 函数，该函数返回三个值：reserve0 和 reserve1 是两个无符号整数类型，代表两种资产的数量；blockTimestampLast 是交易区块（创建）时间。
+```solidity
 interface UniswapV2Pair {
     function getReserves()
         external
         view
         returns (uint112 reserve0, uint112 reserve1, uint32 blockTimestampLast);
 }
+```
 
+UniswapExample 合约包含三个私有变量：factory 是一个地址类型的 Uniswap 工厂合约地址，dai 和 weth 是两个地址类型的代币地址，分别对应 DAI 和 WETH。
+```solidity
 contract UniswapExample {
     address private factory = 0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f;
     address private dai = 0x6B175474E89094C44Da98b954EedeAC495271d0F;
     address private weth = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
-
+}
+```
+getTokenReserves 函数是一个公共函数，返回两个无符号整数类型的储备量，它首先调用 UniswapV2Factory 接口中的 getPair 函数，获取 dai 和 weth 代币对应的交易对地址，然后调用 UniswapV2Pair 接口中的 getReserves 函数，获取该交易对的储备量，最后返回 reserve0 和 reserve1。
+```solidity
     function getTokenReserves() external view returns (uint, uint) {
         address pair = UniswapV2Factory(factory).getPair(dai, weth);
         (uint reserve0, uint reserve1, ) = UniswapV2Pair(pair).getReserves();
         return (reserve0, reserve1);
     }
-}
 ```
 
 

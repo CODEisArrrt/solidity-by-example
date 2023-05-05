@@ -21,7 +21,7 @@ contract Car {
 
 ## 创建新的汽车工厂智能合约的几种方法
 
-### 1.创建一个新的汽车合约，并将其添加到 cars 数组中，不发送以太币。
+1. 创建一个新的汽车合约，并将其添加到 cars 数组中，不发送以太币。
 ```solidity
 
     Car[] public cars;//创建cars数组
@@ -31,7 +31,7 @@ contract Car {
         cars.push(car);
     }
 ```
-### 2.创建一个新的汽车合约，将指定数量的以太币发送到该合约，并将其添加到 cars 数组中。
+2. 创建一个新的汽车合约，将指定数量的以太币发送到该合约，并将其添加到 cars 数组中。
 ```solidity
     function createAndSendEther(address _owner, string memory _model) public payable {
         Car car = (new Car){value: msg.value}(_owner, _model);
@@ -39,7 +39,7 @@ contract Car {
     }
 ```
 
-### 3.使用指定的 salt 值创建一个新的汽车合约，并将其添加到 cars 数组中，不发送以太币。
+3. 使用指定的 salt 值创建一个新的汽车合约，并将其添加到 cars 数组中，不发送以太币。
 ```solidity
     function create2(address _owner, string memory _model, bytes32 _salt) public {
         Car car = (new Car){salt: _salt}(_owner, _model);
@@ -47,7 +47,7 @@ contract Car {
     }
 ```
 
-### 4.使用指定的 salt 值创建一个新的汽车合约，将指定数量的以太币发送到该合约，并将其添加到 cars 数组中。
+4. 使用指定的 salt 值创建一个新的汽车合约，将指定数量的以太币发送到该合约，并将其添加到 cars 数组中。
 ```solidity
     function create2AndSendEther(
         address _owner,
@@ -59,7 +59,7 @@ contract Car {
     }
 ```
 
-## 返回指定索引的汽车合约的所有者地址、型号、合约地址和余额.
+4.  返回指定索引的汽车合约的所有者地址、型号、合约地址和余额.
 ```solidity
     function getCar(
         uint _index
