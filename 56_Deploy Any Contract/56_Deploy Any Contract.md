@@ -2,13 +2,11 @@
 通过调用Proxy.deploy(bytes memory _code)部署任何合约。
 
 对于此示例，您可以通过调用Helper.getBytecode1和Helper.getBytecode2获取合约字节码。
+* 简单的代理合约，允许创建新的合约并执行已有合约的函数。
+Proxy合约包含一个deploy函数，用于创建新合约。
+使用Solidity的assembly语言来调用EVM的create函数来创建新合约。
+一旦新合约被创建，将触发一个Deploy事件，其中包含新合约的地址。
 ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-    //简单的代理合约，允许创建新的合约并执行已有合约的函数。
-    //Proxy合约包含一个deploy函数，用于创建新合约。
-    /*使用Solidity的assembly语言来调用EVM的create函数来创建新合约。
-    一旦新合约被创建，将触发一个Deploy事件，其中包含新合约的地址。*/
 contract Proxy {
     event Deploy(address);
 
@@ -35,7 +33,10 @@ contract Proxy {
         require(success, "failed");
     }
 }
-//TestContract1和TestContract2是两个简单的示例合约，用于演示如何使用Proxy合约。
+```
+
+* TestContract1和TestContract2是两个简单的示例合约，用于演示如何使用Proxy合约。
+```solidity
 contract TestContract1 {
     address public owner = msg.sender;
 
@@ -56,7 +57,10 @@ contract TestContract2 {
         y = _y;
     }
 }
-    //Helper合约，用于获取字节码和调用数据。
+```
+
+* Helper合约，用于获取字节码和调用数据。
+```solidity
 contract Helper {
     function getBytecode1() external pure returns (bytes memory) {
         bytes memory bytecode = type(TestContract1).creationCode;
@@ -73,6 +77,7 @@ contract Helper {
     }
 }
 ```
+
 ## remix验证
 部署合约Proxy和Helper，在Helper合约中调用getBytecode1（）函数获取合约字节码
 ![56-1.png](./img/56-1.png)
