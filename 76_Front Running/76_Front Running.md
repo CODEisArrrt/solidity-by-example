@@ -1,5 +1,6 @@
 # 76.Front Running
 ## 漏洞
+Solidity的Front Running漏洞是指当一个交易被广播到网络时，在该交易被打包之前，其他人可以通过发送一个比该交易更高的gas价格的交易来替换该交易，从而获得更高的优先级，并在合约中执行他们自己的操作，从而获取更多的收益。
 交易需要一定时间才能被挖掘。攻击者可以观察交易池并发送一笔交易，在原始交易之前将其包含在一个区块中。这种机制可以被滥用，以使交易按攻击者的利益重新排序。
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -39,6 +40,8 @@ contract FindThisHash {
 }
 ```
 ## 预防性技术
+为了解决这个问题，Solidity开发人员可以采取一些措施，例如使用交易延迟、限制交易数量、使用闪电贷和其他技术来增加交易的复杂性和安全性。此外，Solidity开发人员还可以遵循最佳实践，例如使用安全的库和框架、审计代码、使用多重签名等来确保合约的安全性。
+
 使用提交-揭示方案（https://medium.com/swlh/exploring-commit-reveal-schemes-on-ethereum-c4ff5a777db8）
 使用潜艇发送（https://libsubmarine.org/）
 ## 提交-揭示方案
@@ -157,6 +160,6 @@ contract SecuredFindThisHash {
     }
 }
 ```
-# remix验证
+## remix验证
 部署FindThisHash并转入10ETH，切换地址为B调用solve（“Ethereum”），C地址在此交易完成前以更高的gas price再次调用solve（“Ethereum”）的话，C地址调用成功，获得10ETH。
 ![76-1.png](./img/76-1.png)

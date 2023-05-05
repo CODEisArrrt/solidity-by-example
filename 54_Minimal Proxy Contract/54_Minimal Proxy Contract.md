@@ -1,5 +1,7 @@
 # 54.Minimal Proxy Contract
 如果您有一个将被部署多次的合约，请使用最小化的代理合约来廉价地部署它们。
+用于创建最小代理合约的Solidity合约。
+使用了Solidity的汇编语言来构建一个新的合约，并将其代码设置为目标合约的代码
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
@@ -8,6 +10,7 @@ pragma solidity ^0.8.17;
 // https://github.com/optionality/clone-factory/blob/master/contracts/CloneFactory.sol
 
 contract MinimalProxy {
+  //函数clone接受一个地址作为参数，该地址是要创建的合约的目标地址。它将该目标地址转换为20个字节，并将其存储在新合约的代码中。
     function clone(address target) external returns (address result) {
         // 将地址转换为20个字节。
         bytes20 targetBytes = bytes20(target);
@@ -73,6 +76,6 @@ contract MinimalProxy {
     }
 }
 ```
-# remix验证
+## remix验证
 部署合约MinimalProxy，调用 clone（） 函数，会将目标合约的地址转换成 20 个字节的 bytes20 类型，返回新合约的地址。
 ![54-1.png](./img/54-1.png)

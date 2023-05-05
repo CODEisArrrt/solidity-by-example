@@ -18,7 +18,8 @@ contract Foo {
     }
 }
 ```
-使用external call的try/catch示例。
+
+* 使用external call的try/catch示例。
 ```solidity
     // tryCatchExternalCall(0) => Log("external call failed")
     // tryCatchExternalCall(1) => Log("my func was called")
@@ -30,7 +31,8 @@ contract Foo {
         }
     }
 ```
-try/catch与合约创建的示例
+
+* try/catch与合约创建的示例
 ```solidity
     // tryCatchNewContract(0x0000000000000000000000000000000000000000) => Log("invalid address")
     // tryCatchNewContract(0x0000000000000000000000000000000000000001) => LogBytes("")
@@ -48,7 +50,7 @@ try/catch与合约创建的示例
         }
     }
 ```
-# remix验证
+## remix验证
 部署合约，调用tryCatchExternalCall（）函数输入数值0，调用失败，释放Log("external call failed")。
 ![36-1.png](./img/36-1.png)
 调用tryCatchExternalCall（）函数输入数值1，调用成功，释放Log("my func was called")。

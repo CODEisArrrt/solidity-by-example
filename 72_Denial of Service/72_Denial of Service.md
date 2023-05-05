@@ -1,27 +1,15 @@
 # 72.Denial of Service
+Solidity的Denial of Service (DoS)攻击是一种恶意行为，旨在通过消耗大量资源来阻止合约的正常运行。攻击者可以通过多种方式实现DoS攻击，包括：
+*无限循环：攻击者可以编写一个无限循环的代码，使合约陷入死循环，从而消耗大量的计算资源。
+*大量输入：攻击者可以向合约发送大量的输入数据，使合约无法处理所有的请求，从而导致拒绝服务。
+*阻塞调用：攻击者可以利用阻塞调用的漏洞，使合约陷入阻塞状态，从而无法继续执行其他操作。
 ## 漏洞
 攻击智能合约使其无法使用的方法有很多种。
 我们在这里介绍的一种利用是通过让发送以太币的函数失败来实现拒绝服务。
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-
-/*
+以太坊智能合约通常包含发送以太币的函数，这些函数允许用户将以太币转移到其他地址。攻击者可以利用漏洞或故意构造恶意输入来使这些函数失败，从而阻止其他用户发送以太币或执行其他操作。
+## KingOfEther
 KingOfEther的目标是通过发送比前任国王更多的以太币来成为国王。前任国王将获得他发送的以太币的退款。
-*/
-
-/*
-1. 部署KingOfEther。
-2. Alice通过发送1 以太币来调用claimThrone()函数成为了国王。
-3. Bob通过发送2 以太币来调用claimThrone()函数成为了国王。Alice收到了1 以太币的退款。
-4. 部署Attack合约并将KingOfEther的地址作为参数。
-5. 调用attack函数并发送3 以太币。
-6. 当前的国王是Attack合约，没有人可以成为新的国王。
-
-发生了什么？
-Attack成为了国王。所有试图夺取王位的新挑战都将被拒绝，因为Attack合约没有回退函数，拒绝接受在新国王产生之前从KingOfEther发送的以太币。
-*/
-
+```solidity
 contract KingOfEther {
     address public king;
     uint public balance;
@@ -36,7 +24,18 @@ contract KingOfEther {
         king = msg.sender;
     }
 }
+```
+## 攻击合约Attack
+1. 部署KingOfEther。
+2. Alice通过发送1 以太币来调用claimThrone()函数成为了国王。
+3. Bob通过发送2 以太币来调用claimThrone()函数成为了国王。Alice收到了1 以太币的退款。
+4. 部署Attack合约并将KingOfEther的地址作为参数。
+5. 调用attack函数并发送3 以太币。
+6. 当前的国王是Attack合约，没有人可以成为新的国王。
 
+发生了什么？
+Attack成为了国王。所有试图夺取王位的新挑战都将被拒绝，因为Attack合约没有回退函数，拒绝接受在新国王产生之前从KingOfEther发送的以太币。
+```solidity
 contract Attack {
     KingOfEther kingOfEther;
 
@@ -88,7 +87,7 @@ contract KingOfEther {
 }
 ```
 
-# remix验证
+## remix验证
 部署合约KingOfEther，1地址通过发送1 以太币来调用claimThrone()函数成为了国王。
 ![72-1.png](./img/72-1.png)
 2地址通过发送2 以太币来调用claimThrone()函数成为了国王。1地址收到了1 以太币的退款。

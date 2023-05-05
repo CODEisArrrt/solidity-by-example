@@ -1,9 +1,11 @@
 # 70.delegatecall
+Solidity的delegatecall漏洞是一种安全漏洞，可以允许攻击者通过调用另一个合约的方法来执行恶意代码。这种漏洞的根本原因是delegatecall的实现方式，该实现方式将调用的代码的上下文（存储、地址等）与调用方的合约合并在一起，从而可能导致意外的行为。
 ## 漏洞
 delegatecall的使用很棘手，错误的使用或不正确的理解可能会导致灾难性的结果。
 在使用delegatecall时，您必须记住两件事：
 1. delegatecall保留上下文（存储，调用者等...）
 2. 调用delegatecall的合约和被调用的合约的存储布局必须相同。
+
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
@@ -134,9 +136,11 @@ contract Attack {
     }
 }
 ```
-## 预防性技术
+### 预防性技术
 * 使用无状态库
-# remix验证
+* 为了避免这种漏洞，开发人员应该避免在智能合约中使用delegatecall，并始终使用call或send来调用其他合约的函数。此外，开发人员还应该谨慎处理来自外部合约的数据，并使用安全的输入验证和过滤机制来防止攻击者利用漏洞。
+  
+## remix验证
 1. 部署合约Lib和HackMe以及Attack，在Attack合约中调用attack（）函数，Hackme合约owner被修改为Attack地址。
 ![70-1.png](./img/70-1.png)
 2. 部署合约Lib和HackMe以及Attack，在Attack合约中调用attack（）函数，Hackme合约owner被修改为Attack地址。在attack()函数内，第一次调用doSomething()会更改存储在HackMe中的lib地址。现在，lib的地址被设置为Attack，第二次调用doSomething()会调用Attack.doSomething()，owner被修改。

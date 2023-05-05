@@ -8,7 +8,7 @@
 ![0-3.png](./img/0-3.png)
 
 ## 1. 文件浏览器
-新建智能合约，右键文件夹后选择“New File”创建一个新的合约。
+新建智能合约，右键文件夹后选择“New File”创建一个新的智能合约。
 ![0-4.png](./img/0-4.png)
 ## 2. Solidity编译器
 当编写完智能合约代码后选中你的合约进行编译。下图中“COMPILER”一栏需要你选择solidity的版本，solidity版本迭代很快可能同样的代码在上个版本成功运行，这个版本就会报错。其默认为最新版本。一般情况下可以勾选自动编译（Auto compile）
@@ -33,3 +33,7 @@
 ![0-12.png](./img/0-12.png)
 4. 进入合约地址查看验证是否通过。
 ![0-13.png](./img/0-13.png)
+### 中文solidity资料推荐：
+1. [Solidity中文文档](https://solidity-cn.readthedocs.io/zh/develop/introduction-to-smart-contracts.html)（官方文档的中文翻译）
+
+2. [崔棉大师solidity教程](https://space.bilibili.com/286084162) web3技术教学博主
