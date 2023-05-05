@@ -1,4 +1,4 @@
-#Constant Sum AMM
+# 93.Constant Sum AMM
 常量和自动市场制造商 X + Y = K
 
 令牌一对一交易。

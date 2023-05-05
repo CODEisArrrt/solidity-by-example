@@ -1,13 +1,15 @@
-# Error
-## 出现错误将会撤销合约编译期间对状态所做的所有更改。
+# 19.Error
+出现错误将会撤销合约编译期间对状态所做的所有更改。
 您可以通过调用require、revert或assert来引发错误。
 error是solidity 0.8版本新加的内容，方便且高效（省gas）地向用户解释操作失败的原因。人们可以在contract之外定义异常。
 
-require用于在执行之前验证输入和条件
-revert与require类似。有关详细信息，请参见下面的代码。
-assert用于检查永远不应为false的代码。失败可能意味着存在错误。
-使用自定义错误以节省gas。
+* require用于在执行之前验证输入和条件
+* revert与require类似。有关详细信息，请参见下面的代码。
+* assert用于检查永远不应为false的代码。失败可能意味着存在错误。
 
+使用自定义错误以节省gas。
+## Require
+require命令是solidity 0.8版本之前抛出异常的常用方法，目前很多主流合约仍然还在使用它。它很好用，唯一的缺点就是gas随着描述异常的字符串长度增加，比error命令要高。使用方法：require(检查条件，"异常的描述")，当检查条件不成立的时候，就会抛出异常。
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
@@ -21,10 +23,6 @@ contract Error {
         require(_i > 10, "Input must be greater than 10");
     }
 
-
-    /*require命令是solidity 0.8版本之前抛出异常的常用方法，目前很多主流合约仍然还在使用它。
-    它很好用，唯一的缺点就是gas随着描述异常的字符串长度增加，比error命令要高。
-    使用方法：require(检查条件，"异常的描述")，当检查条件不成立的时候，就会抛出异常。*/
     function testRevert(uint _i) public pure {
         // 当要检查的条件复杂时，Revert很有用。
         // 此代码与上面的示例完全相同
@@ -32,11 +30,11 @@ contract Error {
             revert("Input must be greater than 10");
         }
     }
-
     uint public num;
-
-    /*assert命令一般用于程序员写程序debug，因为它不能解释抛出异常的原因（比require少个字符串）.
-    它的用法很简单，assert(检查条件)，当检查条件不成立的时候，就会抛出异常。*/
+```
+## Assert
+assert命令一般用于程序员写程序debug，因为它不能解释抛出异常的原因（比require少个字符串）.它的用法很简单，assert(检查条件)，当检查条件不成立的时候，就会抛出异常。
+```solidity
     function testAssert() public view {
         // Assert仅应用于测试内部错误，并检查不变量。
 
@@ -44,12 +42,10 @@ contract Error {
 
         assert(num == 0);
     }
-
-    // 自定义错误
-    /*定义了一个自定义错误函数InsufficientBalance，当账户余额小于提取金额时，会触发该错误。
-    在testCustomError函数中，如果当前合约账户余额小于提取金额，则会抛出该自定义错误。
-    这样可以让调用者更清楚地知道为什么会出现错误，而不是只看到一个普通的revert异常。
-    */
+```
+## Revert
+定义了一个自定义错误函数InsufficientBalance，当账户余额小于提取金额时，会触发该错误。在testCustomError函数中，如果当前合约账户余额小于提取金额，则会抛出该自定义错误。这样可以让调用者更清楚地知道为什么会出现错误，而不是只看到一个普通的revert异常。
+```solidity
     error InsufficientBalance(uint balance, uint withdrawAmount);
 
     function testCustomError(uint _withdrawAmount) public view {
@@ -60,8 +56,7 @@ contract Error {
     }
 }
 ```
-### 这是另一个示例
-
+这是另一个示例
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;

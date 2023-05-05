@@ -1,4 +1,4 @@
-# Primitive Data Types
+# 3.Primitive Data Types
 
 
 在这里，我们介绍 Solidity 中一些可用的原始数据类型。

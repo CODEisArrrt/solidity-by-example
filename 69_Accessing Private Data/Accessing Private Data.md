@@ -1,30 +1,27 @@
-# Accessing Private Data
+# 69.Accessing Private Data
 ## 漏洞
 所有智能合约数据都可以被读取。
 
 让我们看看如何读取私人数据。在此过程中，您将学习Solidity如何存储状态变量。
 
 
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
 
-/*
 注意：无法在JVM上使用web3，因此使用部署在Goerli上的合约
 注意：浏览器Web3已经过时，因此请使用truffle控制台中的Web3
 
-
 合约部署在Goerli上
 0x534E4Ce0ffF779513793cfd70308AF195827BD31
-*/
 
-/*
-# 存储
+
+### 存储
 - 2 ** 256个槽
 - 每个槽32个字节
 - 数据按声明顺序顺序存储
 - 存储被优化以节省空间。如果相邻变量适合单个32字节，则它们将从右侧开始打包到同一槽中
-*/
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.17;
 
 contract Vault {
     // 槽0
@@ -118,7 +115,7 @@ web3.eth.getStorageAt("0x534E4Ce0ffF779513793cfd70308AF195827BD31", "0xb39221ace
 不要在区块链上存储敏感信息。
 
 ## remix验证
-1.传入任意长度的传入任意长度的bytes32类型的值作为密码。来部署合约Vault
+1. 传入任意长度的传入任意长度的bytes32类型的值作为密码。来部署合约Vault
 ![69-1.jpg](img/69-1.jpg)
-2.调用合约中的函数，可以读取到合约存储的信息。所以，不要在区块链上存储敏感信息
+2. 调用合约中的函数，可以读取到合约存储的信息。所以，不要在区块链上存储敏感信息
 ![69-2.jpg](img/69-2.jpg)

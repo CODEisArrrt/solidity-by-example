@@ -1,22 +1,15 @@
-# Honeypot
+# 75.Honeypot
 Honeypot是一种用来捕捉黑客的陷阱。
 
 ## 漏洞
 通过结合两个漏洞，重新进入攻击和隐藏恶意代码，我们可以构建一个合约来捕获恶意用户。
 
 
-
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-
-/*
 Bank 是一个调用 Logger 记录事件的合约。
 Bank.withdraw() 存在重新进入攻击漏洞。
 所以黑客试图从 Bank 中取走以太币。
 但实际上，重新进入攻击漏洞是用来引诱黑客的。
 通过在 Logger 的位置上放置 HoneyPot 并部署 Bank，这个合约就成为了黑客的陷阱。让我们看看发生了什么。
-
 
 1. Alice 部署 HoneyPot
 2. Alice 部署 Bank，并将 HoneyPot 的地址传递给它
@@ -29,7 +22,10 @@ Bank.withdraw() 存在重新进入攻击漏洞。
 Eve 调用 Attack.attack()，并开始从 Bank 中提取以太币。
 当最后一个 Bank.withdraw() 即将完成时，它调用 logger.log()。
 logger.log() 调用 HoneyPot.log() 并抛出异常。交易失败了。
-*/
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.17;
 
 contract Bank {
     mapping(address => uint) public balances;
@@ -63,8 +59,9 @@ contract Logger {
         emit Log(_caller, _amount, _action);
     }
 }
-
-// 黑客试图通过重入攻击来耗尽存储在银行中的以太币。
+```
+黑客试图通过重入攻击来耗尽存储在银行中的以太币。
+```solidity
 contract Attack {
     Bank bank;
 
@@ -87,8 +84,9 @@ contract Attack {
         return address(this).balance;
     }
 }
-
-// 让我们假设这段代码在一个单独的文件中，这样其他人就无法读取它。
+```
+让我们假设这段代码在一个单独的文件中，这样其他人就无法读取它。
+```solidity
 contract HoneyPot {
     function log(address _caller, uint _amount, string memory _action) public {
         if (equal(_action, "Withdraw")) {
@@ -104,9 +102,9 @@ contract HoneyPot {
 ```
 
 ## remix验证
-1.部署 HoneyPot合约
+1. 部署 HoneyPot合约
 ![75-1.jpg](img/75-1.jpg)
-2.部署 Bank合约传入HoneyPot合约地址。并调用deposit函数存入1 eth
+2. 部署 Bank合约传入HoneyPot合约地址。并调用deposit函数存入1 eth
 ![75-2.jpg](img/75-2.jpg)
-3.部署Attack合约传入Bank合约地址。调用attack()函数攻击
+3. 部署Attack合约传入Bank合约地址。调用attack()函数攻击
 ![75-3.jpg](img/75-3.jpg)

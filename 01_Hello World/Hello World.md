@@ -1,5 +1,5 @@
 
-# 01 Hello World
+# 1.Hello World
 
 ## Solidity简述
 Solidity是以太坊虚拟机（EVM）智能合约的语言。同时，我认为solidity是玩链上项目必备的技能：区块链项目大部分是开源的，如果你能读懂代码，就可以规避很多亏钱项目。
@@ -39,5 +39,5 @@ contract HelloWorld {
 ```
 
 ## remix验证
-1.编译并部署代码
+1. 编译并部署代码
 ![1-1.jpg](img/1-1.jpg)

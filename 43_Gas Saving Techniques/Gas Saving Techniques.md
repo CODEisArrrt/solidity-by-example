@@ -1,4 +1,4 @@
-# Gas Saving Techniques
+# 43.Gas Saving Techniques
 一些节省gas的技巧。
 
 1. 用calldata替换储存器
@@ -58,5 +58,5 @@ contract GasGolf {
 ```
 
 ## remix验证
-1.部署 GasGolf 合约，调用sumIfEvenAndLessThan99函数，输入[1, 2, 3, 4, 5, 100]后查看total是否等于6（2+4），验证
+1. 部署 GasGolf 合约，调用sumIfEvenAndLessThan99函数，输入[1, 2, 3, 4, 5, 100]后查看total是否等于6（2+4），验证
 ![43-1.jpg](img/43-1.jpg)

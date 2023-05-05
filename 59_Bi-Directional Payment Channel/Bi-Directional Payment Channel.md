@@ -3,11 +3,6 @@
 
 支付可以双向进行，Alice 支付 Bob，Bob 支付 Alice。
 
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-
-/*
 打开通道
 1. Alice 和 Bob 资助多重签名钱包
 2. 预计算支付通道地址  
@@ -29,8 +24,10 @@ pragma solidity ^0.8.17;
 1. 从多重签名钱包部署支付通道
 2. 调用 challengeExit() 开始关闭通道的过程
 3. 一旦通道过期，Alice 和 Bob 可以提取资金
-*/
 
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.17;
 import "github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.5/contracts/utils/cryptography/ECDSA.sol";
 
 contract BiDirectionalPaymentChannel {
@@ -175,9 +172,9 @@ contract BiDirectionalPaymentChannel {
 
 
 ## remix
-1.传入参数_users：包含两个地址的可支付地址数组，表示参与通道的两个用户。
-_balances: 一个包含两个无符号整数的数组，表示每个用户的初始余额。
-_expiresAt: 一个无符号整数，表示通道的过期时间戳。（时间戳须大于现在）
-_challengePeriod: 一个无符号整数，表示在退出挑战期间内的时间差。
+1. 传入参数_users：包含两个地址的可支付地址数组，表示参与通道的两个用户。
+* _balances: 一个包含两个无符号整数的数组，表示每个用户的初始余额。
+* _expiresAt: 一个无符号整数，表示通道的过期时间戳。（时间戳须大于现在）
+* _challengePeriod: 一个无符号整数，表示在退出挑战期间内的时间差。
 部署合约：
 ![59-1.png](img/59-1.png)

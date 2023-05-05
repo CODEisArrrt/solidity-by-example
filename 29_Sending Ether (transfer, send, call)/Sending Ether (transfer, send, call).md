@@ -1,15 +1,15 @@
-# Sending Ether (transfer, send, call)
+# 29.Sending Ether (transfer, send, call)
 ## 如何发送以太币？
 Solidity有三种方法向其他合约发送ETH，他们是：transfer()，send()和call()，其中call()是被鼓励的用法。
 
-transfer()（2300 gas，抛出错误）
-send()（2300 gas，返回布尔值）
-call()（转发所有gas或设置gas，返回布尔值）
+* transfer()（2300 gas，抛出错误）
+* send()（2300 gas，返回布尔值）
+* call()（转发所有gas或设置gas，返回布尔值）
 
 ### transfer
-用法是接收方地址.transfer(发送ETH数额)。
-transfer()的gas限制是2300，足够用于转账，但对方合约的fallback()或receive()函数不能实现太复杂的逻辑。
-transfer()如果转账失败，会自动revert（回滚交易）。
+* 用法是接收方地址.transfer(发送ETH数额)。
+* transfer()的gas限制是2300，足够用于转账，但对方合约的fallback()或receive()函数不能实现太复杂的逻辑。
+* transfer()如果转账失败，会自动revert（回滚交易）。
 ```solidity
     function sendViaTransfer(address payable _to) public payable {
         // 这个函数不再推荐用于发送以太币。
@@ -18,10 +18,10 @@ transfer()如果转账失败，会自动revert（回滚交易）。
 ```
 
 ### send
-用法是接收方地址.send(发送ETH数额)。
-send()的gas限制是2300，足够用于转账，但对方合约的fallback()或receive()函数不能实现太复杂的逻辑。
-send()如果转账失败，不会revert。
-send()的返回值是bool，代表着转账成功或失败，需要额外代码处理一下。
+* 用法是接收方地址.send(发送ETH数额)。
+* send()的gas限制是2300，足够用于转账，但对方合约的fallback()或receive()函数不能实现太复杂的逻辑。
+* send()如果转账失败，不会revert。
+* send()的返回值是bool，代表着转账成功或失败，需要额外代码处理一下。
 ```solidity
     function sendViaSend(address payable _to) public payable {
         // 发送返回一个布尔值，表示成功或失败。
@@ -31,10 +31,10 @@ send()的返回值是bool，代表着转账成功或失败，需要额外代码�
     }
 ```
 ### call
-用法是接收方地址.call{value: 发送ETH数额}("")。
-call()没有gas限制，可以支持对方合约fallback()或receive()函数实现复杂逻辑。
-call()如果转账失败，不会revert。
-call()的返回值是(bool, data)，其中bool代表着转账成功或失败，需要额外代码处理一下。
+* 用法是接收方地址.call{value: 发送ETH数额}("")。
+* call()没有gas限制，可以支持对方合约fallback()或receive()函数实现复杂逻辑。
+* call()如果转账失败，不会revert。
+* call()的返回值是(bool, data)，其中bool代表着转账成功或失败，需要额外代码处理一下。
 ```solidity
 
     function sendViaCall(address payable _to) public payable {
@@ -48,17 +48,18 @@ call()的返回值是(bool, data)，其中bool代表着转账成功或失败，�
 ## 如何接收以太币？
 接收以太币的合同必须至少有以下一个函数：
 
-receive() external payable
-fallback() external payable
+* receive() external payable
+* fallback() external payable
+
 如果msg.data为空，则调用receive()，否则调用fallback()。
 
-应该使用哪种方法？
+## 应该使用哪种方法？
 在2019年12月之后，结合重入保护的调用是推荐使用的方法。
 
 通过以下方式防止重入：
 
-在调用其他合同之前进行所有状态更改
-使用重入保护修饰器
+* 在调用其他合同之前进行所有状态更改
+* 使用重入保护修饰器
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -96,10 +97,10 @@ receive()是否存在？  fallback()
 
 
 ## remix验证
-1.部署ReceiveEther、SendEther合约 推荐使用sendViaCall发送以太币。
+1. 部署ReceiveEther、SendEther合约 推荐使用sendViaCall发送以太币。
 复制ReceiveEther合约地址用作参数输入到sendViaCall()
 ![29-1.jpg](img/29-1.jpg)
-2.ETH数量设置为1ETH调用sendViaCall()
+2. ETH数量设置为1ETH调用sendViaCall()
 ![29-2.jpg](img/29-2.jpg)
-3.调用getBalance()查看是否接受ETH成功
+3. 调用getBalance()查看是否接受ETH成功
 ![29-3.jpg](img/29-3.jpg)
