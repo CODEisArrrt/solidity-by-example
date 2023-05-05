@@ -3,11 +3,8 @@ swapExactTokensForTokens 将所有代币出售换成另一种代币。
 
 swapTokensForExactTokens 由调用者指定购买特定数量的代币。
 
+合约中使用了常量地址来表示 Uniswap V2 路由器、以太币、Dai 和 USDC 的地址。这些常量地址在合约中是不可变的，因此它们可以被视为合约的配置信息。这些地址通常在合约部署时设置，并在合约中使用，以确保合约中的地址始终是正确的。
 ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-
-contract UniswapV2SwapExamples {
     address private constant UNISWAP_V2_ROUTER =
         0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
 
@@ -18,7 +15,13 @@ contract UniswapV2SwapExamples {
     IUniswapV2Router private router = IUniswapV2Router(UNISWAP_V2_ROUTER);
     IERC20 private weth = IERC20(WETH);
     IERC20 private dai = IERC20(DAI);
+```
+合约中定义了四个函数，用于在 Uniswap V2 上进行交换。这些函数使用 Uniswap V2 路由器中的 swapExactTokensForTokens 和 swapTokensForExactTokens 函数来实现交换。
+* swapExactTokensForTokens 函数用于精确输入交换，即指定输入代币数量和输出代币最小数量。
+* swapTokensForExactTokens 函数用于精确输出交换，即指定输出代币数量和输入代币最大数量。
 
+这些函数的实现过程中，需要指定交换路径，即从哪种代币开始交换到哪种代币结束。在交换过程中，还需要对代币进行授权和转移，以确保交换的顺利进行。
+```solidity
     // 将WETH兑换成DAI
     function swapSingleHopExactAmountIn(
         uint amountIn,
@@ -130,8 +133,9 @@ contract UniswapV2SwapExamples {
 
         return amounts[2];
     }
-}
-
+```
+在合约中，定义了一些接口，如 IUniswapV2Router、IERC20 和 IWETH，用于与 Uniswap V2 路由器和 ERC20 标准兼容的代币进行交互。这些接口定义了一些函数，如 transfer、balanceOf、approve 等，用于实现 ERC20 标准中定义的功能，如转账、查询余额、授权等
+```solidity
 interface IUniswapV2Router {
     function swapExactTokensForTokens(
         uint amountIn,
