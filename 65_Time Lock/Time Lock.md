@@ -3,12 +3,8 @@ TimeLock是一个合约，它发布一个将来要执行的交易。在最短等
 
 时间锁常用于 DAO 中。
 
-
+合约中定义了一些错误类型，用于在合约执行过程中抛出异常。这些错误类型可以帮助合约在执行过程中检测到问题并及时终止程序。
 ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-
-contract TimeLock {
     error NotOwnerError();
     error AlreadyQueuedError(bytes32 txId);
     error TimestampNotInRangeError(uint blockTimestamp, uint timestamp);
@@ -16,6 +12,9 @@ contract TimeLock {
     error TimestampNotPassedError(uint blockTimestmap, uint timestamp);
     error TimestampExpiredError(uint blockTimestamp, uint expiresAt);
     error TxFailedError();
+```
+合约中定义了一些事件，用于在执行交易的过程中发出通知。当合约执行预定交易、执行交易或取消预定交易时，它会相应地发出一个事件，以便其他人可以得知这个操作。
+```solidity
 
     event Queue(
         bytes32 indexed txId,
@@ -34,28 +33,26 @@ contract TimeLock {
         uint timestamp
     );
     event Cancel(bytes32 indexed txId);
+```
+合约中定义了一些常量，这些常量用于限制交易的执行时间范围，以及在执行交易时允许的最大延迟时间。这些常量可以帮助合约确保交易的安全性和有效性。
+```solidity
 
     uint public constant MIN_DELAY = 10; // seconds
     uint public constant MAX_DELAY = 1000; // seconds
     uint public constant GRACE_PERIOD = 1000; // seconds
 
     address public owner;
+```
+用于存储已经预定的交易。这个映射将交易的 ID 映射到一个布尔值，表示该交易是否已经被预定。这个映射可以帮助合约检测重复交易，以及确保交易的有效性。
+```solidity
+
     // tx id => queued
     mapping(bytes32 => bool) public queued;
+```
 
-    constructor() {
-        owner = msg.sender;
-    }
+获取交易ID的函数。
+```solidity
 
-    modifier onlyOwner() {
-        if (msg.sender != owner) {
-            revert NotOwnerError();
-        }
-        _;
-    }
-
-    receive() external payable {}
-    //获取交易ID的函数。
     function getTxId(
         address _target,
         uint _value,

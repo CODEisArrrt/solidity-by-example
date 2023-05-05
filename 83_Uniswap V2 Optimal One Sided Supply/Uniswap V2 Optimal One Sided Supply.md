@@ -1,20 +1,21 @@
 # 83.Uniswap V2 Optimal One Sided Supply
 Optimal One Sided Supply
 
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
 
-/*这是一个用于Uniswap交易的智能合约，实现了一种名为"Optimal One-Sided Supply"的策略，即优化单边提供流动性。
+
+这是一个用于Uniswap交易的智能合约，实现了一种名为"Optimal One-Sided Supply"的策略，即优化单边提供流动性。
 
 具体来说，该合约实现了以下功能：
 
-1.从一个ERC20代币（WETH除外）转账给合约一定数量的代币；
-2.计算出最优的交换数量，用于在Uniswap上将该代币交换成另一个代币；
-3.将计算出的最优交换数量的代币进行交换，并获得相应数量的另一个代币；
-4.将两种代币以最优比例添加到Uniswap的流动性池中。
+1. 从一个ERC20代币（WETH除外）转账给合约一定数量的代币；
+2. 计算出最优的交换数量，用于在Uniswap上将该代币交换成另一个代币；
+3. 将计算出的最优交换数量的代币进行交换，并获得相应数量的另一个代币；
+4. 将两种代币以最优比例添加到Uniswap的流动性池中。
 该合约的目的是在提供流动性时，最大化用户的收益。
-*/
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.17;
 contract TestUniswapOptimalOneSidedSupply {
     address private constant FACTORY = 0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f;
     address private constant ROUTER = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
@@ -32,22 +33,25 @@ contract TestUniswapOptimalOneSidedSupply {
             z = 1;
         }
     }
+```
 
-    /*
-    s = 最佳交换金额 
-    r = 代币a的储备量
-    a = 用户当前持有的代币a数量（尚未添加到储备中）
-    f = 交易手续费百分比
-    s = (sqrt(((2 - f)r)^2 + 4(1 - f)ar) - (2 - f)r) / (2(1 - f))
-    */
+s = 最佳交换金额 
+r = 代币a的储备量
+a = 用户当前持有的代币a数量（尚未添加到储备中）
+f = 交易手续费百分比
+s = (sqrt(((2 - f)r)^2 + 4(1 - f)ar) - (2 - f)r) / (2(1 - f))
+
+```solidity
     function getSwapAmount(uint r, uint a) public pure returns (uint) {
         return (sqrt(r * (r * 3988009 + a * 3988000)) - r * 1997) / 1994;
     }
+```
 
-    /* 最佳单边供应
-    1. 从代币 A 到代币 B 进行最佳兑换
-    2. 添加流动性
-    */
+最佳单边供应
+1.  从代币 A 到代币 B 进行最佳兑换
+2. 添加流动性
+```solidity
+
     function zap(address _tokenA, address _tokenB, uint _amountA) external {
         require(_tokenA == WETH || _tokenB == WETH, "!weth");
 
@@ -104,8 +108,10 @@ contract TestUniswapOptimalOneSidedSupply {
         );
     }
 }
-//Uniswap v2 的接口
-//swapExactTokensForTokens 用于交换代币，即以一种代币换取另一种代币，并返回交换后的代币数量。
+```
+Uniswap v2 的接口
+swapExactTokensForTokens 用于交换代币，即以一种代币换取另一种代币，并返回交换后的代币数量。
+```solidity
 interface IUniswapV2Router {
     function addLiquidity(
         address tokenA,
