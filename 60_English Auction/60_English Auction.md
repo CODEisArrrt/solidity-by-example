@@ -11,16 +11,17 @@ NFT的英式拍卖
 1. 最高出价者成为NFT的新拥有者。
 2. 卖家获得ETH的最高出价。
    
-### ERC721 NFT 的接口
+## English Auction例子合约
+* ERC721 NFT 的接口
 ```solidity
-
 interface IERC721 {
     function safeTransferFrom(address from, address to, uint tokenId) external;
 
     function transferFrom(address, address, uint) external;
 }
 ```
-### 合约中的变量和事件
+
+* 合约中的变量和事件
 ```solidity
     event Start();
     event Bid(address indexed sender, uint amount);
@@ -40,7 +41,7 @@ interface IERC721 {
     mapping(address => uint) public bids;//每个出价者的出价。
 ```
 
-## 构造函数。
+* 构造函数。
 传入 ERC721 资产的地址、ID 和起始出价。
 ```solidity
     constructor(address _nft, uint _nftId, uint _startingBid) {
@@ -52,7 +53,7 @@ interface IERC721 {
     }
 ```
 
-## 开始拍卖
+* 开始拍卖
 只有卖家可以调用。
 将 ERC721 资产转移到合约地址，并标记拍卖已开始。
 ```solidity
@@ -68,7 +69,7 @@ interface IERC721 {
     }
 ```
 
-## 出价
+* 出价
 只有在拍卖已开始且未结束时可以调用。
 要求出价高于当前最高出价。
 如果当前最高出价者不为空，则将其出价退回给其余出价者。
@@ -89,7 +90,7 @@ interface IERC721 {
     }
 ```
 
-## 撤回出价
+* 撤回出价
 只有在拍卖已开始但未结束时可以调用。
 将出价退回给出价者。
 ```solidity
@@ -101,7 +102,8 @@ interface IERC721 {
         emit Withdraw(msg.sender, bal);
     }
 ```
-## 结束拍卖
+
+* 结束拍卖
 只有在拍卖已开始且已结束时可以调用。
 将 ERC721 资产转移给最高出价者，将出价支付给卖家。
 如果没有出价，则将 ERC721 资产返回给卖家。
