@@ -77,6 +77,9 @@ contract CounterV2 {
         count += 1;
     }
 
+    function dec() external {
+        count -= 1;
+    }
 }
 ```
 ```solidity
@@ -89,7 +92,21 @@ contract Dev {
         );
     }
 }
+```
+Proxy合约是一个透明升级代理合约，它将所有函数和变量定义为私有的，并将所有调用都转发到fallback函数。它定义了一个名为ADMIN_SLOT的常量，它是一个存储槽的键，用于存储管理员的地址。它还定义了一个名为IMPLEMENTATION_SLOT的常量，它是用于存储实现合约地址的存储槽的键。该合约具有以下功能：
 
+通过将管理员地址存储在ADMIN_SLOT存储槽中来初始化合约。
+* ifAdmin修饰器：用于确保只有管理员可以访问某些函数。
+* _getAdmin私有函数：用于从ADMIN_SLOT存储槽中检索管理员地址。
+* _setAdmin私有函数：用于将管理员地址存储在ADMIN_SLOT存储槽中。
+* etImplementation私有函数：用于从IMPLEMENTATION_SLOT存储槽中检索实现合约地址。
+* _setImplementation私有函数：用于将实现合约地址存储在IMPLEMENTATION_SLOT存储槽中。
+* changeAdmin函数：用于更改管理员地址。
+* upgradeTo函数：用于将实现合约地址升级到新版本。
+* admin函数：用于返回管理员地址。
+* implementation函数：用于返回实现合约地址。
+* _delegate的内部函数：用于使用delegatecall调用实现合约中的函数。
+```solidity
 contract Proxy {
     // 所有函数/变量应为私有的，将所有调用转发到fallback
 
