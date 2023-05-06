@@ -31,8 +31,8 @@ contract FunctionSelector {
 
 
 ## remix验证
-1.部署FunctionSelector 合约，它提供了一个公共函数getSelector，用于将字符串形式的函数名转换为对应的函数选择器(bytes4类型)。
-验证例子1：
+1. 部署FunctionSelector 合约，它提供了一个公共函数getSelector，用于将字符串形式的函数名转换为对应的函数选择器(bytes4类型)。
+2. 验证例1：
 ![33-1.jpg](img/33-1.jpg)
-例子2：
+3. 例2：
 ![33-2.jpg](img/33-2.jpg)
