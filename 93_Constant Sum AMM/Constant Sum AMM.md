@@ -3,20 +3,26 @@
 
 令牌一对一交易。
 
+* 合约中两种 ERC20 代币的地址，初始化时必须传入。
 ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-
-contract CSAMM {
-    //合约中两种 ERC20 代币的地址，初始化时必须传入。
     IERC20 public immutable token0;
     IERC20 public immutable token1;
-    //合约中两种代币的储备量。
+```
+
+* 合约中两种代币的储备量。
+```solidity
+
     uint public reserve0;
     uint public reserve1;
-    //合约中代币的总供应量。
+```
+
+* 合约中代币的总供应量。
+```solidity
     uint public totalSupply;
-    //记录每个地址持有的代币数量。
+```
+
+* 记录每个地址持有的代币数量。
+```solidity
     mapping(address => uint) public balanceOf;
 
     constructor(address _token0, address _token1) {
@@ -24,7 +30,11 @@ contract CSAMM {
         token0 = IERC20(_token0);
         token1 = IERC20(_token1);
     }
-    //内部函数，用于增加/减少地址持有的代币数量。
+```
+
+* 内部函数，用于增加/减少地址持有的代币数量。
+```solidity
+
     function _mint(address _to, uint _amount) private {
         balanceOf[_to] += _amount;
         totalSupply += _amount;
@@ -33,12 +43,20 @@ contract CSAMM {
         balanceOf[_from] -= _amount;
         totalSupply -= _amount;
     }
-    //内部函数，用于更新储备量。
+```
+
+* 内部函数，用于更新储备量。
+```solidity
+
     function _update(uint _res0, uint _res1) private {
         reserve0 = _res0;
         reserve1 = _res1;
     }
-    //外部函数，用于在两种代币之间进行交换。用户需要传入要交换的 ERC20 代币地址和数量，合约会根据当前的储备量计算出交换的数量，并将交换的代币发送给用户。
+```
+
+* 外部函数，用于在两种代币之间进行交换。用户需要传入要交换的 ERC20 代币地址和数量，合约会根据当前的储备量计算出交换的数量，并将交换的代币发送给用户。
+```solidity
+
     function swap(address _tokenIn, uint _amountIn) external returns (uint amountOut) {
         require(
             _tokenIn == address(token0) || _tokenIn == address(token1),
@@ -64,7 +82,11 @@ contract CSAMM {
         _update(res0, res1);
         tokenOut.transfer(msg.sender, amountOut);
     }
-    //外部函数，用于向合约中添加流动性。用户需要传入两种 ERC20 代币的数量，合约会根据当前的储备量计算出用户所添加的流动性份额，并将份额发送给用户。同时，合约会将用户添加的代币储备量加入到总的储备量中。
+```
+
+* 外部函数，用于向合约中添加流动性。用户需要传入两种 ERC20 代币的数量，合约会根据当前的储备量计算出用户所添加的流动性份额，并将份额发送给用户。同时，合约会将用户添加的代币储备量加入到总的储备量中。
+```solidity
+
     function addLiquidity(uint _amount0, uint _amount1) external returns (uint shares) {
         token0.transferFrom(msg.sender, address(this), _amount0);
         token1.transferFrom(msg.sender, address(this), _amount1);
@@ -97,7 +119,10 @@ contract CSAMM {
 
         _update(bal0, bal1);
     }
-    //外部函数，用于从合约中移除流动性。用户需要传入要移除的流动性份额，合约会根据当前的储备量计算出用户可以获得的两种代币数量，并将数量发送给用户。同时，合约会将用户移除的代币储备量从总的储备量中减去，并销毁用户的流动性份额。
+```
+* 外部函数，用于从合约中移除流动性。用户需要传入要移除的流动性份额，合约会根据当前的储备量计算出用户可以获得的两种代币数量，并将数量发送给用户。同时，合约会将用户移除的代币储备量从总的储备量中减去，并销毁用户的流动性份额。
+```solidity
+
     function removeLiquidity(uint _shares) external returns (uint d0, uint d1) {
         /*
         a = amount out
@@ -123,7 +148,7 @@ contract CSAMM {
             token1.transfer(msg.sender, d1);
         }
     }
-}
+
 
 interface IERC20 {
     function totalSupply() external view returns (uint);
