@@ -44,7 +44,8 @@ contract CrowdFund {
     mapping(uint => Campaign) public campaigns;
     // 从活动ID => 支持者 => 支持金额的映射
     mapping(uint => mapping(address => uint)) public pledgedAmount;
-
+    
+    //初始化了一个代币接口的实例，并将其保存在不可变的变量token中。
     constructor(address _token) {
         token = IERC20(_token);
     }

@@ -5,10 +5,12 @@ Multi Delegatecall的特点是将调用的函数合并在一起，共享合约�
 但是需要注意的是，Multi Delegatecall需要确保调用的函数在同一合约中，且需要保证函数签名和参数类型一致。
 
 使用delegatecall在单个交易中调用多个函数的示例。
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
 
+
+* MultiDelegatecall 是一个用于执行多个 delegatecall 的合约。
+它接受一个包含多个字节数组的参数，每个字节数组都是一个要执行的 delegatecall 的数据。合约会依次执行每个 delegatecall，如果其中任何一个失败，整个过程都会回滚并抛出 DelegatecallFailed 错误。
+该合约的目的是为了提高执行多个 delegatecall 的效率和安全性。
+```solidity
 contract MultiDelegatecall {
     error DelegatecallFailed();
 
@@ -26,11 +28,17 @@ contract MultiDelegatecall {
         }
     }
 }
+```
 
+* TestMultiDelegatecall 是一个演示合约，其中包含了三个函数：func1、func2 和 mint。
+其中，func1 和 func2 是普通的函数，而 mint 是一个可以接受 ETH 的函数。mint 函数存在一个漏洞，即一个用户可以多次调用该函数来铸造代币，这可能导致合约中的代币数量超过预期。
+因此，在与多个 delegatecall 结合使用时，该合约存在不安全性。
+```solidity
 // 为什么要使用多个delegatecall？为什么不使用多个call？
 // Alice -> MultiCall --- call ---> Test (msg.sender = MultiCall)
 // Alice -> Test --- delegatecall ---> Test (msg.sender = Alice)
 contract TestMultiDelegatecall is MultiDelegatecall {
+
     event Log(address caller, string func, uint i);
 
     function func1(uint x, uint y) external {
@@ -52,7 +60,11 @@ contract TestMultiDelegatecall is MultiDelegatecall {
         balanceOf[msg.sender] += msg.value;
     }
 }
+```
 
+* Helper 是一个辅助合约，其中包含三个函数，分别返回 func1、func2 和 mint 函数的数据。
+这些数据可以用于调用 MultiDelegatecall 合约的 multiDelegatecall 函数，从而执行多个 delegatecall。
+```solidity
 contract Helper {
     function getFunc1Data(uint x, uint y) external pure returns (bytes memory) {
         return abi.encodeWithSelector(TestMultiDelegatecall.func1.selector, x, y);
