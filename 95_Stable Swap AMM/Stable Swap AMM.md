@@ -6,7 +6,7 @@ Curve的稳定交换自动市场制造商（AMM）的简化版本
 
 An^n sum(x_i) + D = ADn^n + D^(n + 1) / (n^n prod(x_i))
 
-主题
+## 主题
 0. 牛顿法 x_(n + 1) = x_n - f(x_n) / f'(x_n)
 1. 不变量
 2. 交换
@@ -19,6 +19,7 @@ An^n sum(x_i) + D = ADn^n + D^(n + 1) / (n^n prod(x_i))
 6. 移除一个代币的流动性
    - 计算撤回一个代币
    - getYD
+   
 TODO: test?
 
 
