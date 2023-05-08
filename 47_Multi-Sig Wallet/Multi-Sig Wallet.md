@@ -162,7 +162,7 @@ function confirmTransaction(
 }
 ```
 
-5. executeTransaction（）该函数用于执行一笔交易
+5. executeTransaction（）：该函数用于执行一笔交易
 需要传入交易在 transactions 数组中的索引。
 只有合约的所有者才有权限调用该函数。
 该函数会检查该交易的确认数是否达到要求，如果达到要求则执行该交易，否则会抛出异常。

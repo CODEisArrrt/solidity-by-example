@@ -2,16 +2,11 @@
 Curve的稳定交换自动市场制造商（AMM）的简化版本
 
 
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8;
-
-/*
 不变量 - 交易价格和流动性量由以下方程确定
 
 An^n sum(x_i) + D = ADn^n + D^(n + 1) / (n^n prod(x_i))
 
-主题
+## 主题
 0. 牛顿法 x_(n + 1) = x_n - f(x_n) / f'(x_n)
 1. 不变量
 2. 交换
@@ -24,38 +19,46 @@ An^n sum(x_i) + D = ADn^n + D^(n + 1) / (n^n prod(x_i))
 6. 移除一个代币的流动性
    - 计算撤回一个代币
    - getYD
+   
 TODO: test?
-*/
 
-library Math {
-    function abs(uint x, uint y) internal pure returns (uint) {
-        return x >= y ? x - y : y - x;
-    }
-}
 
-contract StableSwap {
-    //  令牌数量
+令牌数量
+```solidity
+
     uint private constant N = 3;
-    // 放大系数乘以N的N-1次方
-    // 较高的值使曲线更平缓
-    // 较低的值使曲线更类似于恒定产品AMM
+```
+* 放大系数乘以N的N-1次方
+* 较高的值使曲线更平缓
+* 较低的值使曲线更类似于恒定产品AMM
+```solidity
+
     uint private constant A = 1000 * (N ** (N - 1));
     // 0.03%
     uint private constant SWAP_FEE = 300;
-    // 流动性费用来自两个限制条件
-    // 1. 对于导致平衡池的添加/移除流动性，费用为0
-    // 2. 在平衡池中交换就像从平衡池中添加然后移除流动性
-    //    添加流动性费用+移除流动性费用=交换费用
+```
+流动性费用来自两个限制条件
+1. 对于导致平衡池的添加/移除流动性，费用为0
+2. 在平衡池中交换就像从平衡池中添加然后移除流动性
+
+添加流动性费用+移除流动性费用=交换费用
+```solidity
+
     uint private constant LIQUIDITY_FEE = (SWAP_FEE * N) / (4 * (N - 1));
     uint private constant FEE_DENOMINATOR = 1e6;
 
     address[N] public tokens;
-    // 将每个代币标准化为18个小数位
-    // 例如-DAI（18个小数位），USDC（6个小数位），USDT（6个小数位）
+```
+将每个代币标准化为18个小数位
+例如-DAI（18个小数位），USDC（6个小数位），USDT（6个小数位）
+```solidity
+
     uint[N] private multipliers = [1, 1e12, 1e12];
     uint[N] public balances;
+```
+1份= 1e18，18个小数位
+```solidity
 
-    // 1份= 1e18，18个小数位
     uint private constant DECIMALS = 18;
     uint public totalSupply;
     mapping(address => uint) public balanceOf;
@@ -69,20 +72,22 @@ contract StableSwap {
         balanceOf[_from] -= _amount;
         totalSupply -= _amount;
     }
+```
+返回精度调整后的余额，调整为18个小数位
+```solidity
 
-    //  返回精度调整后的余额，调整为18个小数位
     function _xp() private view returns (uint[N] memory xp) {
         for (uint i; i < N; ++i) {
             xp[i] = balances[i] * multipliers[i];
         }
     }
+```
+计算 D，一个完全平衡的池中余额的总和
+如果 x_0、x_1、...、x_(n-1) 的余额，则 sum(x_i) = D
+xp 经过精度调整的余额
+return D
 
-    /**
-     *@notice 计算 D，一个完全平衡的池中余额的总和
-     * 如果 x_0、x_1、...、x_(n-1) 的余额，则 sum(x_i) = D
-     * @param xp 经过精度调整的余额
-     * @return D
-     */
+```solidity
     function _getD(uint[N] memory xp) private pure returns (uint) {
         /*
        使用牛顿法计算D
@@ -124,14 +129,16 @@ contract StableSwap {
         }
         revert("D didn't converge");
     }
+```
 
-    /**
-     * @notice 计算给定 token i 的新余额后，token j 的新余额
-     * @param i token i 的索引
-     * @param j token j 的索引
-     * @param x token i 的新余额
-     * @param xp 当前精度调整后的余额
-     */
+ 计算给定 token i 的新余额后，token j 的新余额
+* i token i 的索引
+* j token j 的索引
+* x token i 的新余额
+* xp 当前精度调整后的余额
+
+```solidity
+
     function _getY(
         uint i,
         uint j,
@@ -189,15 +196,15 @@ contract StableSwap {
         }
         revert("y didn't converge");
     }
+```
+计算给定精度调整后的余额xp和流动性d后，代币i的新余额
+* 计算y的方程式与_getY相同
+* i 要计算新余额的代币索引
+* xp 精度调整后的余额
+* d 流动性d
+* return 代币i的新余额
 
-    /**
-     * @notice 计算给定精度调整后的余额xp和流动性d后，代币i的新余额
-     * @dev 计算y的方程式与_getY相同
-     * @param i 要计算新余额的代币索引
-     * @param xp 精度调整后的余额
-     * @param d 流动性d
-     * @return 代币i的新余额
-     */
+```
     function _getYD(uint i, uint[N] memory xp, uint d) private pure returns (uint) {
         uint a = A * N;
         uint s;
@@ -230,9 +237,11 @@ contract StableSwap {
         }
         revert("y didn't converge");
     }
+```
+估计一股的价值
+一个股份值多少代币？
+```solidity
 
-    // 估计一股的价值
-    // 一个股份值多少代币？
     function getVirtualPrice() external view returns (uint) {
         uint d = _getD(_xp());
         uint _totalSupply = totalSupply;
@@ -241,14 +250,15 @@ contract StableSwap {
         }
         return 0;
     }
+```
 
-    /**
-     * @notice 交换 i 索引的代币的 dx 数量，以换取 j 索引的代币
-     * @param i 代币索引
-     * @param j 代币索引
-     * @param dx 输入代币数量
-     * @param minDy 最小输出代币数量
-     */
+交换 i 索引的代币的 dx 数量，以换取 j 索引的代币
+* i 代币索引
+* j 代币索引
+* dx 输入代币数量
+* minDy 最小输出代币数量
+```solidity
+
     function swap(uint i, uint j, uint dx, uint minDy) external returns (uint dy) {
         require(i != j, "i = j");
 
@@ -352,14 +362,14 @@ contract StableSwap {
 
         _burn(msg.sender, shares);
     }
+```
+*  计算赎回股份所获得的代币i的数量
+* shares 要赎回的股份
+* i 要提取的代币的索引
+* return dy 要获得的代币i的数量
+* fee 提取的费用。费用已包含在dy中
+```solidity
 
-    /**
-     * @notice 计算赎回股份所获得的代币i的数量
-     * @param shares 要赎回的股份
-     * @param i 要提取的代币的索引
-     * @return dy 要获得的代币i的数量
-     *          fee 提取的费用。费用已包含在dy中
-     */
     function _calcWithdrawOneToken(
         uint shares,
         uint i
@@ -401,13 +411,14 @@ contract StableSwap {
     ) external view returns (uint dy, uint fee) {
         return _calcWithdrawOneToken(shares, i);
     }
+```
 
-    /**
-     * @notice 从代币i中提取流动性
-     * @param shares 要销毁的份额
-     * @param i 要提取的代币
-     * @param minAmountOut 必须提取的最小代币i数量 
-     */
+* 从代币i中提取流动性
+* shares 要销毁的份额
+* i 要提取的代币
+* minAmountOut 必须提取的最小代币i数量 
+```solidity
+
     function removeLiquidityOneToken(
         uint shares,
         uint i,
@@ -421,7 +432,7 @@ contract StableSwap {
 
         IERC20(tokens[i]).transfer(msg.sender, amountOut);
     }
-}
+
 
 interface IERC20 {
     function totalSupply() external view returns (uint);

@@ -56,7 +56,14 @@ assert命令一般用于程序员写程序debug，因为它不能解释抛出异
     }
 }
 ```
-这是另一个示例
+## 这是另一个示例
+这个函数用于向合约账户存款.
+函数接受一个参数 _amount，表示存款金额。
+函数首先将当前的账户余额存储在变量 oldBalance 中，然后计算新的账户余额 newBalance，即当前余额加上存款金额。
+接下来，函数使用 require 语句确保新的余额不会导致溢出。
+如果新余额小于旧余额，则会触发 require 语句中的错误信息 "Overflow"。
+最后，函数将新余额存储在 balance 变量中，并使用 assert 语句确保新余额大于等于旧余额。
+这个函数的目的是确保存款操作不会导致溢出，并且在存款完成后，账户余额正确更新。
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
@@ -64,14 +71,7 @@ pragma solidity ^0.8.17;
 contract Account {
     uint public balance;
     uint public constant MAX_UINT = 2 ** 256 - 1;
-    /*于向合约账户存款.
-    函数接受一个参数 _amount，表示存款金额。
-    函数首先将当前的账户余额存储在变量 oldBalance 中，然后计算新的账户余额 newBalance，即当前余额加上存款金额。
-    接下来，函数使用 require 语句确保新的余额不会导致溢出。
-    如果新余额小于旧余额，则会触发 require 语句中的错误信息 "Overflow"。
-    最后，函数将新余额存储在 balance 变量中，并使用 assert 语句确保新余额大于等于旧余额。
-    这个函数的目的是确保存款操作不会导致溢出，并且在存款完成后，账户余额正确更新。
-    */
+  
     function deposit(uint _amount) public {
         uint oldBalance = balance;
         uint newBalance = balance + _amount;
@@ -83,13 +83,16 @@ contract Account {
 
         assert(balance >= oldBalance);
     }
-    
-    /*该函数用于从合约中提取资金并将其转移到调用方的帐户中。
-    函数的第一行创建了一个名为oldBalance的局部变量，以保存提取资金之前的合约余额。
-    接下来的两个条件语句用于确保提取的金额不会导致合约余额下溢（小于零）。第一个条件使用require语句，如果条件不满足，则函数将停止并抛出一个错误消息“Underflow”。第二个条件使用revert语句，如果条件不满足，则函数将停止并回滚所有状态更改。
-    如果余额足够，则函数将执行余额减去提取金额的操作。
-    最后，assert语句用于确保余额减少了提取金额。如果assert失败，则意味着代码存在错误，并且将停止并回滚所有状态更改。
-    */
+}
+```
+
+该函数用于从合约中提取资金并将其转移到调用方的帐户中。
+函数的第一行创建了一个名为oldBalance的局部变量，以保存提取资金之前的合约余额。
+接下来的两个条件语句用于确保提取的金额不会导致合约余额下溢（小于零）。第一个条件使用require语句，如果条件不满足，则函数将停止并抛出一个错误消息“Underflow”。第二个条件使用revert语句，如果条件不满足，则函数将停止并回滚所有状态更改。
+如果余额足够，则函数将执行余额减去提取金额的操作。
+最后，assert语句用于确保余额减少了提取金额。如果assert失败，则意味着代码存在错误，并且将停止并回滚所有状态更改。
+
+```solidity
     function withdraw(uint _amount) public {
         uint oldBalance = balance;
 
@@ -105,15 +108,15 @@ contract Account {
 
         assert(balance <= oldBalance);
     }
-}
+
 ```
 
 ## remix验证
-1.部署 Error合约,testRequire()须大于10否则抛出错误信息；testRevert()如果小于或等于10则抛出错误信息
+1. 部署 Error合约,testRequire()须大于10否则抛出错误信息；testRevert()如果小于或等于10则抛出错误信息
 ![19-1.jpg](img/19-1.jpg)
-2.调用testCustomError函数，输入一个 uint 类型的参数 _withdrawAmount，它使用自定义错误 InsufficientBalance，如果合约余额小于 _withdrawAmount，则会使用 revert 抛出一个带有自定义错误消息的异常，消息中包含合约余额和要提取的金额。
+2. 调用testCustomError函数，输入一个 uint 类型的参数 _withdrawAmount，它使用自定义错误 InsufficientBalance，如果合约余额小于 _withdrawAmount，则会使用 revert 抛出一个带有自定义错误消息的异常，消息中包含合约余额和要提取的金额。
 ![19-2.jpg](img/19-2.jpg)
-3.部署另一个例子Account合约，调用deposit函数表示要存储的金额，首先将原有的balance保存在oldBalance中，然后计算新的余额newBalance。调用balance查看。
+3. 部署另一个例子Account合约，调用deposit函数表示要存储的金额，首先将原有的balance保存在oldBalance中，然后计算新的余额newBalance。调用balance查看。
 ![19-3.jpg](img/19-3.jpg)
-4.调用withdraw函数取款，在取款之前，使用require函数检查balance是否大于等于_amount，如果不是，则抛出异常Underflow。如果balance小于_amount，则使用revert函数抛出异常Underflow。如果balance不小于_amount，则更新balance的值，并使用assert函数再次检查balance是否小于等于oldBalance。
+4. 调用withdraw函数取款，在取款之前，使用require函数检查balance是否大于等于_amount，如果不是，则抛出异常Underflow。如果balance小于_amount，则使用revert函数抛出异常Underflow。如果balance不小于_amount，则更新balance的值，并使用assert函数再次检查balance是否小于等于oldBalance。
 ![19-4.jpg](img/19-4.jpg)

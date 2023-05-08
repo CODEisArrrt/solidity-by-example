@@ -10,46 +10,50 @@
 * rewardIndex：记录当前奖励指数。
 * rewardIndexOf：记录每个地址的最近奖励指数。
 * earned：记录每个地址已经获得的奖励代币数量。
+
+
+接受质押代币和奖励代币的合约地址。
 ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
 
-contract DiscreteStakingRewards {
-    IERC20 public immutable stakingToken;
-    IERC20 public immutable rewardToken;
-
-    mapping(address => uint) public balanceOf;
-    uint public totalSupply;
-
-    uint private constant MULTIPLIER = 1e18;
-    uint private rewardIndex;
-    mapping(address => uint) private rewardIndexOf;
-    mapping(address => uint) private earned;
-//接受质押代币和奖励代币的合约地址。
     constructor(address _stakingToken, address _rewardToken) {
         stakingToken = IERC20(_stakingToken);
         rewardToken = IERC20(_rewardToken);
     }
-//更新奖励指数，需要将奖励代币转入合约地址。
+```
+更新奖励指数，需要将奖励代币转入合约地址。
+```solidity
+
     function updateRewardIndex(uint reward) external {
         rewardToken.transferFrom(msg.sender, address(this), reward);
         rewardIndex += (reward * MULTIPLIER) / totalSupply;
     }
-//计算指定地址应该获得的奖励代币数量。
+```
+计算指定地址应该获得的奖励代币数量。
+```solidity
+
     function _calculateRewards(address account) private view returns (uint) {
         uint shares = balanceOf[account];
         return (shares * (rewardIndex - rewardIndexOf[account])) / MULTIPLIER;
     }
-//查询指定地址已经获得的奖励代币数量。
+```
+查询指定地址已经获得的奖励代币数量。
+```solidity
+
     function calculateRewardsEarned(address account) external view returns (uint) {
         return earned[account] + _calculateRewards(account);
     }
-//更新指定地址的奖励数量和最近奖励指数。
+```
+更新指定地址的奖励数量和最近奖励指数。
+```solidity
+
     function _updateRewards(address account) private {
         earned[account] += _calculateRewards(account);
         rewardIndexOf[account] = rewardIndex;
     }
-//质押代币，需要将质押代币转入合约地址。
+```
+质押代币，需要将质押代币转入合约地址。
+```solidity
+
     function stake(uint amount) external {
         _updateRewards(msg.sender);
 
@@ -58,7 +62,10 @@ contract DiscreteStakingRewards {
 
         stakingToken.transferFrom(msg.sender, address(this), amount);
     }
-//解除质押，需要将质押代币转回用户地址。
+```
+解除质押，需要将质押代币转回用户地址。
+```solidity
+
     function unstake(uint amount) external {
         _updateRewards(msg.sender);
 
@@ -67,7 +74,10 @@ contract DiscreteStakingRewards {
 
         stakingToken.transfer(msg.sender, amount);
     }
-//领取已经获得的奖励代币，将奖励代币转到用户地址。
+```
+领取已经获得的奖励代币，将奖励代币转到用户地址。
+```solidity
+
     function claim() external returns (uint) {
         _updateRewards(msg.sender);
 
@@ -79,7 +89,7 @@ contract DiscreteStakingRewards {
 
         return reward;
     }
-}
+
 
 interface IERC20 {
     function totalSupply() external view returns (uint);

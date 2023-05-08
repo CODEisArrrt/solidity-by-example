@@ -1,13 +1,15 @@
 # 85.Uniswap V3 Swap Examples
 ## Uniswap V3 交换示例
 
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+该合约封装了 Uniswap V3 的交换功能，包括单跳交换和多跳交换。
 
-contract UniswapV3SwapExamples {
-    ISwapRouter constant router =
-        ISwapRouter(0xE592427A0AEce92De3Edee1F18E0157C05861564);
+1. swapExactInputSingleHop(address tokenIn, address tokenOut, uint24 poolFee, uint amountIn) external returns (uint amountOut) 函数：用于进行单跳交换，将 tokenIn 代币的 amountIn 数量进行兑换，以获得尽可能多的 tokenOut 代币。该函数使用 Uniswap V3 的 exactInputSingle 函数进行交换，并需要传入以下参数：
+* tokenIn：输入代币地址。
+* tokenOut：输出代币地址。
+* poolFee：交易所使用的手续费率，取值为 500、3000 或 10000。
+* amountIn：输入代币的数量。
+
+```solidity
 
     function swapExactInputSingleHop(
         address tokenIn,
@@ -32,6 +34,13 @@ contract UniswapV3SwapExamples {
 
         amountOut = router.exactInputSingle(params);
     }
+```
+
+2. swapExactInputMultiHop(bytes calldata path, address tokenIn, uint amountIn) external returns (uint amountOut) 函数：用于进行多跳交换，将 tokenIn 代币的 amountIn 数量进行兑换，以获得尽可能多的目标代币。该函数使用 Uniswap V3 的 exactInput 函数进行交换，并需要传入以下参数：
+* path：交换路径，是一个字节数组，包含了交换所需的所有代币地址。
+* tokenIn：输入代币地址。
+* amountIn：输入代币的数量。
+```solidity
 
     function swapExactInputMultiHop(
         bytes calldata path,
@@ -50,7 +59,13 @@ contract UniswapV3SwapExamples {
         });
         amountOut = router.exactInput(params);
     }
-}
+```
+该合约还包含了三个接口：
+
+* ISwapRouter 接口：定义了 Uniswap V3 的交换路由器接口，包括单跳交换和多跳交换的函数原型和参数结构体。
+* IERC20 接口：定义了 ERC20 标准代币接口，包括代币的余额、转账、授权等函数原型。
+* IWETH 接口：定义了 WETH 代币接口，包括将 ETH 转换为 WETH 和将 WETH 转换为 ETH 的函数原型。
+```solidity
 
 interface ISwapRouter {
     struct ExactInputSingleParams {

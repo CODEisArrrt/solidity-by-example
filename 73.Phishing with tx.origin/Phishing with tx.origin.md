@@ -20,6 +20,10 @@ Wallet.transfer()使用tx.origin来检查调用者是否为所有者。
 Alice被欺骗调用Attack.attack()。在Attack.attack()内部，它请求将Alice钱包中的所有资金转移到Eve的地址。
 由于Wallet.transfer()中的tx.origin等于Alice的地址，它授权了转移。钱包将所有以太币转移到了Eve。
 
+### 钱包合约
+部署钱包合约，包含一个owner状态变量用于记录合约的拥有者，包含一个构造函数和一个public函数：
+* 构造函数: 在创建合约时给owner变量赋值.
+* transfer(): 该函数会获得两个参数_to和_amount，先检查tx.origin == owner，无误后再给_to转账_amount数量的ETH。注意：这个函数有被钓鱼攻击的风险！
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
@@ -37,6 +41,18 @@ contract Wallet {
         require(sent, "Failed to send Ether");
     }
 }
+```
+
+### 共计合约
+
+它的攻击逻辑非常简单，就是构造出一个attack()函数进行钓鱼，将银行合约拥有者的余额转账给黑客。它有2个状态变量owner和wallet，分别用来记录黑客地址和要攻击的钱包合约地址。
+
+它包含2个函数：
+
+* 构造函数:初始化wallet合约地址.
+* attack()：攻击函数，该函数需要钱包合约的owner地址调用，owner调用攻击合约，攻击合约再调用钱包合约的transfer()函数，确认tx.origin == owner后，将银行合约内的余额全部转移到黑客地址中。
+
+```solidity
 
 contract Attack {
     address payable public owner;

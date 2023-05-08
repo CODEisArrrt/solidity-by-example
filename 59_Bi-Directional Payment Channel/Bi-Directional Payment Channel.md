@@ -1,4 +1,4 @@
-# Bi-Directional Payment Channel
+# 59.Bi-Directional Payment Channel
 双向支付通道允许参与者 Alice 和 Bob 反复在链外转移以太币。
 
 支付可以双向进行，Alice 支付 Bob，Bob 支付 Alice。
@@ -120,15 +120,18 @@ contract BiDirectionalPaymentChannel {
 
         _;
     }
+}
 
     modifier onlyUser() {
         require(isUser[msg.sender], "Not user");
         _;
     }
+```
+用于用户退出挑战的，需要传入当前用户的余额、nonce和签名信息。
+在函数中会检查签名信息是否正确、余额是否合法、nonce是否大于当前nonce、是否在挑战期内等条件。
+如果条件都满足，则更新用户余额、nonce和挑战期限，并发送事件通知。
+```solidity
 
-    /*用于用户退出挑战的，需要传入当前用户的余额、nonce和签名信息。
-    在函数中会检查签名信息是否正确、余额是否合法、nonce是否大于当前nonce、是否在挑战期内等条件。
-    如果条件都满足，则更新用户余额、nonce和挑战期限，并发送事件通知。*/
     function challengeExit(
         uint[2] memory _balances,
         uint _nonce,
@@ -151,11 +154,13 @@ contract BiDirectionalPaymentChannel {
 
         emit ChallengeExit(msg.sender, nonce);
     }
+```
+用于用户取回其在合约中存储的以太币。
+只有在挑战期结束后才能执行此操作。
+函数首先检查挑战期是否已过期，然后将用户的余额设置为零，并向用户发送相应的以太币。
+最后，该函数会触发Withdraw事件，以便其他人可以跟踪该操作。
+```solidity
 
-    /*用于用户取回其在合约中存储的以太币。
-    只有在挑战期结束后才能执行此操作。
-    函数首先检查挑战期是否已过期，然后将用户的余额设置为零，并向用户发送相应的以太币。
-    最后，该函数会触发Withdraw事件，以便其他人可以跟踪该操作。*/
     function withdraw() public onlyUser {
         require(block.timestamp >= expiresAt, "Challenge period has not expired yet");
 
@@ -167,7 +172,6 @@ contract BiDirectionalPaymentChannel {
 
         emit Withdraw(msg.sender, amount);
     }
-}
 ```
 
 
