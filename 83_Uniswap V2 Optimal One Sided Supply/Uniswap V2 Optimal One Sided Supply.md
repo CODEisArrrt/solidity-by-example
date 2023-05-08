@@ -2,7 +2,6 @@
 Optimal One Sided Supply
 
 
-
 这是一个用于Uniswap交易的智能合约，实现了一种名为"Optimal One-Sided Supply"的策略，即优化单边提供流动性。
 
 具体来说，该合约实现了以下功能：
@@ -48,7 +47,7 @@ s = (sqrt(((2 - f)r)^2 + 4(1 - f)ar) - (2 - f)r) / (2(1 - f))
 ```
 
 最佳单边供应
-1.  从代币 A 到代币 B 进行最佳兑换
+1. 从代币 A 到代币 B 进行最佳兑换
 2. 添加流动性
 ```solidity
 
