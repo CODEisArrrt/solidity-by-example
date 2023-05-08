@@ -2,17 +2,12 @@
 ## 漏洞
 Solidity的Front Running漏洞是指当一个交易被广播到网络时，在该交易被打包之前，其他人可以通过发送一个比该交易更高的gas价格的交易来替换该交易，从而获得更高的优先级，并在合约中执行他们自己的操作，从而获取更多的收益。
 交易需要一定时间才能被挖掘。攻击者可以观察交易池并发送一笔交易，在原始交易之前将其包含在一个区块中。这种机制可以被滥用，以使交易按攻击者的利益重新排序。
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
 
-/*
-
+## 漏洞例子合约
 Alice创建了一个猜测游戏。
 如果您能找到正确的字符串，将其哈希为目标哈希，则可以赢得10个以太币。让我们看看这个合同如何容易受到前置交易攻击的影响。
-*/
 
-/*
+
 1. Alice使用10个以太币部署了FindThisHash。
 2. Bob找到了正确的字符串，可以哈希成目标哈希值。（“以太坊”）
 3. Bob调用solve（“以太坊”），以15个gwei的燃气价格设置。
@@ -23,7 +18,9 @@ Alice创建了一个猜测游戏。
 发生了什么？
 
 交易需要一些时间才能被挖掘。尚未被挖掘的交易会被放入交易池中。通常，具有更高燃气价格的交易会优先被挖掘。攻击者可以从交易池中获取答案，发送一笔具有更高燃气价格的交易，以便他们的交易将在原始交易之前被包含在一个块中。
-*/
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.17;
 
 contract FindThisHash {
     bytes32 public constant hash =
@@ -46,29 +43,25 @@ contract FindThisHash {
 使用潜艇发送（https://libsubmarine.org/）
 ## 提交-揭示方案
 提交方案是一种加密算法，用于允许某人承诺一个值，同时将其隐藏在其他人无法看到的情况下，可以稍后揭示它。提交方案中的值是绑定的，意味着一旦提交，就无法更改。该方案有两个阶段：提交阶段，在该阶段选择和指定值，以及揭示阶段，在该阶段揭示并检查值。
+   
+   现在让我们看看如何使用提交揭示方案来防止前置交易。
+1. Alice使用10个以太币部署了SecuredFindThisHash。
+2. Bob找到了正确的字符串，可以哈希到目标哈希值（“Ethereum”）。
+3. Bob然后找到了keccak256（地址小写+解决方案+密码）。地址是他的钱包地址小写，解决方案是“Ethereum”，密码类似于只有Bob知道的密码（“mysecret”），Bob用它来提交和揭示解决方案。keccak2566（“0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266Ethereummysecret”）=“0xf95b1dd61edc3bd962cdea3987c6f55bcb714a02a2c3eb73bd960d6b4387fc36”。
+4. Bob然后调用commitSolution（“0xf95b1dd61edc3bd962cdea3987c6f55bcb714a02a2c3eb73bd960d6b4387fc36”），其中他提交了计算出的解决方案哈希，燃气价格设置为15个gwei。
+5. Eve正在观察交易池，等待答案提交。
+6. Eve看到了Bob的答案，他也调用了commitSolution（“0xf95b1dd61edc3bd962cdea3987c6f55bcb714a02a2c3eb73bd960d6b4387fc36”），燃气价格比Bob高（100个gwei）。
+7. Eve的交易比Bob的交易先被挖掘出来，但Eve还没有获得奖励。他需要使用确切的密码和解决方案调用revealSolution()，因此假设他正在观察交易池，以前面的方式跟Bob抢先。
+8. 然后Bob调用revealSolution（“Ethereum”，“mysecret”），燃气价格设置为15个gwei；
+9. 假设Eve在观察交易池时找到了Bob的揭示解决方案交易，他也调用了revealSolution（“Ethereum”，“mysecret”），但燃气价格比Bob高（100个gwei）。
+10. 假设这次Eve的揭示交易也在Bob的交易之前被挖掘出来，但Eve将被还原为“哈希不匹配”错误。因为revealSolution()函数使用keccak256(msg.sender + solution + secret)检查哈希。所以这次Eve未能赢得奖励。
+10.但是Bob的revealSolution（“Ethereum”，“mysecret”）通过了哈希检查，并获得了10个以太币的奖励。
+
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
 import "github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.5/contracts/utils/Strings.sol";
-
-/*
-   现在让我们看看如何使用提交揭示方案来防止前置交易。
-*/
-
-/*
-1. Alice使用10个以太币部署了SecuredFindThisHash。
-2. Bob找到了正确的字符串，可以哈希到目标哈希值（“Ethereum”）。
-3. Bob然后找到了keccak256（地址小写+解决方案+密码）。地址是他的钱包地址小写，解决方案是“Ethereum”，密码类似于只有Bob知道的密码（“mysecret”），Bob用它来提交和揭示解决方案。keccak2566（“0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266Ethereummysecret”）=“0xf95b1dd61edc3bd962cdea3987c6f55bcb714a02a2c3eb73bd960d6b4387fc36”。
-3. Bob然后调用commitSolution（“0xf95b1dd61edc3bd962cdea3987c6f55bcb714a02a2c3eb73bd960d6b4387fc36”），其中他提交了计算出的解决方案哈希，燃气价格设置为15个gwei。
-4. Eve正在观察交易池，等待答案提交。
-5. Eve看到了Bob的答案，他也调用了commitSolution（“0xf95b1dd61edc3bd962cdea3987c6f55bcb714a02a2c3eb73bd960d6b4387fc36”），燃气价格比Bob高（100个gwei）。
-6. Eve的交易比Bob的交易先被挖掘出来，但Eve还没有获得奖励。他需要使用确切的密码和解决方案调用revealSolution()，因此假设他正在观察交易池，以前面的方式跟Bob抢先。
-7. 然后Bob调用revealSolution（“Ethereum”，“mysecret”），燃气价格设置为15个gwei；
-8. 假设Eve在观察交易池时找到了Bob的揭示解决方案交易，他也调用了revealSolution（“Ethereum”，“mysecret”），但燃气价格比Bob高（100个gwei）。
-9. 假设这次Eve的揭示交易也在Bob的交易之前被挖掘出来，但Eve将被还原为“哈希不匹配”错误。因为revealSolution()函数使用keccak256(msg.sender + solution + secret)检查哈希。所以这次Eve未能赢得奖励。
-10.但是Bob的revealSolution（“Ethereum”，“mysecret”）通过了哈希检查，并获得了10个以太币的奖励。
-*/
 
 contract SecuredFindThisHash {
     // Struct用于存储提交的详细信息。

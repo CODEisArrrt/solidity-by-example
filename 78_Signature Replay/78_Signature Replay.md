@@ -22,9 +22,11 @@ contract MultiSigWallet {
     constructor(address[2] memory _owners) payable {
         owners = _owners;
     }
-
+    
+    //存入以太币到合约地址
     function deposit() external payable {}
-
+    
+    //从合约地址向指定地址发送以太币
     function transfer(address _to, uint _amount, bytes[2] memory _sigs) external {
         bytes32 txHash = getTxHash(_to, _amount);
         require(_checkSigs(_sigs, txHash), "invalid sig");
@@ -32,11 +34,13 @@ contract MultiSigWallet {
         (bool sent, ) = _to.call{value: _amount}("");
         require(sent, "Failed to send Ether");
     }
-
+    
+    //获取交易哈希，用于生成签名和验证交易。
     function getTxHash(address _to, uint _amount) public view returns (bytes32) {
         return keccak256(abi.encodePacked(_to, _amount));
     }
-
+    
+    //验证签名是否合法。
     function _checkSigs(
         bytes[2] memory _sigs,
         bytes32 _txHash
@@ -56,9 +60,14 @@ contract MultiSigWallet {
     }
 }
 ```
+
 ## 预防性技术
-该漏洞通常是由于合约没有正确实现签名验证机制而导致的。为了避免这种漏洞，Solidity开发人员应该仔细检查其合约的签名验证机制，并确保其能够正确地防止重放攻击。
-使用随机数和合约地址对消息进行签名
+为了防止签名重放攻击，开发人员应该遵循以下建议：
+* 使用不同的密钥对不同的合同进行签名。
+* 在每个合同中使用唯一的nonce值，以确保每个签名只能在特定的合同中使用一次。
+* 在验证签名时，确保签名的消息哈希与合同中的哈希匹配。
+* 可以考虑使用off-chain签名方案，将签名数据存储在链外，并在执行合同操作时进行验证。
+总之，签名重放攻击是一个常见的以太坊安全问题，开发人员应该采取适当的措施来防止这种攻击。
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;

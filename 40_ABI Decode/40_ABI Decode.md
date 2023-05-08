@@ -3,7 +3,7 @@ ABI Decode是指将以太坊智能合约的函数调用数据解码为可读的�
 在以太坊中，智能合约的函数调用数据是以十六进制字符串的形式传递的。
 为了执行这些函数，我们需要将这些数据解码为可读的形式，以便我们知道要执行哪个函数以及传递哪些参数
 
-abi.encode将数据编码为字节。
+* abi.encode将数据编码为字节。
 ```solidity
 function encode(
         uint x,
@@ -14,7 +14,7 @@ function encode(
         return abi.encode(x, addr, arr, myStruct);
     }
 ```
-abi.decode将字节解码回数据。
+* abi.decode将字节解码回数据。
 ```solidity
 function decode(
     bytes calldata data

@@ -18,7 +18,9 @@ Self Destruct是一种Solidity语言的函数，它可以在智能合约中销�
 contract EtherGame {
     uint public targetAmount = 7 ether;
     address public winner;
-
+    
+    //deposit()函数接受1个以太币的付款，并将其存入合约地址。
+    //如果存款后合约地址的余额等于目标金额（7个以太币），则将当前发送方的地址设置为赢家地址。
     function deposit() public payable {
         require(msg.value == 1 ether, "You can only send 1 Ether");
 
@@ -30,6 +32,7 @@ contract EtherGame {
         }
     }
 
+    //claimReward()：该函数用于获胜者领取奖励，只有获胜者才能调用该函数。该函数会将合约余额发送到获胜者的地址上。
     function claimReward() public {
         require(msg.sender == winner, "Not winner");
 

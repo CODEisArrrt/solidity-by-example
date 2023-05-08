@@ -5,12 +5,38 @@ delegatecall的使用很棘手，错误的使用或不正确的理解可能会�
 在使用delegatecall时，您必须记住两件事：
 1. delegatecall保留上下文（存储，调用者等...）
 2. 调用delegatecall的合约和被调用的合约的存储布局必须相同。
-
+### 合约漏洞例子
+* Lib合约。
+它有一个公共变量 "owner"，代表合约的拥有者地址。合约中有一个公共函数 "pwn()"，当该函数被调用时，会将合约的拥有者地址设置为调用该函数的地址。
 ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+contract Lib {
+    address public owner;
 
-/*
+    function pwn() public {
+        owner = msg.sender;
+    }
+}
+```
+
+* HackMe合约
+它有一个公共变量owner，表示合约的所有者地址，以及一个名为lib的公共变量，表示该合约依赖的Lib合约。
+由于delegatecall()函数的特性，如果lib合约中存在恶意代码，则可以利用fallback()函数将其调用到当前合约中，并在当前合约的上下文中执行。因此，该合约存在安全隐患，可能被黑客攻击。
+```solidity
+contract HackMe {
+    address public owner;
+    Lib public lib;
+    
+    //构造函数中，传入一个Lib类型的参数_lib，并将msg.sender赋值给owner，将_lib强制转换为Lib类型并赋值给lib变量
+    constructor(Lib _lib) {
+        owner = msg.sender;
+        lib = Lib(_lib);
+    }
+    //fallback()函数中，使用delegatecall()函数调用lib合约，并将msg.data作为参数传递给它。
+    fallback() external payable {
+        address(lib).delegatecall(msg.data);
+    }
+}
+```
 HackMe是一个使用delegatecall执行代码的合约。由于HackMe内部没有更改所有者的功能，因此更改所有者并不明显。但攻击者可以通过利用delegatecall来劫持合约。让我们看看如何实现。
 
 1. Alice部署了Lib。
@@ -29,30 +55,8 @@ HackMe使用delegatecall将调用转发到Lib。
 函数pwn()将所有者更新为msg.sender。
 Delegatecall使用HackMe的上下文运行Lib的代码。
 因此，HackMe的存储被更新为msg.sender，其中msg.sender是HackMe的调用者，即Attack。
-*/
 
-contract Lib {
-    address public owner;
-
-    function pwn() public {
-        owner = msg.sender;
-    }
-}
-
-contract HackMe {
-    address public owner;
-    Lib public lib;
-
-    constructor(Lib _lib) {
-        owner = msg.sender;
-        lib = Lib(_lib);
-    }
-
-    fallback() external payable {
-        address(lib).delegatecall(msg.data);
-    }
-}
-
+```solidity
 contract Attack {
     address public hackMe;
 
@@ -65,14 +69,10 @@ contract Attack {
     }
 }
 ```
-这是另一个例子。
-在你理解这个漏洞之前，你需要了解Solidity如何存储状态变量。
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
 
-/*
-这是前一个漏洞的更复杂版本。
+### 另一个例子。
+在你理解这个漏洞之前，你需要了解Solidity如何存储状态变量。
+这是比前一个漏洞例子的更复杂版本。
 
 1. Alice部署Lib和HackMe，并将Lib的地址传递给它们
 2. Eve部署Attack并将HackMe的地址传递给它
@@ -85,7 +85,9 @@ pragma solidity ^0.8.17;
 在attack()函数内，第一次调用doSomething()会更改存储在HackMe中的lib地址。现在，lib的地址被设置为Attack。
 
 第二次调用doSomething()会调用Attack.doSomething()，在这里我们更改了所有者。
-*/
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.17;
 
 contract Lib {
     uint public someNumber;
