@@ -5,7 +5,7 @@ delegatecall的使用很棘手，错误的使用或不正确的理解可能会�
 在使用delegatecall时，您必须记住两件事：
 1. delegatecall保留上下文（存储，调用者等...）
 2. 调用delegatecall的合约和被调用的合约的存储布局必须相同。
-合约例子
+### 合约漏洞例子
 * Lib合约。
 它有一个公共变量 "owner"，代表合约的拥有者地址。合约中有一个公共函数 "pwn()"，当该函数被调用时，会将合约的拥有者地址设置为调用该函数的地址。
 ```solidity
@@ -69,14 +69,10 @@ contract Attack {
     }
 }
 ```
-这是另一个例子。
-在你理解这个漏洞之前，你需要了解Solidity如何存储状态变量。
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
 
-/*
-这是前一个漏洞的更复杂版本。
+### 另一个例子。
+在你理解这个漏洞之前，你需要了解Solidity如何存储状态变量。
+这是比前一个漏洞例子的更复杂版本。
 
 1. Alice部署Lib和HackMe，并将Lib的地址传递给它们
 2. Eve部署Attack并将HackMe的地址传递给它
@@ -89,7 +85,9 @@ pragma solidity ^0.8.17;
 在attack()函数内，第一次调用doSomething()会更改存储在HackMe中的lib地址。现在，lib的地址被设置为Attack。
 
 第二次调用doSomething()会调用Attack.doSomething()，在这里我们更改了所有者。
-*/
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.17;
 
 contract Lib {
     uint public someNumber;

@@ -22,9 +22,11 @@ contract MultiSigWallet {
     constructor(address[2] memory _owners) payable {
         owners = _owners;
     }
-
+    
+    //存入以太币到合约地址
     function deposit() external payable {}
-
+    
+    //从合约地址向指定地址发送以太币
     function transfer(address _to, uint _amount, bytes[2] memory _sigs) external {
         bytes32 txHash = getTxHash(_to, _amount);
         require(_checkSigs(_sigs, txHash), "invalid sig");
@@ -32,11 +34,13 @@ contract MultiSigWallet {
         (bool sent, ) = _to.call{value: _amount}("");
         require(sent, "Failed to send Ether");
     }
-
+    
+    //获取交易哈希，用于生成签名和验证交易。
     function getTxHash(address _to, uint _amount) public view returns (bytes32) {
         return keccak256(abi.encodePacked(_to, _amount));
     }
-
+    
+    //验证签名是否合法。
     function _checkSigs(
         bytes[2] memory _sigs,
         bytes32 _txHash
@@ -56,6 +60,7 @@ contract MultiSigWallet {
     }
 }
 ```
+
 ## 预防性技术
 该漏洞通常是由于合约没有正确实现签名验证机制而导致的。为了避免这种漏洞，Solidity开发人员应该仔细检查其合约的签名验证机制，并确保其能够正确地防止重放攻击。
 使用随机数和合约地址对消息进行签名
