@@ -44,27 +44,27 @@ contract DutchAuction {
 ```
 计算当前价格的函数，根据时间的流逝和折扣率来计算价格。
 ```solidity
-    function getPrice() public view returns (uint) {
-        uint timeElapsed = block.timestamp - startAt;
-        uint discount = discountRate * timeElapsed;
-        return startingPrice - discount;
-    }
+function getPrice() public view returns (uint) {
+    uint timeElapsed = block.timestamp - startAt;
+    uint discount = discountRate * timeElapsed;
+    return startingPrice - discount;
+}
 ```
 购买函数，用于实现竞拍功能。如果在拍卖期限内且出价高于当前价格，则将NFT转移给买家，并退还多余的ETH给买家。最后销毁合约并将ETH发送给卖家。
 ```solidity
-    function buy() external payable {
-        require(block.timestamp < expiresAt, "auction expired");
+function buy() external payable {
+    require(block.timestamp < expiresAt, "auction expired");
 
-        uint price = getPrice();
-        require(msg.value >= price, "ETH < price");
+    uint price = getPrice();
+    require(msg.value >= price, "ETH < price");
 
-        nft.transferFrom(seller, msg.sender, nftId);
-        uint refund = msg.value - price;
-        if (refund > 0) {
-            payable(msg.sender).transfer(refund);
-        }
-        selfdestruct(seller);
+    nft.transferFrom(seller, msg.sender, nftId);
+    uint refund = msg.value - price;
+    if (refund > 0) {
+        payable(msg.sender).transfer(refund);
     }
+    selfdestruct(seller);
+}
 
 ```
 

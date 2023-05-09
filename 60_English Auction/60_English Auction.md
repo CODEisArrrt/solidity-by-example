@@ -23,50 +23,50 @@ interface IERC721 {
 
 * 合约中的变量和事件
 ```solidity
-    event Start();
-    event Bid(address indexed sender, uint amount);
-    event Withdraw(address indexed bidder, uint amount);
-    event End(address winner, uint amount);
+event Start();
+event Bid(address indexed sender, uint amount);
+event Withdraw(address indexed bidder, uint amount);
+event End(address winner, uint amount);
 
-    IERC721 public nft;//ERC721 资产的接口。
-    uint public nftId;//ERC721 资产的 ID。
+IERC721 public nft;//ERC721 资产的接口。
+uint public nftId;//ERC721 资产的 ID。
 
-    address payable public seller;//卖家的地址。
-    uint public endAt;//拍卖结束的时间戳。
-    bool public started;//标记拍卖是否已经开始。
-    bool public ended;//标记拍卖是否已经结束。
+address payable public seller;//卖家的地址。
+uint public endAt;//拍卖结束的时间戳。
+bool public started;//标记拍卖是否已经开始。
+bool public ended;//标记拍卖是否已经结束。
 
-    address public highestBidder;//当前最高出价者的地址。
-    uint public highestBid;//当前最高出价。
-    mapping(address => uint) public bids;//每个出价者的出价。
+address public highestBidder;//当前最高出价者的地址。
+uint public highestBid;//当前最高出价。
+mapping(address => uint) public bids;//每个出价者的出价。
 ```
 
 * 构造函数。
 传入 ERC721 资产的地址、ID 和起始出价。
 ```solidity
-    constructor(address _nft, uint _nftId, uint _startingBid) {
-        nft = IERC721(_nft);
-        nftId = _nftId;
+constructor(address _nft, uint _nftId, uint _startingBid) {
+    nft = IERC721(_nft);
+    nftId = _nftId;
 
-        seller = payable(msg.sender);
-        highestBid = _startingBid;
-    }
+    seller = payable(msg.sender);
+    highestBid = _startingBid;
+}
 ```
 
 * 开始拍卖
 只有卖家可以调用。
 将 ERC721 资产转移到合约地址，并标记拍卖已开始。
 ```solidity
-    function start() external {
-        require(!started, "started");
-        require(msg.sender == seller, "not seller");
+function start() external {
+    require(!started, "started");
+    require(msg.sender == seller, "not seller");
 
-        nft.transferFrom(msg.sender, address(this), nftId);
-        started = true;
-        endAt = block.timestamp + 7 days;
+    nft.transferFrom(msg.sender, address(this), nftId);
+    started = true;
+    endAt = block.timestamp + 7 days;
 
-        emit Start();
-    }
+    emit Start();
+}
 ```
 
 * 出价
@@ -74,33 +74,33 @@ interface IERC721 {
 要求出价高于当前最高出价。
 如果当前最高出价者不为空，则将其出价退回给其余出价者。
 ```solidity
-    function bid() external payable {
-        require(started, "not started");
-        require(block.timestamp < endAt, "ended");
-        require(msg.value > highestBid, "value < highest");
+function bid() external payable {
+    require(started, "not started");
+    require(block.timestamp < endAt, "ended");
+    require(msg.value > highestBid, "value < highest");
 
-        if (highestBidder != address(0)) {
-            bids[highestBidder] += highestBid;
-        }
-
-        highestBidder = msg.sender;
-        highestBid = msg.value;
-
-        emit Bid(msg.sender, msg.value);
+    if (highestBidder != address(0)) {
+        bids[highestBidder] += highestBid;
     }
+
+    highestBidder = msg.sender;
+    highestBid = msg.value;
+
+    emit Bid(msg.sender, msg.value);
+}
 ```
 
 * 撤回出价
 只有在拍卖已开始但未结束时可以调用。
 将出价退回给出价者。
 ```solidity
-    function withdraw() external {
-        uint bal = bids[msg.sender];
-        bids[msg.sender] = 0;
-        payable(msg.sender).transfer(bal);
+function withdraw() external {
+    uint bal = bids[msg.sender];
+    bids[msg.sender] = 0;
+    payable(msg.sender).transfer(bal);
 
-        emit Withdraw(msg.sender, bal);
-    }
+    emit Withdraw(msg.sender, bal);
+}
 ```
 
 * 结束拍卖
@@ -108,21 +108,21 @@ interface IERC721 {
 将 ERC721 资产转移给最高出价者，将出价支付给卖家。
 如果没有出价，则将 ERC721 资产返回给卖家。
 ```solidity
-    function end() external {
-        require(started, "not started");
-        require(block.timestamp >= endAt, "not ended");
-        require(!ended, "ended");
+function end() external {
+    require(started, "not started");
+    require(block.timestamp >= endAt, "not ended");
+    require(!ended, "ended");
 
-        ended = true;
-        if (highestBidder != address(0)) {
-            nft.safeTransferFrom(address(this), highestBidder, nftId);
-            seller.transfer(highestBid);
-        } else {
-            nft.safeTransferFrom(address(this), seller, nftId);
-        }
-
-        emit End(highestBidder, highestBid);
+    ended = true;
+    if (highestBidder != address(0)) {
+        nft.safeTransferFrom(address(this), highestBidder, nftId);
+        seller.transfer(highestBid);
+    } else {
+        nft.safeTransferFrom(address(this), seller, nftId);
     }
+
+    emit End(highestBidder, highestBid);
+}
 ```
 
 ## remix验证

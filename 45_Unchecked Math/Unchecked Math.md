@@ -4,41 +4,41 @@
 
 ## 上溢
 ```solidity
-    function add(uint x, uint y) external pure returns (uint) {
-        // 22291 gas
-        // return x + y;
+function add(uint x, uint y) external pure returns (uint) {
+    // 22291 gas
+    // return x + y;
 
-        // 22103 gas
-        unchecked {
-            return x + y;
-        }
+    // 22103 gas
+    unchecked {
+        return x + y;
     }
+}
 ```
 
 ## 下溢
 ```solidity
-    function sub(uint x, uint y) external pure returns (uint) {
-        // 22329 gas
-        // return x - y;
+function sub(uint x, uint y) external pure returns (uint) {
+    // 22329 gas
+    // return x - y;
 
-        // 22147 gas
-        unchecked {
-            return x - y;
-        }
+    // 22147 gas
+    unchecked {
+        return x - y;
     }
+}
 ```
 
 ## 复杂的数学逻辑包装在unchecked中
 ```solidity
-    function sumOfCubes(uint x, uint y) external pure returns (uint) {
-        // 将复杂的数学逻辑包装在unchecked中
-        unchecked {
-            uint x3 = x * x * x;
-            uint y3 = y * y * y;
+function sumOfCubes(uint x, uint y) external pure returns (uint) {
+    // 将复杂的数学逻辑包装在unchecked中
+    unchecked {
+        uint x3 = x * x * x;
+        uint y3 = y * y * y;
 
-            return x3 + y3;
-        }
+        return x3 + y3;
     }
+}
 ```
 
 

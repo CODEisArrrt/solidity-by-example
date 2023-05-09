@@ -35,24 +35,23 @@ contract Error {
 ## Assert
 assert命令一般用于程序员写程序debug，因为它不能解释抛出异常的原因（比require少个字符串）.它的用法很简单，assert(检查条件)，当检查条件不成立的时候，就会抛出异常。
 ```solidity
-    function testAssert() public view {
-        // Assert仅应用于测试内部错误，并检查不变量。
+function testAssert() public view {
+    // Assert仅应用于测试内部错误，并检查不变量。
 
-        // 我们在这里声明，由于不可能更新num的值，因此num始终等于0。
+    // 我们在这里声明，由于不可能更新num的值，因此num始终等于0。
 
-        assert(num == 0);
-    }
+    assert(num == 0);
+}
 ```
 ## Revert
 定义了一个自定义错误函数InsufficientBalance，当账户余额小于提取金额时，会触发该错误。在testCustomError函数中，如果当前合约账户余额小于提取金额，则会抛出该自定义错误。这样可以让调用者更清楚地知道为什么会出现错误，而不是只看到一个普通的revert异常。
 ```solidity
-    error InsufficientBalance(uint balance, uint withdrawAmount);
+error InsufficientBalance(uint balance, uint withdrawAmount);
 
-    function testCustomError(uint _withdrawAmount) public view {
-        uint bal = address(this).balance;
-        if (bal < _withdrawAmount) {
-            revert InsufficientBalance({balance: bal, withdrawAmount: _withdrawAmount});
-        }
+function testCustomError(uint _withdrawAmount) public view {
+    uint bal = address(this).balance;
+    if (bal < _withdrawAmount) {
+        revert InsufficientBalance({balance: bal, withdrawAmount: _withdrawAmount});
     }
 }
 ```
@@ -93,21 +92,21 @@ contract Account {
 最后，assert语句用于确保余额减少了提取金额。如果assert失败，则意味着代码存在错误，并且将停止并回滚所有状态更改。
 
 ```solidity
-    function withdraw(uint _amount) public {
-        uint oldBalance = balance;
+function withdraw(uint _amount) public {
+    uint oldBalance = balance;
 
-        // 如果balance >= _amount，则balance - _amount不会下溢
+    // 如果balance >= _amount，则balance - _amount不会下溢
 
-        require(balance >= _amount, "Underflow");
+    require(balance >= _amount, "Underflow");
 
-        if (balance < _amount) {
-            revert("Underflow");
-        }
-
-        balance -= _amount;
-
-        assert(balance <= oldBalance);
+    if (balance < _amount) {
+        revert("Underflow");
     }
+
+    balance -= _amount;
+
+    assert(balance <= oldBalance);
+}
 
 ```
 

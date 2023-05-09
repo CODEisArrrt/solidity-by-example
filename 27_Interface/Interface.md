@@ -72,11 +72,11 @@ contract UniswapExample {
 ```
 * getTokenReserves 函数是一个公共函数，返回两个无符号整数类型的储备量，它首先调用 UniswapV2Factory 接口中的 getPair 函数，获取 dai 和 weth 代币对应的交易对地址，然后调用 UniswapV2Pair 接口中的 getReserves 函数，获取该交易对的储备量，最后返回 reserve0 和 reserve1。
 ```solidity
-    function getTokenReserves() external view returns (uint, uint) {
-        address pair = UniswapV2Factory(factory).getPair(dai, weth);
-        (uint reserve0, uint reserve1, ) = UniswapV2Pair(pair).getReserves();
-        return (reserve0, reserve1);
-    }
+function getTokenReserves() external view returns (uint, uint) {
+    address pair = UniswapV2Factory(factory).getPair(dai, weth);
+    (uint reserve0, uint reserve1, ) = UniswapV2Pair(pair).getReserves();
+    return (reserve0, reserve1);
+}
 ```
 
 

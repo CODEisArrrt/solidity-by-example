@@ -10,9 +10,9 @@ constant变量必须在声明的时候初始化，之后再也不能改变。尝
 
 
 ```solidity
-    // 编码约定将常量变量大写
-    address public constant MY_ADDRESS = 0x777788889999AaAAbBbbCcccddDdeeeEfFFfCcCc;
-    uint public constant MY_UINT = 123;
+// 编码约定将常量变量大写
+address public constant MY_ADDRESS = 0x777788889999AaAAbBbbCcccddDdeeeEfFFfCcCc;
+uint public constant MY_UINT = 123;
 ```
 
 

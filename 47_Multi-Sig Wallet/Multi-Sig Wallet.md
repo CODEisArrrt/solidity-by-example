@@ -12,55 +12,54 @@
 
 ### 事件
 MultisigWallet合约有5个事件：
-1. event Deposit（）：表示有人向合约地址存入了一定数量的以太币。
+1. event Deposit（）：表示有人向合约地址存入了一定数量的以太。
 ```solidity
-    event Deposit(address indexed sender, uint amount, uint balance);
+event Deposit(address indexed sender, uint amount, uint balance);
 ```
 
 2. event SubmitTransaction（）：表示有一个交易被提交到合约中待执行。
 ```solidity
-
-    event SubmitTransaction(
-        address indexed owner,
-        uint indexed txIndex,
-        address indexed to,
-        uint value,
-        bytes data
-    );
+event SubmitTransaction(
+    address indexed owner,
+    uint indexed txIndex,
+    address indexed to,
+    uint value,
+    bytes data
+);
 ```
 
 3. event ConfirmTransaction():表示一个交易被确认。
 ```solidity
-    event ConfirmTransaction(address indexed owner, uint indexed txIndex);
+event ConfirmTransaction(address indexed owner, uint indexed txIndex);
 ```
 
 4. event RevokeConfirmation():表示一个确认被撤销。
 ```solidity
-    event RevokeConfirmation(address indexed owner, uint indexed txIndex);
+event RevokeConfirmation(address indexed owner, uint indexed txIndex);
 ```
 5. event ExecuteTransaction():表示一个待执行的交易被执行了。
 ```solidity
-    event ExecuteTransaction(address indexed owner, uint indexed txIndex);
+event ExecuteTransaction(address indexed owner, uint indexed txIndex);
 ```
 
 ### 核心要素
 ```solidity
-    address[] public owners;
-    mapping(address => bool) public isOwner;
-    uint public numConfirmationsRequired;
+address[] public owners;
+mapping(address => bool) public isOwner;
+uint public numConfirmationsRequired;
 
-    struct Transaction {
-        address to;
-        uint value;
-        bytes data;
-        bool executed;
-        uint numConfirmations;
-    }
+struct Transaction {
+    address to;
+    uint value;
+    bytes data;
+    bool executed;
+    uint numConfirmations;
+}
 
-    // 从交易索引 => 拥有者 => 布尔值的映射
-    mapping(uint => mapping(address => bool)) public isConfirmed;
+// 从交易索引 => 拥有者 => 布尔值的映射
+mapping(uint => mapping(address => bool)) public isConfirmed;
 
-    Transaction[] public transactions;
+Transaction[] public transactions;
 ```
 
 ### 修饰器
@@ -114,8 +113,8 @@ constructor(address[] memory _owners, uint _numConfirmationsRequired) {
 }
 ```
 
-2. receive（）：当合约收到以太币时会被自动调用。
-在该合约中，收到以太币时会触发 Deposit 事件。
+2. receive（）：当合约收到以太时会被自动调用。
+在该合约中，收到以太时会触发 Deposit 事件。
 ```solidity
 receive() external payable {
     emit Deposit(msg.sender, msg.value, address(this).balance);

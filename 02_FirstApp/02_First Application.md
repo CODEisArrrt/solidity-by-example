@@ -11,16 +11,16 @@ function get() public view returns (uint) {
 * 计数增加1的函数。
 ```solidity
 function inc() public {
-        count += 1;
-    }
+    count += 1;
+}
 ```
 
 * 计数减少1的函数。
 ```solidity
 function dec() public {
-        // 如果计数为0，这个函数将会失败。
-        count -= 1;
-    }
+    // 如果计数为0，这个函数将会失败。
+    count -= 1;
+}
 ```
 
 ## remix验证

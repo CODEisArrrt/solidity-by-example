@@ -5,10 +5,10 @@ pragma solidity ^0.8.17;
 EtherStore是一个合约，您可以存入和取出ETH。该合约容易受到可重入攻击的威胁。让我们来看看为什么。
 
 1. 部署EtherStore
-2. 从账户1（Alice）和账户2（Bob）各存入1个以太币到EtherStore
+2. 从账户1（Alice）和账户2（Bob）各存入1个以太到EtherStore
 3. 部署攻击合约并指定EtherStore的地址
-4. 使用账户3（Eve）调用Attack.attack函数并发送1个以太币。
-   你将会得到3个以太币（其中2个以太币是从Alice和Bob那里被盗取的，另外1个以太币是从这个合约发送的）。
+4. 使用账户3（Eve）调用Attack.attack函数并发送1个以太。
+   你将会得到3个以太（其中2个以太是从Alice和Bob那里被盗取的，另外1个以太是从这个合约发送的）。
 
 发生了什么？
 攻击者能够在EtherStore.withdraw执行完成之前多次调用EtherStore.withdraw。
@@ -54,7 +54,7 @@ contract Attack {
         etherStore = EtherStore(_etherStoreAddress);
     }
 
-    // 当EtherStore向此合约发送以太币时，将调用Fallback函数。
+    // 当EtherStore向此合约发送以太时，将调用Fallback函数。
     fallback() external payable {
         if (address(etherStore).balance >= 1 ether) {
             etherStore.withdraw();

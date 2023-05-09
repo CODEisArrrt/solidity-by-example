@@ -61,7 +61,7 @@ contract TimeLock {
 
     /**
      * @param _target 要调用的合约或账户的地址
-     * @param _value 要发送的以太币数量
+     * @param _value 要发送的以太数量
      * @param _func 函数签名，例如 "foo(address,uint256)"
      * @param _data ABI ABI编码的数据发送。
      * @param _timestamp 可以执行交易的时间戳。

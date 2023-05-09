@@ -17,7 +17,7 @@ contract Proxy {
     function deploy(bytes memory _code) external payable returns (address addr) {
         assembly {
             // create(v, p, n)函数：
-            // v = 要发送的以太币数量
+            // v = 要发送的以太数量
             // p = 内存中代码起始位置的指针
             // n = 代码的大小
             addr := create(callvalue(), add(_code, 0x20), mload(_code))

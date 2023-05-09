@@ -20,12 +20,12 @@ enum Status {
 ```solidity
 Status public status;
 
-    // 返回值为无符号整数uint。
-    // 待处理 - 0
-    // 已发货 - 1
-    // 已接受 - 2
-    // 已拒绝 - 3
-    // 已取消 - 4
+// 返回值为无符号整数uint。
+// 待处理 - 0
+// 已发货 - 1
+// 已接受 - 2
+// 已拒绝 - 3
+// 已取消 - 4
 function get() public view returns (Status) {
     return status;
 }

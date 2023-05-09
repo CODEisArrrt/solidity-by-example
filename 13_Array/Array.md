@@ -7,61 +7,61 @@
 初始化数组的几种方式
 ```solidity
 uint[] public arr;
-    uint[] public arr2 = [1, 2, 3];
-    // 固定长度的数组，所有元素都初始化为0
-    uint[10] public myFixedSizeArr;
+uint[] public arr2 = [1, 2, 3];
+// 固定长度的数组，所有元素都初始化为0
+uint[10] public myFixedSizeArr;
 ```
 获取数组arr中索引为i的元素的值，并将其作为无符号整数返回
 ```solidity
-    function get(uint i) public view returns (uint) {
-        return arr[i];
-    }
+function get(uint i) public view returns (uint) {
+    return arr[i];
+}
 ```
 Solidity 可以返回整个数组.
 但是对于长度可以无限增长的数组，应该避免使用此类函数.
 获取数组arr的值，返回一个包含所有元素的uint类型数组。
 ```solidity
 //由于函数声明了view关键字，因此不会修改合约状态，任何人都可以调用此函数来获取数组的当前状态。
-    function getArr() public view returns (uint[] memory) {
-        return arr;
-    }
+function getArr() public view returns (uint[] memory) {
+    return arr;
+}
 ```
 
 在数组末尾添加元素
 这将使数组长度增加1.
 ```solidity
-    function push(uint i) public {
-        arr.push(i);
-    }
+function push(uint i) public {
+    arr.push(i);
+}
 ```
 
 删除数组中的最后一个元素
 这将使数组长度减少1
 ```solidity
-    function pop() public {
-        arr.pop();
-    }
+function pop() public {
+    arr.pop();
+}
 ```
 
 读取数组arr长度
 ```solidity
-    function getLength() public view returns (uint) {
-        return arr.length;
-    }
+function getLength() public view returns (uint) {
+    return arr.length;
+}
 ```
 
 删除操作不会改变数组的长度。
 它将索引处的值重置为其默认值，在这种情况下为0。
 ```solidity
-    function remove(uint index) public {
-        delete arr[index];
-    }
+function remove(uint index) public {
+    delete arr[index];
+}
 ```
 在内存中创建数组，只能创建固定大小的数组
 ```solidity
-    function examples() external {
-        uint[] memory a = new uint[](5);
-    }
+function examples() external {
+    uint[] memory a = new uint[](5);
+}
 ```
 
 

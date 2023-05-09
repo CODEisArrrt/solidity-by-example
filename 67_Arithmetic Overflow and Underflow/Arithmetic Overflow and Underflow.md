@@ -12,7 +12,7 @@ Solidity 0.8的默认行为是在发生溢出/下溢时抛出错误。
 
 1. 部署TimeLock
 2. 部署Attack，将TimeLock的地址传递给Attack
-3. 调用Attack.attack发送1个以太币。您将立即能够取回您的以太币。
+3. 调用Attack.attack发送1个以太。您将立即能够取回您的以太。
 
 发生了什么？
 攻击导致TimeLock.lockTime溢出，并在一周等待期结束之前取款。

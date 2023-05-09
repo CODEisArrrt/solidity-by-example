@@ -3,7 +3,7 @@ swapExactTokensForTokens 将所有代币出售换成另一种代币。
 
 swapTokensForExactTokens 由调用者指定购买特定数量的代币。
 
-合约中使用了常量地址来表示 Uniswap V2 路由器、以太币、Dai 和 USDC 的地址。这些常量地址在合约中是不可变的，因此它们可以被视为合约的配置信息。这些地址通常在合约部署时设置，并在合约中使用，以确保合约中的地址始终是正确的。
+合约中使用了常量地址来表示 Uniswap V2 路由器、以太、Dai 和 USDC 的地址。这些常量地址在合约中是不可变的，因此它们可以被视为合约的配置信息。这些地址通常在合约部署时设置，并在合约中使用，以确保合约中的地址始终是正确的。
 ```solidity
     address private constant UNISWAP_V2_ROUTER =
         0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
