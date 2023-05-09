@@ -9,7 +9,8 @@ error是solidity 0.8版本新加的内容，方便且高效（省gas）地向用
 
 使用自定义错误以节省gas。
 ## Require
-require命令是solidity 0.8版本之前抛出异常的常用方法，目前很多主流合约仍然还在使用它。它很好用，唯一的缺点就是gas随着描述异常的字符串长度增加，比error命令要高。使用方法：require(检查条件，"异常的描述")，当检查条件不成立的时候，就会抛出异常。
+require 函数要么创造一个没有任何数据的错误， 要么创造一个 Error(string) 类型的错误。 它应该被用来确保在执行之前无法检测到的有效条件。 这包括对输入的条件或调用外部合约的返回值。
+
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
@@ -32,8 +33,8 @@ contract Error {
     }
     uint public num;
 ```
-## Assert
-assert命令一般用于程序员写程序debug，因为它不能解释抛出异常的原因（比require少个字符串）.它的用法很简单，assert(检查条件)，当检查条件不成立的时候，就会抛出异常。
+* Assert
+Assert应该只用于测试内部错误，以及检查不变量。
 ```solidity
     function testAssert() public view {
         // Assert仅应用于测试内部错误，并检查不变量。
@@ -43,7 +44,7 @@ assert命令一般用于程序员写程序debug，因为它不能解释抛出异
         assert(num == 0);
     }
 ```
-## Revert
+* Revert
 定义了一个自定义错误函数InsufficientBalance，当账户余额小于提取金额时，会触发该错误。在testCustomError函数中，如果当前合约账户余额小于提取金额，则会抛出该自定义错误。这样可以让调用者更清楚地知道为什么会出现错误，而不是只看到一个普通的revert异常。
 ```solidity
     error InsufficientBalance(uint balance, uint withdrawAmount);
