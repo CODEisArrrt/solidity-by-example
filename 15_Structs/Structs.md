@@ -6,7 +6,7 @@
 结构体可以在合约之外声明，并在另一个合约中进行导入。
 
 
-## Solidity支持通过构造结构体的形式定义新的类型。创建结构体的方法：
+* Solidity支持通过构造结构体的形式定义新的类型。创建结构体的方法：
 ```solidity
 struct Todo {
     string text;
@@ -16,7 +16,7 @@ struct Todo {
 Todo[] public todos;
 ```
 
-## 有三种初始化结构体的方法
+* 有三种初始化结构体的方法
 ```solidity
 function create(string calldata _text) public {
     // - 像调用函数一样调用它
@@ -33,14 +33,14 @@ function create(string calldata _text) public {
     todos.push(todo);
 }
 ```
-更新文本
+* 更新文本
 ```solidity
 function updateText(uint _index, string calldata _text) public {
     Todo storage todo = todos[_index];
     todo.text = _text;
 }
 ```
-更新完成状态
+* 更新完成状态
 ```solidity
 function toggleCompleted(uint _index) public {
     Todo storage todo = todos[_index];
