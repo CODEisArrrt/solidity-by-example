@@ -2,19 +2,19 @@
 pragma solidity ^0.8.17;
 
 /*
-KingOfEther的目标是通过发送比前任国王更多的以太币来成为国王。前任国王将获得他发送的以太币的退款。
+KingOfEther的目标是通过发送比前任国王更多的以太来成为国王。前任国王将获得他发送的以太的退款。
 */
 
 /*
 1. 部署KingOfEther。
-2. Alice通过发送1 以太币来调用claimThrone()函数成为了国王。
-3. Bob通过发送2 以太币来调用claimThrone()函数成为了国王。Alice收到了1 以太币的退款。
+2. Alice通过发送1 以太来调用claimThrone()函数成为了国王。
+3. Bob通过发送2 以太来调用claimThrone()函数成为了国王。Alice收到了1 以太的退款。
 4. 部署Attack合约并将KingOfEther的地址作为参数。
-5. 调用attack函数并发送3 以太币。
+5. 调用attack函数并发送3 以太。
 6. 当前的国王是Attack合约，没有人可以成为新的国王。
 
 发生了什么？
-Attack成为了国王。所有试图夺取王位的新挑战都将被拒绝，因为Attack合约没有回退函数，拒绝接受在新国王产生之前从KingOfEther发送的以太币。
+Attack成为了国王。所有试图夺取王位的新挑战都将被拒绝，因为Attack合约没有回退函数，拒绝接受在新国王产生之前从KingOfEther发送的以太。
 */
 
 contract KingOfEther {

@@ -24,25 +24,24 @@ function notPayable() public {}
 
 * 从合约中提取所有ETH的函数。
 ```solidity
-    function withdraw() public {
-        // 获取存储在此合约中的ETH数量。
-        uint amount = address(this).balance;
+function withdraw() public {
+    // 获取存储在此合约中的ETH数量。
+    uint amount = address(this).balance;
 
-        // 将所有ETH发送至所有者。
-        // O所有者可以收到ETH，因为所有者的地址是payable的。
-        (bool success, ) = owner.call{value: amount}("");
-        require(success, "Failed to send Ether");
-    }
+    // 将所有ETH发送至所有者。
+    // O所有者可以收到ETH，因为所有者的地址是payable的。
+    (bool success, ) = owner.call{value: amount}("");
+    require(success, "Failed to send Ether");
+}
 ```
 
 * 将ETH从该合约转移到输入地址的函数
 ```solidity
-
-    function transfer(address payable _to, uint _amount) public {
-        // 请注意，“to”被声明为payable的。
-        (bool success, ) = _to.call{value: _amount}("");
-        require(success, "Failed to send Ether");
-    }
+function transfer(address payable _to, uint _amount) public {
+    // 请注意，“to”被声明为payable的。
+    (bool success, ) = _to.call{value: _amount}("");
+    require(success, "Failed to send Ether");
+}
 ```
 ## remix验证
 1. 部署合约Payable，调用deposit（）函数，存入1ETH，账户余额为1ETH。

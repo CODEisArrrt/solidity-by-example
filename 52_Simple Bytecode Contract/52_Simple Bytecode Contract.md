@@ -63,6 +63,6 @@ RETURN
 
 ## remix验证
 1. 部署Factory合约，调用Deploy（）函数。在Log事件中，记录合约的地址。
-![52-1.jpg](img/52-1.jpg)
+![52-1.jpg](./img/52-1.jpg)
 2. 使用记录的合约地址来调用IContract接口的新合约getMeaningOfLife函数，验证返回值为42。
-![52-2.jpg](img/52-2.jpg)
+![52-2.jpg](./img/52-2.jpg)

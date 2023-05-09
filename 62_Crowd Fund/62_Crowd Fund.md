@@ -20,7 +20,7 @@ interface IERC20 {
 ### CrowdFund主合约，包含了众筹相关的所有函数和数据结构
 实现了IERC20定义的所有功能，包含4个事件声明、3个状态变量和7个函数。实现都比较简单，每个函数的功能见代码注释：
 ```solidity
-    contract CrowdFund {
+contract CrowdFund {
     //表示众筹项目被创建并启动
     event Launch(
         uint id,

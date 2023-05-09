@@ -53,101 +53,101 @@ TimeLock是一个合约，它发布一个将来要执行的交易。在最短等
 获取交易ID的函数。
 ```solidity
 
-    function getTxId(
-        address _target,
-        uint _value,
-        string calldata _func,
-        bytes calldata _data,
-        uint _timestamp
-    ) public pure returns (bytes32) {
-        return keccak256(abi.encode(_target, _value, _func, _data, _timestamp));
+function getTxId(
+    address _target,
+    uint _value,
+    string calldata _func,
+    bytes calldata _data,
+    uint _timestamp
+) public pure returns (bytes32) {
+    return keccak256(abi.encode(_target, _value, _func, _data, _timestamp));
+}
+
+/**
+ * @param _target 要调用的合约或账户的地址
+ * @param _value 要发送的以太数量
+ * @param _func 函数签名，例如 "foo(address,uint256)"
+ * @param _data ABI ABI编码的数据发送。
+ * @param _timestamp 可以执行交易的时间戳。
+ */
+//将交易加入队列的函数。
+function queue(
+    address _target,
+    uint _value,
+    string calldata _func,
+    bytes calldata _data,
+    uint _timestamp
+) external onlyOwner returns (bytes32 txId) {
+    txId = getTxId(_target, _value, _func, _data, _timestamp);
+    if (queued[txId]) {
+    revert AlreadyQueuedError(txId);
+    }
+    // ---|------------|---------------|-------
+    //  block    block + min     block + max
+    if (
+        _timestamp < block.timestamp + MIN_DELAY ||
+        _timestamp > block.timestamp + MAX_DELAY
+    ) {
+        revert TimestampNotInRangeError(block.timestamp, _timestamp);
     }
 
-    /**
-     * @param _target 要调用的合约或账户的地址
-     * @param _value 要发送的以太币数量
-     * @param _func 函数签名，例如 "foo(address,uint256)"
-     * @param _data ABI ABI编码的数据发送。
-     * @param _timestamp 可以执行交易的时间戳。
-     */
-     //将交易加入队列的函数。
-    function queue(
-        address _target,
-        uint _value,
-        string calldata _func,
-        bytes calldata _data,
-        uint _timestamp
-    ) external onlyOwner returns (bytes32 txId) {
-        txId = getTxId(_target, _value, _func, _data, _timestamp);
-        if (queued[txId]) {
-            revert AlreadyQueuedError(txId);
-        }
-        // ---|------------|---------------|-------
-        //  block    block + min     block + max
-        if (
-            _timestamp < block.timestamp + MIN_DELAY ||
-            _timestamp > block.timestamp + MAX_DELAY
-        ) {
-            revert TimestampNotInRangeError(block.timestamp, _timestamp);
-        }
+    queued[txId] = true;
 
-        queued[txId] = true;
-
-        emit Queue(txId, _target, _value, _func, _data, _timestamp);
+    emit Queue(txId, _target, _value, _func, _data, _timestamp);
+}
+//执行交易的函数。
+function execute(
+    address _target,
+    uint _value,
+    string calldata _func,
+    bytes calldata _data,
+    uint _timestamp
+) external payable onlyOwner returns (bytes memory) {
+    bytes32 txId = getTxId(_target, _value, _func, _data, _timestamp);
+    if (!queued[txId]) {
+        revert NotQueuedError(txId);
     }
-    //执行交易的函数。
-    function execute(
-        address _target,
-        uint _value,
-        string calldata _func,
-        bytes calldata _data,
-        uint _timestamp
-    ) external payable onlyOwner returns (bytes memory) {
-        bytes32 txId = getTxId(_target, _value, _func, _data, _timestamp);
-        if (!queued[txId]) {
-            revert NotQueuedError(txId);
-        }
-        // ----|-------------------|-------
-        //  timestamp    timestamp + grace period
-        if (block.timestamp < _timestamp) {
-            revert TimestampNotPassedError(block.timestamp, _timestamp);
-        }
-        if (block.timestamp > _timestamp + GRACE_PERIOD) {
-            revert TimestampExpiredError(block.timestamp, _timestamp + GRACE_PERIOD);
-        }
-
-        queued[txId] = false;
-
-        // 准备数据
-        bytes memory data;
-        if (bytes(_func).length > 0) {
-            // data = func selector + _data
-            data = abi.encodePacked(bytes4(keccak256(bytes(_func))), _data);
-        } else {
-            //调用回退函数并附带数据
-            data = _data;
-        }
-
-        // 调用目标
-        (bool ok, bytes memory res) = _target.call{value: _value}(data);
-        if (!ok) {
-            revert TxFailedError();
-        }
-
-        emit Execute(txId, _target, _value, _func, _data, _timestamp);
-
-        return res;
+    // ----|-------------------|-------
+    //  timestamp    timestamp + grace period
+    if (block.timestamp < _timestamp) {
+        revert TimestampNotPassedError(block.timestamp, _timestamp);
     }
-    //取消交易的函数。
-    function cancel(bytes32 _txId) external onlyOwner {
-        if (!queued[_txId]) {
-            revert NotQueuedError(_txId);
-        }
-
-        queued[_txId] = false;
-
-        emit Cancel(_txId);
+    if (block.timestamp > _timestamp + GRACE_PERIOD) {
+        revert TimestampExpiredError(block.timestamp, _timestamp + GRACE_PERIOD);
     }
+
+    queued[txId] = false;
+
+    // 准备数据
+    bytes memory data;
+    if (bytes(_func).length > 0) {
+        // data = func selector + _data
+        data = abi.encodePacked(bytes4(keccak256(bytes(_func))), _data);
+    } else {
+        //调用回退函数并附带数据
+        data = _data;
+    }
+
+    // 调用目标
+    (bool ok, bytes memory res) = _target.call{value: _value}(data);
+    if (!ok) {
+        revert TxFailedError();
+    }
+
+    emit Execute(txId, _target, _value, _func, _data, _timestamp);
+
+    return res;
+}
+//取消交易的函数。
+function cancel(bytes32 _txId) external onlyOwner {
+    if (!queued[_txId]) {
+        revert NotQueuedError(_txId);
+    }
+
+    queued[_txId] = false;
+
+    emit Cancel(_txId);
+}
 ```
 
 
@@ -160,6 +160,6 @@ TimeLock是一个合约，它发布一个将来要执行的交易。在最短等
     * 编码前地址：0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2
     * 编码后地址：0x000000000000000000000000ab8483f64d9c6d1ecf9b849ae677dd3315835cb2
 * _timestamp：可以执行交易的时间戳。
-![65-1.jpg](img/65-1.jpg)
-2. 调用getTxId函数 传入上一步的参数，查看交易id；再调用cancel函数 ，输入getTxId函数返回的交易id，完成取消交易。
-![65-2.jpg](img/65-2.jpg)
+![65-1.jpg](./img/65-1.jpg)
+1. 调用getTxId函数 传入上一步的参数，查看交易id；再调用cancel函数 ，输入getTxId函数返回的交易id，完成取消交易。
+![65-2.jpg](./img/65-2.jpg)

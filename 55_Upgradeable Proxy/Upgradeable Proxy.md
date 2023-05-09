@@ -287,18 +287,18 @@ contract TestSlot {
 
 ## remix验证
 1. 部署BuggyProxy合约、CounterV1合约和CounterV2合约，调用admin函数查看管理员地址
-![55-1.jpg](img/55-1.jpg)
+![55-1.jpg](./img/55-1.jpg)
 2. 调用upgradeTo函数，复制黏贴CounterV1合约的地址参数，调用implementation验证是否成功.
-![55-2.jpg](img/55-2.jpg)
+![55-2.jpg](./img/55-2.jpg)
 3. 利用选择器0x371303c0，在代理合约中调用旧逻辑合约CounterV1的inc()函数。调用将失败，因为管理员不能调用逻辑合约。
-![55-3.png](img/55-3.png)
+![55-3.png](./img/55-3.png)
 4. 切换新钱包，利用选择器0x371303c0，在代理合约中调用旧逻辑合约CounterV1的inc()函数，count = 1，调用将成功。
-![55-4.png](img/55-4.png)
+![55-4.png](./img/55-4.png)
 5. 切换回管理员钱包，调用upgradeTo()函数，将implementation地址指向新逻辑合约CounterV2。
-![55-5.png](img/55-5.png)
+![55-5.png](./img/55-5.png)
 6. 切换新钱包，利用选择器0x371303c0，在代理合约中调用三次新逻辑合约CounterV2的inc()函数，再利用选择器0xb3bcfa82，在代理合约中调用一·次新逻辑合约CounterV2的dec()函数，最终count = 2。
-![55-6.png](img/55-6.png)
+![55-6.png](./img/55-6.png)
 7. 部署Dev合约，调用selectors()函数查看Proxy的三个函数的函数选择器.
-![55-7.jpg](img/55-7.jpg)
+![55-7.jpg](./img/55-7.jpg)
 8. 部署Proxy合约，调用changeAdmin函数，使调用者成为管理员；调用upgrandeTo函数升级合约.
-![55-8.jpg](img/55-8.jpg)
+![55-8.jpg](./img/55-8.jpg)

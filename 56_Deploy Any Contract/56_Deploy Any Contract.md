@@ -17,7 +17,7 @@ contract Proxy {
     function deploy(bytes memory _code) external payable returns (address addr) {
         assembly {
             // create(v, p, n)函数：
-            // v = 要发送的以太币数量
+            // v = 要发送的以太数量
             // p = 内存中代码起始位置的指针
             // n = 代码的大小
             addr := create(callvalue(), add(_code, 0x20), mload(_code))
@@ -79,11 +79,11 @@ contract Helper {
 ```
 
 ## remix验证
-部署合约Proxy和Helper，在Helper合约中调用getBytecode1（）函数获取合约字节码
+1. 部署合约Proxy和Helper，在Helper合约中调用getBytecode1（）函数获取合约字节码
 ![56-1.png](./img/56-1.png)
-复制合约字节码，调用合约Proxy中的deploy（）函数获取新部署合约地址
+2. 复制合约字节码，调用合约Proxy中的deploy（）函数获取新部署合约地址
 ![56-2.png](./img/56-2.png)
-通过合约地址在remix打开该合约，与TestContract1合约一致。
+3. 通过合约地址在remix打开该合约，与TestContract1合约一致。
 ![56-3.png](./img/56-3.png)
-以上述操作同样部署TestContract2，结果一致。
+4. 以上述操作同样部署TestContract2，结果一致。
 ![56-4.png](./img/56-4.png)

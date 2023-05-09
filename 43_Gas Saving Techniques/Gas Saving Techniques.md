@@ -59,4 +59,4 @@ contract GasGolf {
 
 ## remix验证
 1. 部署 GasGolf 合约，调用sumIfEvenAndLessThan99函数，输入[1, 2, 3, 4, 5, 100]后查看total是否等于6（2+4），验证
-![43-1.jpg](img/43-1.jpg)
+![43-1.jpg](./img/43-1.jpg)

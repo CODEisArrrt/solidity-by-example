@@ -71,6 +71,6 @@ contract TestArray {
 
 ## remix验证
 1. 部署 Math的库和 TestMath的合约。调用testSquareRoot（）函数计算平方根，查看结果
-![38-1.jpg](img/38-1.jpg)
+![38-1.jpg](./img/38-1.jpg)
 2. 部署Array的库和 TestArray的合约。调用testArrayRemove()函数往数组中添加三个元素，然后删除第二个元素，并检查数组的长度和剩余元素是否符合预期。
-![38-2.jpg](img/38-2.jpg)
+![38-2.jpg](./img/38-2.jpg)

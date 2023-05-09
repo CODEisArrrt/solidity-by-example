@@ -23,10 +23,10 @@ contract MultiSigWallet {
         owners = _owners;
     }
     
-    //存入以太币到合约地址
+    //存入以太到合约地址
     function deposit() external payable {}
     
-    //从合约地址向指定地址发送以太币
+    //从合约地址向指定地址发送以太
     function transfer(address _to, uint _amount, bytes[2] memory _sigs) external {
         bytes32 txHash = getTxHash(_to, _amount);
         require(_checkSigs(_sigs, txHash), "invalid sig");

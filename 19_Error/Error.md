@@ -36,24 +36,23 @@ contract Error {
 * Assert
 Assert应该只用于测试内部错误，以及检查不变量。
 ```solidity
-    function testAssert() public view {
-        // Assert仅应用于测试内部错误，并检查不变量。
+function testAssert() public view {
+    // Assert仅应用于测试内部错误，并检查不变量。
 
-        // 我们在这里声明，由于不可能更新num的值，因此num始终等于0。
+    // 我们在这里声明，由于不可能更新num的值，因此num始终等于0。
 
-        assert(num == 0);
-    }
+    assert(num == 0);
+}
 ```
 * Revert
 定义了一个自定义错误函数InsufficientBalance，当账户余额小于提取金额时，会触发该错误。在testCustomError函数中，如果当前合约账户余额小于提取金额，则会抛出该自定义错误。这样可以让调用者更清楚地知道为什么会出现错误，而不是只看到一个普通的revert异常。
 ```solidity
-    error InsufficientBalance(uint balance, uint withdrawAmount);
+error InsufficientBalance(uint balance, uint withdrawAmount);
 
-    function testCustomError(uint _withdrawAmount) public view {
-        uint bal = address(this).balance;
-        if (bal < _withdrawAmount) {
-            revert InsufficientBalance({balance: bal, withdrawAmount: _withdrawAmount});
-        }
+function testCustomError(uint _withdrawAmount) public view {
+    uint bal = address(this).balance;
+    if (bal < _withdrawAmount) {
+        revert InsufficientBalance({balance: bal, withdrawAmount: _withdrawAmount});
     }
 }
 ```
@@ -94,30 +93,30 @@ contract Account {
 最后，assert语句用于确保余额减少了提取金额。如果assert失败，则意味着代码存在错误，并且将停止并回滚所有状态更改。
 
 ```solidity
-    function withdraw(uint _amount) public {
-        uint oldBalance = balance;
+function withdraw(uint _amount) public {
+    uint oldBalance = balance;
 
-        // 如果balance >= _amount，则balance - _amount不会下溢
+    // 如果balance >= _amount，则balance - _amount不会下溢
 
-        require(balance >= _amount, "Underflow");
+    require(balance >= _amount, "Underflow");
 
-        if (balance < _amount) {
-            revert("Underflow");
-        }
-
-        balance -= _amount;
-
-        assert(balance <= oldBalance);
+    if (balance < _amount) {
+        revert("Underflow");
     }
+
+    balance -= _amount;
+
+    assert(balance <= oldBalance);
+}
 
 ```
 
 ## remix验证
 1. 部署 Error合约,testRequire()须大于10否则抛出错误信息；testRevert()如果小于或等于10则抛出错误信息
-![19-1.jpg](img/19-1.jpg)
+![19-1.jpg](./img/19-1.jpg)
 2. 调用testCustomError函数，输入一个 uint 类型的参数 _withdrawAmount，它使用自定义错误 InsufficientBalance，如果合约余额小于 _withdrawAmount，则会使用 revert 抛出一个带有自定义错误消息的异常，消息中包含合约余额和要提取的金额。
-![19-2.jpg](img/19-2.jpg)
+![19-2.jpg](./img/19-2.jpg)
 3. 部署另一个例子Account合约，调用deposit函数表示要存储的金额，首先将原有的balance保存在oldBalance中，然后计算新的余额newBalance。调用balance查看。
-![19-3.jpg](img/19-3.jpg)
+![19-3.jpg](./img/19-3.jpg)
 4. 调用withdraw函数取款，在取款之前，使用require函数检查balance是否大于等于_amount，如果不是，则抛出异常Underflow。如果balance小于_amount，则使用revert函数抛出异常Underflow。如果balance不小于_amount，则更新balance的值，并使用assert函数再次检查balance是否小于等于oldBalance。
-![19-4.jpg](img/19-4.jpg)
+![19-4.jpg](./img/19-4.jpg)
