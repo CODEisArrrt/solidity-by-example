@@ -5,16 +5,16 @@ swapTokensForExactTokens 由调用者指定购买特定数量的代币。
 
 合约中使用了常量地址来表示 Uniswap V2 路由器、以太、Dai 和 USDC 的地址。这些常量地址在合约中是不可变的，因此它们可以被视为合约的配置信息。这些地址通常在合约部署时设置，并在合约中使用，以确保合约中的地址始终是正确的。
 ```solidity
-    address private constant UNISWAP_V2_ROUTER =
-        0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
+address private constant UNISWAP_V2_ROUTER =
+    0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
 
-    address private constant WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
-    address private constant DAI = 0x6B175474E89094C44Da98b954EedeAC495271d0F;
-    address constant USDC = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
+address private constant WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
+address private constant DAI = 0x6B175474E89094C44Da98b954EedeAC495271d0F;
+address constant USDC = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
 
-    IUniswapV2Router private router = IUniswapV2Router(UNISWAP_V2_ROUTER);
-    IERC20 private weth = IERC20(WETH);
-    IERC20 private dai = IERC20(DAI);
+IUniswapV2Router private router = IUniswapV2Router(UNISWAP_V2_ROUTER);
+IERC20 private weth = IERC20(WETH);
+IERC20 private dai = IERC20(DAI);
 ```
 合约中定义了四个函数，用于在 Uniswap V2 上进行交换。这些函数使用 Uniswap V2 路由器中的 swapExactTokensForTokens 和 swapTokensForExactTokens 函数来实现交换。
 * swapExactTokensForTokens 函数用于精确输入交换，即指定输入代币数量和输出代币最小数量。
@@ -22,117 +22,117 @@ swapTokensForExactTokens 由调用者指定购买特定数量的代币。
 
 这些函数的实现过程中，需要指定交换路径，即从哪种代币开始交换到哪种代币结束。在交换过程中，还需要对代币进行授权和转移，以确保交换的顺利进行。
 ```solidity
-    // 将WETH兑换成DAI
-    function swapSingleHopExactAmountIn(
-        uint amountIn,
-        uint amountOutMin
-    ) external returns (uint amountOut) {
-        weth.transferFrom(msg.sender, address(this), amountIn);
-        weth.approve(address(router), amountIn);
+// 将WETH兑换成DAI
+function swapSingleHopExactAmountIn(
+    uint amountIn,
+    uint amountOutMin
+) external returns (uint amountOut) {
+    weth.transferFrom(msg.sender, address(this), amountIn);
+    weth.approve(address(router), amountIn);
 
-        address[] memory path;
-        path = new address[](2);
-        path[0] = WETH;
-        path[1] = DAI;
+    address[] memory path;
+    path = new address[](2);
+    path[0] = WETH;
+    path[1] = DAI;
 
-        uint[] memory amounts = router.swapExactTokensForTokens(
-            amountIn,
-            amountOutMin,
-            path,
-            msg.sender,
-            block.timestamp
-        );
+    uint[] memory amounts = router.swapExactTokensForTokens(
+        amountIn,
+        amountOutMin,
+        path,
+        msg.sender,
+        block.timestamp
+    );
 
-        // amounts[0] = WETH amount, amounts[1] = DAI amount
-        return amounts[1];
+    // amounts[0] = WETH amount, amounts[1] = DAI amount
+    return amounts[1];
+}
+
+// Swap DAI -> WETH -> USDC
+function swapMultiHopExactAmountIn(
+    uint amountIn,
+    uint amountOutMin
+) external returns (uint amountOut) {
+    dai.transferFrom(msg.sender, address(this), amountIn);
+    dai.approve(address(router), amountIn);
+
+    address[] memory path;
+    path = new address[](3);
+    path[0] = DAI;
+    path[1] = WETH;
+    path[2] = USDC;
+
+    uint[] memory amounts = router.swapExactTokensForTokens(
+        amountIn,
+        amountOutMin,
+        path,
+        msg.sender,
+        block.timestamp
+    );
+
+    // amounts[0] = DAI amount
+    // amounts[1] = WETH amount
+    // amounts[2] = USDC amount
+    return amounts[2];
+}
+
+// 将WETH换成DAI
+function swapSingleHopExactAmountOut(
+    uint amountOutDesired,
+    uint amountInMax
+) external returns (uint amountOut) {
+    weth.transferFrom(msg.sender, address(this), amountInMax);
+    weth.approve(address(router), amountInMax);
+
+    address[] memory path;
+    path = new address[](2);
+    path[0] = WETH;
+    path[1] = DAI;
+
+    uint[] memory amounts = router.swapTokensForExactTokens(
+        amountOutDesired,
+        amountInMax,
+        path,
+        msg.sender,
+        block.timestamp
+    );
+
+    // 将WETH退还给msg.sender
+    if (amounts[0] < amountInMax) {
+        weth.transfer(msg.sender, amountInMax - amounts[0]);
     }
 
-    // Swap DAI -> WETH -> USDC
-    function swapMultiHopExactAmountIn(
-        uint amountIn,
-        uint amountOutMin
-    ) external returns (uint amountOut) {
-        dai.transferFrom(msg.sender, address(this), amountIn);
-        dai.approve(address(router), amountIn);
+    return amounts[1];
+}
 
-        address[] memory path;
-        path = new address[](3);
-        path[0] = DAI;
-        path[1] = WETH;
-        path[2] = USDC;
+// 兑换 DAI -> WETH -> USDC
+function swapMultiHopExactAmountOut(
+    uint amountOutDesired,
+    uint amountInMax
+) external returns (uint amountOut) {
+    dai.transferFrom(msg.sender, address(this), amountInMax);
+    dai.approve(address(router), amountInMax);
 
-        uint[] memory amounts = router.swapExactTokensForTokens(
-            amountIn,
-            amountOutMin,
-            path,
-            msg.sender,
-            block.timestamp
-        );
+    address[] memory path;
+    path = new address[](3);
+    path[0] = DAI;
+    path[1] = WETH;
+    path[2] = USDC;
 
-        // amounts[0] = DAI amount
-        // amounts[1] = WETH amount
-        // amounts[2] = USDC amount
-        return amounts[2];
+    uint[] memory amounts = router.swapTokensForExactTokens(
+        amountOutDesired,
+        amountInMax,
+        path,
+        msg.sender,
+        block.timestamp
+    );
+
+    // 将 DAI 退还给 msg.sender
+    if (amounts[0] < amountInMax) {
+        dai.transfer(msg.sender, amountInMax - amounts[0]);
     }
 
-    // 将WETH换成DAI
-    function swapSingleHopExactAmountOut(
-        uint amountOutDesired,
-        uint amountInMax
-    ) external returns (uint amountOut) {
-        weth.transferFrom(msg.sender, address(this), amountInMax);
-        weth.approve(address(router), amountInMax);
-
-        address[] memory path;
-        path = new address[](2);
-        path[0] = WETH;
-        path[1] = DAI;
-
-        uint[] memory amounts = router.swapTokensForExactTokens(
-            amountOutDesired,
-            amountInMax,
-            path,
-            msg.sender,
-            block.timestamp
-        );
-
-        // 将WETH退还给msg.sender
-        if (amounts[0] < amountInMax) {
-            weth.transfer(msg.sender, amountInMax - amounts[0]);
-        }
-
-        return amounts[1];
-    }
-
-    // 兑换 DAI -> WETH -> USDC
-    function swapMultiHopExactAmountOut(
-        uint amountOutDesired,
-        uint amountInMax
-    ) external returns (uint amountOut) {
-        dai.transferFrom(msg.sender, address(this), amountInMax);
-        dai.approve(address(router), amountInMax);
-
-        address[] memory path;
-        path = new address[](3);
-        path[0] = DAI;
-        path[1] = WETH;
-        path[2] = USDC;
-
-        uint[] memory amounts = router.swapTokensForExactTokens(
-            amountOutDesired,
-            amountInMax,
-            path,
-            msg.sender,
-            block.timestamp
-        );
-
-        // 将 DAI 退还给 msg.sender
-        if (amounts[0] < amountInMax) {
-            dai.transfer(msg.sender, amountInMax - amounts[0]);
-        }
-
-        return amounts[2];
-    }
+    return amounts[2];
+}
 ```
 在合约中，定义了一些接口，如 IUniswapV2Router、IERC20 和 IWETH，用于与 Uniswap V2 路由器和 ERC20 标准兼容的代币进行交互。这些接口定义了一些函数，如 transfer、balanceOf、approve 等，用于实现 ERC20 标准中定义的功能，如转账、查询余额、授权等
 ```solidity
