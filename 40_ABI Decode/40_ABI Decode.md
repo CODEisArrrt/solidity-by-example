@@ -6,13 +6,13 @@ ABI Decode是指将以太坊智能合约的函数调用数据解码为可读的�
 * abi.encode将数据编码为字节。
 ```solidity
 function encode(
-        uint x,
-        address addr,
-        uint[] calldata arr,
-        MyStruct calldata myStruct
-    ) external pure returns (bytes memory) {
-        return abi.encode(x, addr, arr, myStruct);
-    }
+    uint x,
+    address addr,
+    uint[] calldata arr,
+    MyStruct calldata myStruct
+) external pure returns (bytes memory) {
+    return abi.encode(x, addr, arr, myStruct);
+}
 ```
 * abi.decode将字节解码回数据。
 ```solidity
@@ -28,7 +28,7 @@ function decode(
 }
 ```
 ## remix验证
-部署合约，调用encode（）函数传入参数进行编码。
+1. 部署合约，调用encode（）函数传入参数进行编码。
 ![40-1.png](./img/40-1.png)
-调用decode（）函数对上文编码后参数进行解码。
+2. 调用decode（）函数对上文编码后参数进行解码。
 ![40-2.png](./img/40-2.png)

@@ -10,12 +10,12 @@ constant变量必须在声明的时候初始化，之后再也不能改变。尝
 
 
 ```solidity
-    // 编码约定将常量变量大写
-    address public constant MY_ADDRESS = 0x777788889999AaAAbBbbCcccddDdeeeEfFFfCcCc;
-    uint public constant MY_UINT = 123;
+// 编码约定将常量变量大写
+address public constant MY_ADDRESS = 0x777788889999AaAAbBbbCcccddDdeeeEfFFfCcCc;
+uint public constant MY_UINT = 123;
 ```
 
 
 ## remix验证
 1. 编译并部署代码调用MY_ADDRESS显示地址，调用MY_UINT显示整数。
-![5-1.jpg](img/5-1.jpg)
+![5-1.jpg](./img/5-1.jpg)

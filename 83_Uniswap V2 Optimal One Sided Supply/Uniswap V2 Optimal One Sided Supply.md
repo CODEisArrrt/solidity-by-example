@@ -13,25 +13,22 @@ Optimal One Sided Supply
 该合约的目的是在提供流动性时，最大化用户的收益。
 
 ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-contract TestUniswapOptimalOneSidedSupply {
-    address private constant FACTORY = 0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f;
-    address private constant ROUTER = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
-    address private constant WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
+address private constant FACTORY = 0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f;
+address private constant ROUTER = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
+address private constant WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
 
-    function sqrt(uint y) private pure returns (uint z) {
-        if (y > 3) {
-            z = y;
-            uint x = y / 2 + 1;
-            while (x < z) {
-                z = x;
-                x = (y / x + x) / 2;
-            }
-        } else if (y != 0) {
-            z = 1;
+function sqrt(uint y) private pure returns (uint z) {
+    if (y > 3) {
+        z = y;
+        uint x = y / 2 + 1;
+        while (x < z) {
+            z = x;
+            x = (y / x + x) / 2;
         }
+    } else if (y != 0) {
+        z = 1;
     }
+}
 ```
 
 s = 最佳交换金额 
@@ -41,71 +38,69 @@ f = 交易手续费百分比
 s = (sqrt(((2 - f)r)^2 + 4(1 - f)ar) - (2 - f)r) / (2(1 - f))
 
 ```solidity
-    function getSwapAmount(uint r, uint a) public pure returns (uint) {
-        return (sqrt(r * (r * 3988009 + a * 3988000)) - r * 1997) / 1994;
-    }
+function getSwapAmount(uint r, uint a) public pure returns (uint) {
+    return (sqrt(r * (r * 3988009 + a * 3988000)) - r * 1997) / 1994;
+}
 ```
 
 最佳单边供应
 1. 从代币 A 到代币 B 进行最佳兑换
 2. 添加流动性
 ```solidity
+function zap(address _tokenA, address _tokenB, uint _amountA) external {
+    require(_tokenA == WETH || _tokenB == WETH, "!weth");
 
-    function zap(address _tokenA, address _tokenB, uint _amountA) external {
-        require(_tokenA == WETH || _tokenB == WETH, "!weth");
+    IERC20(_tokenA).transferFrom(msg.sender, address(this), _amountA);
 
-        IERC20(_tokenA).transferFrom(msg.sender, address(this), _amountA);
+    address pair = IUniswapV2Factory(FACTORY).getPair(_tokenA, _tokenB);
+    (uint reserve0, uint reserve1, ) = IUniswapV2Pair(pair).getReserves();
 
-        address pair = IUniswapV2Factory(FACTORY).getPair(_tokenA, _tokenB);
-        (uint reserve0, uint reserve1, ) = IUniswapV2Pair(pair).getReserves();
-
-        uint swapAmount;
-        if (IUniswapV2Pair(pair).token0() == _tokenA) {
-            //从代币0兑换到代币1
-            swapAmount = getSwapAmount(reserve0, _amountA);
-        } else {
-            // 从代币1兑换到代币0
-            swapAmount = getSwapAmount(reserve1, _amountA);
-        }
-
-        _swap(_tokenA, _tokenB, swapAmount);
-        _addLiquidity(_tokenA, _tokenB);
+    uint swapAmount;
+    if (IUniswapV2Pair(pair).token0() == _tokenA) {
+        //从代币0兑换到代币1
+        swapAmount = getSwapAmount(reserve0, _amountA);
+    } else {
+        // 从代币1兑换到代币0
+        swapAmount = getSwapAmount(reserve1, _amountA);
     }
 
-    function _swap(address _from, address _to, uint _amount) internal {
-        IERC20(_from).approve(ROUTER, _amount);
+    _swap(_tokenA, _tokenB, swapAmount);
+    _addLiquidity(_tokenA, _tokenB);
+}
 
-        address[] memory path = new address[](2);
-        path = new address[](2);
-        path[0] = _from;
-        path[1] = _to;
+function _swap(address _from, address _to, uint _amount) internal {
+    IERC20(_from).approve(ROUTER, _amount);
 
-        IUniswapV2Router(ROUTER).swapExactTokensForTokens(
-            _amount,
-            1,
-            path,
-            address(this),
-            block.timestamp
-        );
-    }
+    address[] memory path = new address[](2);
+    path = new address[](2);
+    path[0] = _from;
+    path[1] = _to;
 
-    function _addLiquidity(address _tokenA, address _tokenB) internal {
-        uint balA = IERC20(_tokenA).balanceOf(address(this));
-        uint balB = IERC20(_tokenB).balanceOf(address(this));
-        IERC20(_tokenA).approve(ROUTER, balA);
-        IERC20(_tokenB).approve(ROUTER, balB);
+    IUniswapV2Router(ROUTER).swapExactTokensForTokens(
+        _amount,
+        1,
+        path,
+        address(this),
+        block.timestamp
+    );
+}
 
-        IUniswapV2Router(ROUTER).addLiquidity(
-            _tokenA,
-            _tokenB,
-            balA,
-            balB,
-            0,
-            0,
-            address(this),
-            block.timestamp
-        );
-    }
+function _addLiquidity(address _tokenA, address _tokenB) internal {
+    uint balA = IERC20(_tokenA).balanceOf(address(this));
+    uint balB = IERC20(_tokenB).balanceOf(address(this));
+    IERC20(_tokenA).approve(ROUTER, balA);
+    IERC20(_tokenB).approve(ROUTER, balB);
+
+    IUniswapV2Router(ROUTER).addLiquidity(
+        _tokenA,
+        _tokenB,
+        balA,
+        balB,
+        0,
+        0,
+        address(this),
+        block.timestamp
+    );
 }
 ```
 Uniswap v2 的接口

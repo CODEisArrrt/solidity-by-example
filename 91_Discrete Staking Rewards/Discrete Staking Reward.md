@@ -14,81 +14,74 @@
 
 接受质押代币和奖励代币的合约地址。
 ```solidity
-
-    constructor(address _stakingToken, address _rewardToken) {
-        stakingToken = IERC20(_stakingToken);
-        rewardToken = IERC20(_rewardToken);
-    }
+constructor(address _stakingToken, address _rewardToken) {
+    stakingToken = IERC20(_stakingToken);
+    rewardToken = IERC20(_rewardToken);
+}
 ```
 更新奖励指数，需要将奖励代币转入合约地址。
 ```solidity
-
-    function updateRewardIndex(uint reward) external {
-        rewardToken.transferFrom(msg.sender, address(this), reward);
-        rewardIndex += (reward * MULTIPLIER) / totalSupply;
-    }
+function updateRewardIndex(uint reward) external {
+    rewardToken.transferFrom(msg.sender, address(this), reward);
+    rewardIndex += (reward * MULTIPLIER) / totalSupply;
+}
 ```
 计算指定地址应该获得的奖励代币数量。
 ```solidity
 
-    function _calculateRewards(address account) private view returns (uint) {
-        uint shares = balanceOf[account];
-        return (shares * (rewardIndex - rewardIndexOf[account])) / MULTIPLIER;
-    }
+function _calculateRewards(address account) private view returns (uint) {
+    uint shares = balanceOf[account];
+    return (shares * (rewardIndex - rewardIndexOf[account])) / MULTIPLIER;
+}
 ```
 查询指定地址已经获得的奖励代币数量。
 ```solidity
-
-    function calculateRewardsEarned(address account) external view returns (uint) {
-        return earned[account] + _calculateRewards(account);
-    }
+function calculateRewardsEarned(address account) external view returns (uint) {
+    return earned[account] + _calculateRewards(account);
+}
 ```
 更新指定地址的奖励数量和最近奖励指数。
 ```solidity
-
-    function _updateRewards(address account) private {
-        earned[account] += _calculateRewards(account);
-        rewardIndexOf[account] = rewardIndex;
-    }
+function _updateRewards(address account) private {
+    earned[account] += _calculateRewards(account);
+    rewardIndexOf[account] = rewardIndex;
+}
 ```
 质押代币，需要将质押代币转入合约地址。
 ```solidity
+function stake(uint amount) external {
+    _updateRewards(msg.sender);
 
-    function stake(uint amount) external {
-        _updateRewards(msg.sender);
+    balanceOf[msg.sender] += amount;
+    totalSupply += amount;
 
-        balanceOf[msg.sender] += amount;
-        totalSupply += amount;
-
-        stakingToken.transferFrom(msg.sender, address(this), amount);
-    }
+    stakingToken.transferFrom(msg.sender, address(this), amount);
+}
 ```
 解除质押，需要将质押代币转回用户地址。
 ```solidity
+function unstake(uint amount) external {
+    _updateRewards(msg.sender);
 
-    function unstake(uint amount) external {
-        _updateRewards(msg.sender);
+    balanceOf[msg.sender] -= amount;
+    totalSupply -= amount;
 
-        balanceOf[msg.sender] -= amount;
-        totalSupply -= amount;
-
-        stakingToken.transfer(msg.sender, amount);
-    }
+    stakingToken.transfer(msg.sender, amount);
+}
 ```
 领取已经获得的奖励代币，将奖励代币转到用户地址。
 ```solidity
+function claim() external returns (uint) {
+    _updateRewards(msg.sender);
 
-    function claim() external returns (uint) {
-        _updateRewards(msg.sender);
-
-        uint reward = earned[msg.sender];
-        if (reward > 0) {
-            earned[msg.sender] = 0;
-            rewardToken.transfer(msg.sender, reward);
-        }
-
-        return reward;
+    uint reward = earned[msg.sender];
+    if (reward > 0) {
+        earned[msg.sender] = 0;
+        rewardToken.transfer(msg.sender, reward);
     }
+
+    return reward;
+}
 
 
 interface IERC20 {

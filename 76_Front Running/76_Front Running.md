@@ -5,15 +5,15 @@ Solidity的Front Running漏洞是指当一个交易被广播到网络时，在�
 
 ## 漏洞例子合约
 Alice创建了一个猜测游戏。
-如果您能找到正确的字符串，将其哈希为目标哈希，则可以赢得10个以太币。让我们看看这个合同如何容易受到前置交易攻击的影响。
+如果您能找到正确的字符串，将其哈希为目标哈希，则可以赢得10个以太。让我们看看这个合同如何容易受到前置交易攻击的影响。
 
 
-1. Alice使用10个以太币部署了FindThisHash。
+1. Alice使用10个以太部署了FindThisHash。
 2. Bob找到了正确的字符串，可以哈希成目标哈希值。（“以太坊”）
 3. Bob调用solve（“以太坊”），以15个gwei的燃气价格设置。
 4. Eve正在观察交易池，等待答案提交。
 5. Eve看到了Bob的答案，并以比Bob更高的燃气价格（100个gwei）调用solve（“以太坊”）。
-6. Eve的交易在Bob的交易之前被挖掘。Eve赢得了10个以太币的奖励。
+6. Eve的交易在Bob的交易之前被挖掘。Eve赢得了10个以太的奖励。
 
 发生了什么？
 
@@ -45,7 +45,7 @@ contract FindThisHash {
 提交方案是一种加密算法，用于允许某人承诺一个值，同时将其隐藏在其他人无法看到的情况下，可以稍后揭示它。提交方案中的值是绑定的，意味着一旦提交，就无法更改。该方案有两个阶段：提交阶段，在该阶段选择和指定值，以及揭示阶段，在该阶段揭示并检查值。
    
    现在让我们看看如何使用提交揭示方案来防止前置交易。
-1. Alice使用10个以太币部署了SecuredFindThisHash。
+1. Alice使用10个以太部署了SecuredFindThisHash。
 2. Bob找到了正确的字符串，可以哈希到目标哈希值（“Ethereum”）。
 3. Bob然后找到了keccak256（地址小写+解决方案+密码）。地址是他的钱包地址小写，解决方案是“Ethereum”，密码类似于只有Bob知道的密码（“mysecret”），Bob用它来提交和揭示解决方案。keccak2566（“0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266Ethereummysecret”）=“0xf95b1dd61edc3bd962cdea3987c6f55bcb714a02a2c3eb73bd960d6b4387fc36”。
 4. Bob然后调用commitSolution（“0xf95b1dd61edc3bd962cdea3987c6f55bcb714a02a2c3eb73bd960d6b4387fc36”），其中他提交了计算出的解决方案哈希，燃气价格设置为15个gwei。
@@ -55,7 +55,7 @@ contract FindThisHash {
 8. 然后Bob调用revealSolution（“Ethereum”，“mysecret”），燃气价格设置为15个gwei；
 9. 假设Eve在观察交易池时找到了Bob的揭示解决方案交易，他也调用了revealSolution（“Ethereum”，“mysecret”），但燃气价格比Bob高（100个gwei）。
 10. 假设这次Eve的揭示交易也在Bob的交易之前被挖掘出来，但Eve将被还原为“哈希不匹配”错误。因为revealSolution()函数使用keccak256(msg.sender + solution + secret)检查哈希。所以这次Eve未能赢得奖励。
-10.但是Bob的revealSolution（“Ethereum”，“mysecret”）通过了哈希检查，并获得了10个以太币的奖励。
+10.但是Bob的revealSolution（“Ethereum”，“mysecret”）通过了哈希检查，并获得了10个以太的奖励。
 
 ```solidity
 // SPDX-License-Identifier: MIT

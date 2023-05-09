@@ -32,4 +32,4 @@ contract Loop {
 
 ## remix验证
 1. 部署合约，调用loop函数进行循环验证测试
-![11-1.png](img/11-1.png)
+![11-1.png](./img/11-1.png)

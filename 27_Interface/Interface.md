@@ -72,16 +72,16 @@ contract UniswapExample {
 ```
 * getTokenReserves 函数是一个公共函数，返回两个无符号整数类型的储备量，它首先调用 UniswapV2Factory 接口中的 getPair 函数，获取 dai 和 weth 代币对应的交易对地址，然后调用 UniswapV2Pair 接口中的 getReserves 函数，获取该交易对的储备量，最后返回 reserve0 和 reserve1。
 ```solidity
-    function getTokenReserves() external view returns (uint, uint) {
-        address pair = UniswapV2Factory(factory).getPair(dai, weth);
-        (uint reserve0, uint reserve1, ) = UniswapV2Pair(pair).getReserves();
-        return (reserve0, reserve1);
-    }
+function getTokenReserves() external view returns (uint, uint) {
+    address pair = UniswapV2Factory(factory).getPair(dai, weth);
+    (uint reserve0, uint reserve1, ) = UniswapV2Pair(pair).getReserves();
+    return (reserve0, reserve1);
+}
 ```
 
 
 ## remix验证
 1. 部署Counter 合约，调用increment()函数，增加计数器数值
-![27-1.jpg](img/27-1.jpg)
+![27-1.jpg](./img/27-1.jpg)
 2. 部署MyContract合约，调用incrementCounter函数，输入Counter合约地址，调用ICounter 接口中的函数来操作计数器。incrementCounter() 函数用于增加计数器的值，getCount() 函数用于获取计数器的值。
-![27-2.jpg](img/27-2.jpg)
+![27-2.jpg](./img/27-2.jpg)

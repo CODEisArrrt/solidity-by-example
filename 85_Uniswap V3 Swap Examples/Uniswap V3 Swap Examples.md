@@ -10,30 +10,29 @@
 * amountIn：输入代币的数量。
 
 ```solidity
+function swapExactInputSingleHop(
+    address tokenIn,
+    address tokenOut,
+    uint24 poolFee,
+    uint amountIn
+) external returns (uint amountOut) {
+    IERC20(tokenIn).transferFrom(msg.sender, address(this), amountIn);
+    IERC20(tokenIn).approve(address(router), amountIn);
 
-    function swapExactInputSingleHop(
-        address tokenIn,
-        address tokenOut,
-        uint24 poolFee,
-        uint amountIn
-    ) external returns (uint amountOut) {
-        IERC20(tokenIn).transferFrom(msg.sender, address(this), amountIn);
-        IERC20(tokenIn).approve(address(router), amountIn);
+    ISwapRouter.ExactInputSingleParams memory params = ISwapRouter
+        .ExactInputSingleParams({
+            tokenIn: tokenIn,
+            tokenOut: tokenOut,
+            fee: poolFee,
+            recipient: msg.sender,
+            deadline: block.timestamp,
+            amountIn: amountIn,
+            amountOutMinimum: 0,
+            sqrtPriceLimitX96: 0
+        });
 
-        ISwapRouter.ExactInputSingleParams memory params = ISwapRouter
-            .ExactInputSingleParams({
-                tokenIn: tokenIn,
-                tokenOut: tokenOut,
-                fee: poolFee,
-                recipient: msg.sender,
-                deadline: block.timestamp,
-                amountIn: amountIn,
-                amountOutMinimum: 0,
-                sqrtPriceLimitX96: 0
-            });
-
-        amountOut = router.exactInputSingle(params);
-    }
+    amountOut = router.exactInputSingle(params);
+}
 ```
 
 2. swapExactInputMultiHop(bytes calldata path, address tokenIn, uint amountIn) external returns (uint amountOut) 函数：用于进行多跳交换，将 tokenIn 代币的 amountIn 数量进行兑换，以获得尽可能多的目标代币。该函数使用 Uniswap V3 的 exactInput 函数进行交换，并需要传入以下参数：
@@ -41,24 +40,23 @@
 * tokenIn：输入代币地址。
 * amountIn：输入代币的数量。
 ```solidity
+function swapExactInputMultiHop(
+    bytes calldata path,
+    address tokenIn,
+    uint amountIn
+) external returns (uint amountOut) {
+    IERC20(tokenIn).transferFrom(msg.sender, address(this), amountIn);
+    IERC20(tokenIn).approve(address(router), amountIn);
 
-    function swapExactInputMultiHop(
-        bytes calldata path,
-        address tokenIn,
-        uint amountIn
-    ) external returns (uint amountOut) {
-        IERC20(tokenIn).transferFrom(msg.sender, address(this), amountIn);
-        IERC20(tokenIn).approve(address(router), amountIn);
-
-        ISwapRouter.ExactInputParams memory params = ISwapRouter.ExactInputParams({
-            path: path,
-            recipient: msg.sender,
-            deadline: block.timestamp,
-            amountIn: amountIn,
-            amountOutMinimum: 0
-        });
-        amountOut = router.exactInput(params);
-    }
+    ISwapRouter.ExactInputParams memory params = ISwapRouter.ExactInputParams({
+        path: path,
+        recipient: msg.sender,
+        deadline: block.timestamp,
+        amountIn: amountIn,
+        amountOutMinimum: 0
+    });
+    amountOut = router.exactInput(params);
+}
 ```
 该合约还包含了三个接口：
 

@@ -1,10 +1,10 @@
 # 30.Fallback
 fallback是一种特殊的函数，当以下情况发生时执行：
 1. 调用不存在的函数时；
-2. 将以太币直接发送到合约但receive( )不存在或msg.data不为空时。
+2. 将以太直接发送到合约但receive( )不存在或msg.data不为空时。
 
 当通过transfer或send调用时，fallback的gas限制为2300。
-* Fallback函数必须声明为external，并且不能带任何参数。Fallback函数还必须设置为payable，这样它才能接收以太币。
+* Fallback函数必须声明为external，并且不能带任何参数。Fallback函数还必须设置为payable，这样它才能接收以太。
 需要注意的是，每个合约只能有一个Fallback函数。如果合约中定义了多个Fallback函数，则编译器会报错。
 ```solidity
 fallback() external payable {
@@ -16,21 +16,21 @@ fallback() external payable {
 
 * Receive是fallback的一种变体，当msg.data为0时触发。
 ```solidity
-    receive() external payable {
-        emit Log("receive", gasleft());
-    }
+receive() external payable {
+    emit Log("receive", gasleft());
+}
 ```
 
 * 辅助函数用于检查此合约的余额。
 ```solidity
-    function getBalance() public view returns (uint) {
-        return address(this).balance;
-    }
+function getBalance() public view returns (uint) {
+    return address(this).balance;
+}
 ```
 
 * fallback可以选择使用字节作为输入和输出。
 TestFallbackInputOutput -> FallbackInputOutput -> Counter
-FallbackInputOutput 合约中定义了一个 fallback 函数，当该合约接收到以太币时，
+FallbackInputOutput 合约中定义了一个 fallback 函数，当该合约接收到以太时，
     会将传入的数据 data 转发给目标合约，并返回目标合约的执行结果 res。
 ```solidity
 contract FallbackInputOutput {
@@ -84,7 +84,7 @@ contract TestFallbackInputOutput {
 }
 ```
 ## remix验证
-使用calldata低级别调用不存在的函数，显示调用成功，执行fallback（）函数。
+1. 使用calldata低级别调用不存在的函数，显示调用成功，执行fallback（）函数。
 ![30-1.png](./img/30-1.png)
-msg.data为0时，触发receive（）函数。
+2. msg.data为0时，触发receive（）函数。
 ![30-2.png](./img/30-2.png)

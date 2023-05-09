@@ -7,76 +7,71 @@
 此合约还使用了PoolAddress库，用于计算Uniswap V3池子地址。
 
 ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-contract UniswapV3Flash {
-    address private constant FACTORY = 0x1F98431c8aD98523631AE4a59f267346ea31F984;
 
-    struct FlashCallbackData {
-        uint amount0;
-        uint amount1;
-        address caller;
-    }
+address private constant FACTORY = 0x1F98431c8aD98523631AE4a59f267346ea31F984;
 
-    IERC20 private immutable token0;
-    IERC20 private immutable token1;
+struct FlashCallbackData {
+    uint amount0;
+    uint amount1;
+    address caller;
+}
 
-    IUniswapV3Pool private immutable pool;
+IERC20 private immutable token0;
+IERC20 private immutable token1;
+
+IUniswapV3Pool private immutable pool;
 ```
 接受两个ERC20代币地址和一个手续费，然后获取对应的Uniswap V3池子的地址。
 ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-    constructor(address _token0, address _token1, uint24 _fee) {
-        token0 = IERC20(_token0);
-        token1 = IERC20(_token1);
-        pool = IUniswapV3Pool(getPool(_token0, _token1, _fee));
-    }
+constructor(address _token0, address _token1, uint24 _fee) {
+    token0 = IERC20(_token0);
+    token1 = IERC20(_token1);
+    pool = IUniswapV3Pool(getPool(_token0, _token1, _fee));
+}
 ```
 根据两个ERC20代币地址和手续费计算对应的Uniswap V3池子地址。
 ```solidity
-    function getPool(
-        address _token0,
-        address _token1,
-        uint24 _fee
-    ) public pure returns (address) {
-        PoolAddress.PoolKey memory poolKey = PoolAddress.getPoolKey(
-            _token0,
-            _token1,
-            _fee
-        );
-        return PoolAddress.computeAddress(FACTORY, poolKey);
-    }
+function getPool(
+    address _token0,
+    address _token1,
+    uint24 _fee
+) public pure returns (address) {
+    PoolAddress.PoolKey memory poolKey = PoolAddress.getPoolKey(
+        _token0,
+        _token1,
+        _fee
+    );
+    return PoolAddress.computeAddress(FACTORY, poolKey);
+}
 ```
 允许用户借贷一定数量的代币，同时在同一交易中进行交易。
 ```solidity
-    function flash(uint amount0, uint amount1) external {
-        bytes memory data = abi.encode(
-            FlashCallbackData({amount0: amount0, amount1: amount1, caller: msg.sender})
-        );
-        IUniswapV3Pool(pool).flash(address(this), amount0, amount1, data);
-    }
+function flash(uint amount0, uint amount1) external {
+    bytes memory data = abi.encode(
+        FlashCallbackData({amount0: amount0, amount1: amount1, caller: msg.sender})
+    );
+    IUniswapV3Pool(pool).flash(address(this), amount0, amount1, data);
+}
 ```
 当flash函数被调用时，Uniswap V3池子将调用此函数，用于还款和交易。
 ```solidity
-    function uniswapV3FlashCallback(
-        uint fee0,
-        uint fee1,
-        bytes calldata data
-    ) external {
-        require(msg.sender == address(pool), "not authorized");
+function uniswapV3FlashCallback(
+    uint fee0,
+    uint fee1,
+    bytes calldata data
+) external {
+    require(msg.sender == address(pool), "not authorized");
 
-        FlashCallbackData memory decoded = abi.decode(data, (FlashCallbackData));
+    FlashCallbackData memory decoded = abi.decode(data, (FlashCallbackData));
 
-        // 偿还借款
-        if (fee0 > 0) {
-            token0.transferFrom(decoded.caller, address(this), fee0);
-            token0.transfer(address(pool), decoded.amount0 + fee0);
-        }
-        if (fee1 > 0) {
-            token1.transferFrom(decoded.caller, address(this), fee1);
-            token1.transfer(address(pool), decoded.amount1 + fee1);
-        }
+    // 偿还借款
+    if (fee0 > 0) {
+        token0.transferFrom(decoded.caller, address(this), fee0);
+        token0.transfer(address(pool), decoded.amount0 + fee0);
+    }
+    if (fee1 > 0) {
+        token1.transferFrom(decoded.caller, address(this), fee1);
+        token1.transfer(address(pool), decoded.amount1 + fee1);
     }
 }
 

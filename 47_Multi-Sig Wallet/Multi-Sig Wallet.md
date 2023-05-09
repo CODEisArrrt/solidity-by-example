@@ -12,55 +12,54 @@
 
 ### 事件
 MultisigWallet合约有5个事件：
-1. event Deposit（）：表示有人向合约地址存入了一定数量的以太币。
+1. event Deposit（）：表示有人向合约地址存入了一定数量的以太。
 ```solidity
-    event Deposit(address indexed sender, uint amount, uint balance);
+event Deposit(address indexed sender, uint amount, uint balance);
 ```
 
 2. event SubmitTransaction（）：表示有一个交易被提交到合约中待执行。
 ```solidity
-
-    event SubmitTransaction(
-        address indexed owner,
-        uint indexed txIndex,
-        address indexed to,
-        uint value,
-        bytes data
-    );
+event SubmitTransaction(
+    address indexed owner,
+    uint indexed txIndex,
+    address indexed to,
+    uint value,
+    bytes data
+);
 ```
 
 3. event ConfirmTransaction():表示一个交易被确认。
 ```solidity
-    event ConfirmTransaction(address indexed owner, uint indexed txIndex);
+event ConfirmTransaction(address indexed owner, uint indexed txIndex);
 ```
 
 4. event RevokeConfirmation():表示一个确认被撤销。
 ```solidity
-    event RevokeConfirmation(address indexed owner, uint indexed txIndex);
+event RevokeConfirmation(address indexed owner, uint indexed txIndex);
 ```
 5. event ExecuteTransaction():表示一个待执行的交易被执行了。
 ```solidity
-    event ExecuteTransaction(address indexed owner, uint indexed txIndex);
+event ExecuteTransaction(address indexed owner, uint indexed txIndex);
 ```
 
 ### 核心要素
 ```solidity
-    address[] public owners;
-    mapping(address => bool) public isOwner;
-    uint public numConfirmationsRequired;
+address[] public owners;
+mapping(address => bool) public isOwner;
+uint public numConfirmationsRequired;
 
-    struct Transaction {
-        address to;
-        uint value;
-        bytes data;
-        bool executed;
-        uint numConfirmations;
-    }
+struct Transaction {
+    address to;
+    uint value;
+    bytes data;
+    bool executed;
+    uint numConfirmations;
+}
 
-    // 从交易索引 => 拥有者 => 布尔值的映射
-    mapping(uint => mapping(address => bool)) public isConfirmed;
+// 从交易索引 => 拥有者 => 布尔值的映射
+mapping(uint => mapping(address => bool)) public isConfirmed;
 
-    Transaction[] public transactions;
+Transaction[] public transactions;
 ```
 
 ### 修饰器
@@ -114,8 +113,8 @@ constructor(address[] memory _owners, uint _numConfirmationsRequired) {
 }
 ```
 
-2. receive（）：当合约收到以太币时会被自动调用。
-在该合约中，收到以太币时会触发 Deposit 事件。
+2. receive（）：当合约收到以太时会被自动调用。
+在该合约中，收到以太时会触发 Deposit 事件。
 ```solidity
 receive() external payable {
     emit Deposit(msg.sender, msg.value, address(this).balance);
@@ -270,12 +269,12 @@ contract TestContract {
 
 # remix验证
 1. 传入所有人地址数组和确认数，部署合约。
-![47-1.jpg](img/47-1.jpg)
+![47-1.jpg](./img/47-1.jpg)
 2. 调用submitTransaction函数，提交一笔交易
-![47-2.jpg](img/47-2.jpg)
+![47-2.jpg](./img/47-2.jpg)
 3. 调用confirmTransaction函数确认交易，输入交易交易在 transactions 数组中的索引
-![47-3.jpg](img/47-3.jpg)
+![47-3.jpg](./img/47-3.jpg)
 4. 调用getOwners函数查看所有者地址，调用getTransactionCount()函数查看当前交易数，并使用getTransaction函数索引交易信息
-![47-4.jpg](img/47-4.jpg)
+![47-4.jpg](./img/47-4.jpg)
 5. 部署TestContract测试合约，调用 getData 函数的调用按钮，可以看到返回值为十六进制编码的字符串，表示调用 "callMe(uint256)" 函数，并传入参数 123，再调用callMe 函数，可以看到 i 的值增加了 123。
-![47-5.jpg](img/47-5.jpg)
+![47-5.jpg](./img/47-5.jpg)

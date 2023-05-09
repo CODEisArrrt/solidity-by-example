@@ -5,7 +5,7 @@ contract ReceiveEther {
     /*
     哪个函数被调用，fallback()还是receive()？
 
-           发送以太币
+           发送以太
 
                |
          msg.data 是否为空？
@@ -19,7 +19,7 @@ receive()是否存在？  fallback()
     receive()   fallback()
     */
 
-    // 接收以太币的函数。msg.data必须为空
+    // 接收以太的函数。msg.data必须为空
     receive() external payable {}
 
     // 当msg.data不为空时调用这个回退函数
@@ -32,13 +32,13 @@ receive()是否存在？  fallback()
 
 contract SendEther {
     function sendViaTransfer(address payable _to) public payable {
-        // 这个函数不再推荐用于发送以太币。
+        // 这个函数不再推荐用于发送以太。
         _to.transfer(msg.value);
     }
 
     function sendViaSend(address payable _to) public payable {
         // 发送返回一个布尔值，表示成功或失败。
-        // 这个函数不推荐用于发送以太币。
+        // 这个函数不推荐用于发送以太。
         bool sent = _to.send(msg.value);
         require(sent, "Failed to send Ether");
     }

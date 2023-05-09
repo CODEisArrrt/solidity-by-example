@@ -11,8 +11,8 @@ uint public immutable MY_UINT;
 * 构造函数，将一个无符号整数作为参数并将其存储在名为MY_UINT的状态变量中并将合约创建者的地址存储在名为MY_ADDRESS的状态变量中。
 ```solidity
 constructor(uint _myUint) {
-    MY_ADDRESS = msg.sender;
-    MY_UINT = _myUint;
+MY_ADDRESS = msg.sender;
+MY_UINT = _myUint;
 }
 ```
 ## remix验证
