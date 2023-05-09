@@ -4,7 +4,7 @@
 
 让我们看看如何创建一个代码大小由extcodesize返回的合约等于0的合约。
 
-Tatget合约：Target合约是一个简单的合约，包含一个bool类型的状态变量pwned和一个函数protected()。该函数要求调用者不是一个合约，如果调用者是一个合约，函数将抛出一个错误。该函数将pwned变量设置为true。
+* Tatget合约：Target合约是一个简单的合约，包含一个bool类型的状态变量pwned和一个函数protected()。该函数要求调用者不是一个合约，如果调用者是一个合约，函数将抛出一个错误。该函数将pwned变量设置为true。
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
@@ -27,7 +27,7 @@ contract Target {
     }
 }
 ```
-FailedAttack合约：FailedAttack合约是一个攻击合约，尝试调用Target合约的protected()函数。但是，由于Target合约的保护机制，从合约调用将失败。
+* FailedAttack合约：FailedAttack合约是一个攻击合约，尝试调用Target合约的protected()函数。但是，由于Target合约的保护机制，从合约调用将失败。
 ```solidity
 contract FailedAttack {
     // 尝试调用Target.protected将失败，
@@ -38,7 +38,7 @@ contract FailedAttack {
     }
 }
 ```
-Hack合约：Hack合约是一个攻击合约，可以绕过Target合约的保护机制。当Hack合约被创建时，它会调用Target合约的isContract()函数来检查它自己是否是一个合约。但是，由于Target合约的isContract()函数依赖于extcodesize()函数，该函数在合约创建期间返回0，因此Hack合约将绕过isContract()检查。然后，它调用Target合约的protected()函数，将pwned变量设置为true。
+* Hack合约：Hack合约是一个攻击合约，可以绕过Target合约的保护机制。当Hack合约被创建时，它会调用Target合约的isContract()函数来检查它自己是否是一个合约。但是，由于Target合约的isContract()函数依赖于extcodesize()函数，该函数在合约创建期间返回0，因此Hack合约将绕过isContract()检查。然后，它调用Target合约的protected()函数，将pwned变量设置为true。
 
 
 ```solidity
