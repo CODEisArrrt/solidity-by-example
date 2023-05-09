@@ -4,8 +4,8 @@
 * 获取当前计数的函数。
 ```solidity
 function get() public view returns (uint) {
-        return count;
-    }
+    return count;
+}
 ```
 
 * 计数增加1的函数。

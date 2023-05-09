@@ -40,4 +40,4 @@ contract HelloWorld {
 
 ## remix验证
 1. 编译并部署代码
-![1-1.jpg](img/1-1.jpg)
+![1-1.jpg](./img/1-1.jpg)

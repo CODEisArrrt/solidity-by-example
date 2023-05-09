@@ -144,10 +144,10 @@ contract ArrayReplaceFromEnd {
 
 ## remix验证
 1. 部署Array合约，调用push函数写入元素，调用getArr查看数组元素，调用getLength查看数组长度
-![13-1.jpg](img/13-1.jpg)
+![13-1.jpg](./img/13-1.jpg)
 2. 调用pop函数 删除从右往左第一个元素，验证
-![13-2.jpg](img/13-2.jpg)
+![13-2.jpg](./img/13-2.jpg)
 3. 调用get函数，索引数组中的元素。
-![13-3.jpg](img/13-3.jpg)
+![13-3.jpg](./img/13-3.jpg)
 4. 调用remove函数，删除索引位置元素，不会改变数组的长度，将删除元素重置为默认值。
-![13-4.jpg](img/13-4.jpg)
+![13-4.jpg](./img/13-4.jpg)

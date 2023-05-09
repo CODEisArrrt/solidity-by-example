@@ -160,6 +160,6 @@ TimeLock是一个合约，它发布一个将来要执行的交易。在最短等
     * 编码前地址：0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2
     * 编码后地址：0x000000000000000000000000ab8483f64d9c6d1ecf9b849ae677dd3315835cb2
 * _timestamp：可以执行交易的时间戳。
-![65-1.jpg](img/65-1.jpg)
-2. 调用getTxId函数 传入上一步的参数，查看交易id；再调用cancel函数 ，输入getTxId函数返回的交易id，完成取消交易。
-![65-2.jpg](img/65-2.jpg)
+![65-1.jpg](./img/65-1.jpg)
+1. 调用getTxId函数 传入上一步的参数，查看交易id；再调用cancel函数 ，输入getTxId函数返回的交易id，完成取消交易。
+![65-2.jpg](./img/65-2.jpg)

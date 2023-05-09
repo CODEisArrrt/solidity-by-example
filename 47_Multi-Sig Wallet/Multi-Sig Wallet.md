@@ -270,12 +270,12 @@ contract TestContract {
 
 # remix验证
 1. 传入所有人地址数组和确认数，部署合约。
-![47-1.jpg](img/47-1.jpg)
+![47-1.jpg](./img/47-1.jpg)
 2. 调用submitTransaction函数，提交一笔交易
-![47-2.jpg](img/47-2.jpg)
+![47-2.jpg](./img/47-2.jpg)
 3. 调用confirmTransaction函数确认交易，输入交易交易在 transactions 数组中的索引
-![47-3.jpg](img/47-3.jpg)
+![47-3.jpg](./img/47-3.jpg)
 4. 调用getOwners函数查看所有者地址，调用getTransactionCount()函数查看当前交易数，并使用getTransaction函数索引交易信息
-![47-4.jpg](img/47-4.jpg)
+![47-4.jpg](./img/47-4.jpg)
 5. 部署TestContract测试合约，调用 getData 函数的调用按钮，可以看到返回值为十六进制编码的字符串，表示调用 "callMe(uint256)" 函数，并传入参数 123，再调用callMe 函数，可以看到 i 的值增加了 123。
-![47-5.jpg](img/47-5.jpg)
+![47-5.jpg](./img/47-5.jpg)

@@ -64,8 +64,8 @@ contract Attack {
 
 ## remix验证
 1. 因为无法在Remix中使用blockhash，因此切换至ganache-cli
-![71-1.jpg](img/71-1.jpg)
+![71-1.jpg](./img/71-1.jpg)
 2. 部署GuessTheRandomNumber并放入1 Ether
-![71-2.jpg](img/71-2.jpg)
+![71-2.jpg](./img/71-2.jpg)
 3. 部署Attack合约，调用attack()函数，输入GuessTheRandomNumber合约地址，获取1 ETH 验证
-![71-3.jpg](img/71-3.jpg)
+![71-3.jpg](./img/71-3.jpg)

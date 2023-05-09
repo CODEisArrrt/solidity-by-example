@@ -99,8 +99,8 @@ receive()是否存在？  fallback()
 ## remix验证
 1. 部署ReceiveEther、SendEther合约 推荐使用sendViaCall发送以太币。
 复制ReceiveEther合约地址用作参数输入到sendViaCall()
-![29-1.jpg](img/29-1.jpg)
+![29-1.jpg](./img/29-1.jpg)
 2. ETH数量设置为1ETH调用sendViaCall()
-![29-2.jpg](img/29-2.jpg)
+![29-2.jpg](./img/29-2.jpg)
 3. 调用getBalance()查看是否接受ETH成功
-![29-3.jpg](img/29-3.jpg)
+![29-3.jpg](./img/29-3.jpg)

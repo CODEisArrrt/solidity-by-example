@@ -78,8 +78,8 @@ contract Todos {
 
 ## remix验证
 1. 部署 Todos合约，调用create函数，创建结构体,调用get函数，验证是否创建成功
-![15-1.jpg](img/15-1.jpg)
+![15-1.jpg](./img/15-1.jpg)
 2. 调用updateText（）函数修改文本为1，调用get（）函数查看结果修改为1，状态为false。
-![15-2.jpg](img/15-2.png)
+![15-2.jpg](./img/15-2.png)
 3. 调用toggleCompleted（）函数修改完成状态，调用get（）函数查看状态修改为true。
-![15-3.jpg](img/15-3.png)
+![15-3.jpg](./img/15-3.png)

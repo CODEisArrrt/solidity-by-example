@@ -40,6 +40,6 @@ contract Roulette {
 
 ## remix验证
 1. 传入10 eth部署合约Roulette
-![77-1.jpg](img/77-1.jpg)
+![77-1.jpg](./img/77-1.jpg)
 2. 调用spin合约，成功后调用pastBlockTime查看成功时间戳
-![77-2.jpg](img/77-2.jpg)
+![77-2.jpg](./img/77-2.jpg)

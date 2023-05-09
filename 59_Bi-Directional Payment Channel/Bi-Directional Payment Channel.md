@@ -181,4 +181,4 @@ contract BiDirectionalPaymentChannel {
 * _expiresAt: 一个无符号整数，表示通道的过期时间戳。（时间戳须大于现在）
 * _challengePeriod: 一个无符号整数，表示在退出挑战期间内的时间差。
 部署合约：
-![59-1.png](img/59-1.png)
+![59-1.png](./img/59-1.png)

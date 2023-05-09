@@ -89,13 +89,13 @@
     }
 ```
 ## remix验证
-部署合约，调用getMessageHash（）函数，对消息进行哈希处理。
+1. 部署合约，调用getMessageHash（）函数，对消息进行哈希处理。
 ![42-1.png](./img/42-1.png)
-调用getEthSignedMessageHash（）函数，输入messageHash生成签名。
+2. 调用getEthSignedMessageHash（）函数，输入messageHash生成签名。
 ![42-2.png](./img/42-2.png)
-调用verify（）函数验证签名。
+3. 调用verify（）函数验证签名。
 ![42-3.png](./img/42-3.png)
-调用recoverSigner（）函数通过签名和哈希值中恢复签名者。
+4. 调用recoverSigner（）函数通过签名和哈希值中恢复签名者。
 ![42-4.png](./img/42-4.png)
-调用splitSignature（）函数拆分签名。
+5. 调用splitSignature（）函数拆分签名。
 ![42-5.png](./img/42-5.png)

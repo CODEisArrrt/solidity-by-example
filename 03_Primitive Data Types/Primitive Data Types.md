@@ -76,10 +76,10 @@ bool public defaultBoo; // false错误
 
 ## remix验证
 1. 编译并部署代码查看数据类型bool
-![3-1.jpg](img/3-1.jpg)
-2. 查看数据类型uint
-![3-2.jpg](img/3-2.jpg)
-3. 查看数据类型int
-![3-3.jpg](img/3-3.jpg)
-4. 查看数据类型addresss
-![3-4.jpg](img/3-4.jpg)
+![3-1.jpg](./img/3-1.jpg)
+1. 查看数据类型uint
+![3-2.jpg](./img/3-2.jpg)
+1. 查看数据类型int
+![3-3.jpg](./img/3-3.jpg)
+1. 查看数据类型addresss
+![3-4.jpg](./img/3-4.jpg)

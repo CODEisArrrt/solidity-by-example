@@ -53,6 +53,6 @@ foo()函数也会触发Received事件，并将调用者的地址、发送的以�
 
 ## remix验证
 1. 部署Caller、Receiver合约，调用testCallFoo函数，输入Caller合约地址，验证。如果调用成功，它将返回 true 和一个包含函数返回值的字节数组。如果调用失败，它将返回 false 和一个包含错误信息的字节数组。无论调用是否成功，Caller 合约都会触发一个 Response 事件。
-![31-1.jpg](img/31-1.jpg)
+![31-1.jpg](./img/31-1.jpg)
 2. 当 testCallDoesNotExist 函数被调用时，它会使用指定的以太币调用 Receiver 合约中不存在的函数。由于该函数不存在，它将触发 fallback 函数，并返回 false 和一个包含 fallback 函数事件信息的字节数组。无论调用是否成功，Caller 合约都会触发一个 Response 事件。
-![31-2.jpg](img/31-2.jpg)
+![31-2.jpg](./img/31-2.jpg)

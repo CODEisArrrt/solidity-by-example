@@ -20,6 +20,6 @@
 
 ## remix验证
 1. 部署合约 调用set写入状态变量
-![7-1.jpg](img/7-1.jpg)
+![7-1.jpg](./img/7-1.jpg)
 2. 调用get可以不消耗gas读取变量
-![7-2.jpg](img/7-2.jpg)
+![7-2.jpg](./img/7-2.jpg)

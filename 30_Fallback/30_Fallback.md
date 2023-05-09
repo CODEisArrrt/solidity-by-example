@@ -84,7 +84,7 @@ contract TestFallbackInputOutput {
 }
 ```
 ## remix验证
-使用calldata低级别调用不存在的函数，显示调用成功，执行fallback（）函数。
+1. 使用calldata低级别调用不存在的函数，显示调用成功，执行fallback（）函数。
 ![30-1.png](./img/30-1.png)
-msg.data为0时，触发receive（）函数。
+2. msg.data为0时，触发receive（）函数。
 ![30-2.png](./img/30-2.png)

@@ -79,4 +79,4 @@ Solidity 0.8版本中算术操作在下溢和溢出时都会恢复。你可以�
 
 ## remix验证
 1. 部署TimeLock合约。部署Attack合约，并传递TimeLock合约的地址给它。
-![67-1.jpg](img/67-1.jpg)
+![67-1.jpg](./img/67-1.jpg)
