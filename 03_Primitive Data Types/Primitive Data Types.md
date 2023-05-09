@@ -3,12 +3,12 @@
 
 在这里，我们介绍 Solidity 中一些可用的原始数据类型。
 
-## boolean//布尔型
+## boolean //布尔型
 ```solidity
 bool public boo = true;
 ```
 
-## uint256//256位正整数
+## uint256 //256位正整数
 uint 代表无符号整数，表示非负整数
 有不同的大小可用
 uint8   范围从 0 到 2 ** 8 - 1
@@ -20,7 +20,7 @@ uint public u256 = 456;
 uint public u = 123;// uint是uint256的别名。
 ```
 
-## int256//256位整数(包括负数)
+## int256 //256位整数(包括负数)
 int 类型允许负数。
 和 uint 类型一样，可以有不同范围，从 int8 到 int256
     
@@ -42,7 +42,7 @@ int public maxInt = type(int).max;
 address public addr = 0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c;
 ```
 
-## byte//字节类型
+## byte //字节类型
 在 Solidity 中，数据类型 byte 表示一系列字节。 
 Solidity 提供了两种字节类型：
 
@@ -64,7 +64,7 @@ enum ActionSet { Buy, Hold, Sell }
 // 创建enum变量 action
 ActionSet action = ActionSet.Buy;
 ```
-enum的一个比较冷门的变量，几乎没什么人用。
+
 ## 默认值
 未分配的变量有一个默认值
 ```solidity
